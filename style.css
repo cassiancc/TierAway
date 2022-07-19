@@ -1,0 +1,79 @@
+/*FONT CSS*/
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;700&display=swap');
+.material-symbols-outlined {
+    font-variation-settings:
+        'FILL' 100,
+        'wght' 400,
+        'GRAD' 0,
+        'opsz' 48
+    }
+* {
+    font-family: 'Source Sans Pro', sans-serif;
+}
+#addtierdiv {
+    display: flex;
+    margin-bottom: 10px;
+    align-items: center;
+}
+#addtierdiv div {
+    display: flex;
+}
+#addtierdiv div input {
+    margin-right: 5px;
+}
+#addtierdiv label {
+    margin-right: 5px;
+}
+.drag {
+    position: absolute;
+    z-index: 2;
+    text-align: center;
+    width: 10vh;
+    height: 10vh;
+    border: solid white;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+.potentialdrag {
+    z-index: 2;
+    text-align: center;
+    width: 10vh;
+    height: 10vh;
+    margin-top: auto;
+    margin-bottom: auto;
+    background-size: contain; 
+    background-repeat: no-repeat; 
+    background-position: center;
+}
+td, th {
+    width: 10vh;
+    height: 10vh;
+}
+td img {
+    width: 100%;
+    max-width: 10vh;
+}
+table {
+    border-collapse: collapse;
+    border: black solid 3px;
+    width: 100%;
+    background-color: #393939;
+}
+tr, td, th {
+    border: black solid 2px;
+}
+.tierheader {
+    width: 7%;
+    text-align: center;
+    background-color: red;
+    font-size: x-large;
+    font-weight: 400;
+}
+.tiersettings {
+    width: 7%;
+    background-color: #1f1f1f;
+    text-align: center;
+}

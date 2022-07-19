@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <style>
+        </style>
+        <title>Tier Away</title>
+    </head>
+    <body>
+        <h1>Tier Away</h1>
+        <p>A simple way to easily create unique tier lists. No accounts, no hassle.</p>
+        <div id="addtierdiv">
+            <label>Add Tier: </label>
+            <div>
+            <input type="text" name="addtier" placeholder="S Tier" id="addtier">
+            
+            <input type="color" name="addtiercolour" id="addtiercolour">
+            <button onclick="addTier()" id="addtierbutton">Add Tier</button>
+            </div>
+        </div>
+
+        <table id="tierlist"><tbody></tbody></table>
+        
+        <label>Add new image: <input onchange="imageRead()" type="file" accept="image/*" id="fileselect">
+        </label>
+       
+        <div id="imageoptions">
+
+        </div>
+        <script src="script.js">
+        </script>
+    </body>
+</html>
