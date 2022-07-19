@@ -1,7 +1,7 @@
 //declare variables
-let pos1 = 0, pos2 = 0, pos3 = 0, pos4 = 0;
 let imageArray = [];
 let i = 0;
+let items = "";
 let tierList = [
 `<tr id="0">
 <th style="background-color: red;" class="tiers tierheader">S</td>
@@ -68,84 +68,41 @@ function imageRead() {
 
     imageArray.push(URL.createObjectURL(document.getElementById("fileselect").files[0]))
     document.querySelector("#imageoptions").innerHTML += `
-        <img id="${i}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[i]}">`
+        <img id="${i}" draggable="true" class="potentialdrag" src="${imageArray[i]}">`
     i = i + 1
-    //dragElement(document.getElementById("drag"));
+    items = document.querySelectorAll('.potentialdrag');
+    items.forEach(function (item) {
+    item.addEventListener('dragstart', startDrag);
+    item.addEventListener('dragend', endDrag);
+  });
 }
-//convert drag
-function convertDrag(element) {
-    element.className = "drag"
-    element.removeAttribute("onmouseenter")
-    dragElement(element);
-}
+function startDrag() {
+    this.id = 'dragged';
+  }
+  
+function endDrag(e) {
+    //find the mouse
+    posX = e.clientX;
+    posY = e.clientY;
+    //check what the mouse is hovering over
+    let position = document.elementsFromPoint(posX, posY)
+    position.forEach(function(element) {
+    if (element.tagName == "TD") { //find a part of the table to insert
+        element.innerHTML += `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`
+        document.getElementById("dragged").remove()
 
-    //unconvert drag
-    function unconvertDrag(element) {
-    element.className = "potentialdrag"
-    element.setAttribute("onmouseenter", "convertDrag(this)")
-}
-
-//drag functionality
-function dragElement(elmnt) {
-document.querySelector(".drag").onmousedown = dragMouseDown;
-
-function dragMouseDown(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // get the mouse cursor position at startup:
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    document.onmouseup = closeDragElement;
-    // call a function whenever the cursor moves:
-    document.onmousemove = elementDrag;
-}
-
-function elementDrag(e) {
-    e = e || window.event;
-    e.preventDefault();
-    // calculate the new cursor position:
-    pos1 = pos3 - e.clientX;
-    pos2 = pos4 - e.clientY;
-    pos3 = e.clientX;
-    pos4 = e.clientY;
-    // set the element's new position:
-    elmnt.style.top = (elmnt.offsetTop - pos2) + "px";
-    elmnt.style.left = (elmnt.offsetLeft - pos1) + "px";
-}
-
-function closeDragElement() {
-    // stop moving when mouse button is released:
-    let elementArray = document.elementsFromPoint(pos3, pos4)
-    elementArray.forEach(function(element) {
-        if (element.className == "tiers") {
-            document.getElementById("tierscontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        else if (element.className == "tiera") {
-            document.getElementById("tieracontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        else if (element.className == "tierb") {
-            document.getElementById("tierbcontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        else if (element.className == "tierc") {
-            document.getElementById("tierccontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        else if (element.className == "tierd") {
-            document.getElementById("tierdcontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        else if (element.className == "tierf") {
-            document.getElementById("tierfcontent").innerHTML += `<img id="${document.querySelector(".drag").id}" draggable="false" onmouseleave="unconvertDrag(this)" onmouseenter="convertDrag(this)" class="potentialdrag" src="${imageArray[document.querySelector(".drag").id]}">`
-            document.querySelector(".drag").remove()
-        }
-        
-        
-    })
-    document.onmouseup = null;
-    document.onmousemove = null;
-
-}
-}
+    }
+    else { //if isn't dragged into the table
+        //sometimes elements get stuck in a dragged state, fixes
+        if (document.getElementById('dragged')) {
+        document.getElementById("dragged").id = ""}
+    }})
+    //moved elements lose their event listeners after being dragged
+    items = document.querySelectorAll('.potentialdrag');
+    items.forEach(function (item) {
+    item.addEventListener('dragstart', startDrag);
+    item.addEventListener('dragend', endDrag);
+  });
+    
+    
+  }

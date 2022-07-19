@@ -39,6 +39,7 @@
 }
 .potentialdrag {
     z-index: 2;
+    cursor: pointer;
     text-align: center;
     width: 10vh;
     height: 10vh;
@@ -76,4 +77,7 @@ tr, td, th {
     width: 7%;
     background-color: #1f1f1f;
     text-align: center;
+}
+#dragged {
+    opacity: 0.4;
 }
