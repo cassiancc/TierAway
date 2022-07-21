@@ -11,6 +11,16 @@ body {
     background-color: #18181b;
     color: white;
     font-family: 'Source Sans Pro', sans-serif;
+    margin: 0;
+}
+header {
+    display:flex;
+    background-color: black;
+    align-items: center;
+    justify-content: space-between;
+    padding-left: 20px;
+    padding-right: 20px;
+    border-bottom: #d22d59 5px solid;
 }
 #addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
@@ -139,4 +149,15 @@ th:not(.header) {
 }
 #new:hover {
     color: white;
+}
+
+#github:hover {
+    color: #d22d59
+}
+#github {
+    color: white;
+    text-decoration: none;
+}
+#desc {
+    margin-left: 10px;
 }
