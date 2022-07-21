@@ -108,7 +108,6 @@ function startDrag() {
 }
 
 function endDrag(e) {
-    console.log(e);
     //find the mouse
     posX = e.clientX;
     posY = e.clientY;
@@ -119,7 +118,7 @@ function endDrag(e) {
             //If its a TD, we know it has a TR above it
             let template = `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`;
             let id = element.parentElement.id;
-            tierList[id].children += template;
+            tierList.tiers[id].children += template;
             element.innerHTML += template;
             document.getElementById("dragged").remove();
 
