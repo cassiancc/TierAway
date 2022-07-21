@@ -141,23 +141,35 @@ function addNew() {
     console.log("add")
     document.getElementById("addDrop").className = "dropshown"
     document.getElementById("addDrop").style.opacity = 1
-    document.querySelector("body").onmousedown = bodyCoords;
-    document.querySelector("#addDrop").onmousedown = dropCoords;
     document.getElementById("addDrop").innerHTML = `<button onclick="addSelection('upload')">Add Image from Upload</button>
     <button onclick="addSelection('url')">Add Image from URL</button>
-    <button onclick="addSelection('text')">Add Text to Tier list</button>
+    <button onclick="addSelection('text')">Add Text to Tier list (indev)</button>
     <button onclick="addSelection('newtier')">Add new Tier</button>
     <button onclick="addSelection('import')">Import Tier List (indev)</button>`
 }
 function addSelection(select) {
     if (select == "upload") {
-        document.getElementById("addDrop").innerHTML = `<div id="addimagediv"><label>Add new image: </label><input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect"></div>`
+        document.getElementById("addDrop").innerHTML = 
+        `<div id="addimagediv">
+            <label>Add new image: </label>
+            <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect">
+        </div>`
     } 
     else if (select == "url") {
-        document.getElementById("addDrop").innerHTML = `<div id="addurldiv"><label>Add image from URL: </label><input type="url" name="urlselect" id="urlselect"><button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button></div>`
+        document.getElementById("addDrop").innerHTML = 
+        `<div id="addurldiv">
+            <label>Add image from URL: </label>
+            <input type="url" name="urlselect" id="urlselect">
+            <button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button>
+        </div>`
     }
     else if (select == "text") {
-        document.getElementById("addDrop").innerHTML = '<div id="addtextdiv"><label>Add text: </label><input type="text" name="textselect" id="textselect"><button onclick="addTier()" id="addtierbutton">Add Text</button></div>'
+        document.getElementById("addDrop").innerHTML = 
+        `<div id="addtextdiv">
+            <label>Add text: </label>
+            <input type="text" name="textselect" id="textselect">
+            <button onclick="addTier()" id="addtierbutton">Add Text</button>
+        </div>`
     }
     else if (select == "newtier") {
         document.getElementById("addDrop").innerHTML = 
@@ -205,39 +217,5 @@ function findScreenCoords(mouseEvent)
     dropArray = []
     dropRunCount = 0
   }
-  
-}
-
-function bodyCoords(mouseEvent)
-{
-  var xpos;
-  var ypos;
-  if (mouseEvent)
-  {
-    //FireFox
-    xpos = mouseEvent.screenX;
-    ypos = mouseEvent.screenY;
-  }
-  else
-  {
-    //IE
-    xpos = window.event.screenX;
-    ypos = window.event.screenY;
-  }
-  console.log()
-  dropArray.push(document.elementFromPoint(xpos, ypos))
-  if (dropArray.length >= 1 && outside == "yes") {
-    closePlus()
-    dropArray = []
-    dropRunCount = 0
-    console.log()
-    outside = "yes"
-  }
-  
-}
-var outside = "yes"
-function dropCoords(mouseEvent)
-{
-  outside = "no"
   
 }
