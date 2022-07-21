@@ -9,6 +9,7 @@
     <body>
         <h1>Tier Away</h1>
         <p>A simple way to easily create unique tier lists. No accounts, no hassle.</p>
+        
         <div id="addtierdiv">
             <label>Add Tier: </label>
             <div>
@@ -18,11 +19,28 @@
             <button onclick="addTier()" id="addtierbutton">Add Tier</button>
             </div>
         </div>
-
-        <table id="tierlist"><tbody></tbody></table>
+        <div id="addimagediv"><label>Add new image: </label><input multiple onchange="imageRead(`file`)" type="file" accept="image/*" id="fileselect">
+        </div>
+        <div id="addurldiv"><label>Add image from URL: </label><input type="url" name="urlselect" id="urlselect"><button onclick="imageRead(document.getElementById(`urlselect`).value)" id="addtierbutton">Add Image</button></div>
         
-        <label>Add new image: <input onchange="imageRead()" type="file" accept="image/*" id="fileselect">
-        </label>
+        <div id="addtextdiv"><label>Add text: </label><input type="text" name="textselect" id="textselect"><button onclick="addTier()" id="addtierbutton">Add Text</button></div>
+        
+
+        <table id="tierlist"><thead><tr id="tablehead">
+            <th contenteditable="true" colspan="2">
+                Tier List
+            </th><th><button>Add Element</button>
+
+            </th>
+        </tr></thead><tbody></tbody></table>
+        <!-- ADD MENU
+        <div>
+            <p>Add Image from Upload</p>
+            <p>Add Image from URL</p>
+            <p>Add Text to Tier list</p>
+            <p>Add new Tier</p>
+            <p>Import Tier List</p>
+        </div>-->
        
         <div id="imageoptions">
 

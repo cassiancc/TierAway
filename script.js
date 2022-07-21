@@ -64,12 +64,29 @@ function addTier() {
     </tr>`
 }
 //read image from file upload
-function imageRead() {
-
-    imageArray.push(URL.createObjectURL(document.getElementById("fileselect").files[0]))
-    document.querySelector("#imageoptions").innerHTML += `
-        <img id="${i}" draggable="true" class="potentialdrag" src="${imageArray[i]}">`
-    i = i + 1
+function imageRead(imageToRead) {
+    //check if it was triggered by the file upload
+    if (imageToRead == "file") {
+        let fileLength = document.getElementById(`fileselect`).files.length
+        let f = 0
+        while (fileLength != 0) {
+            imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f])
+            document.querySelector("#imageoptions").innerHTML += `
+            <img id="${i}" draggable="true" class="potentialdrag" src="${imageToRead}">`
+            i = i + 1
+            f = f + 1
+            fileLength = fileLength - 1
+        }
+        
+    }
+    else {
+        imageArray.push(imageToRead)
+        document.querySelector("#imageoptions").innerHTML += `
+        <img id="${i}" draggable="true" class="potentialdrag" src="${imageToRead[i]}">`
+        i = i + 1
+    }
+    
+    
     items = document.querySelectorAll('.potentialdrag');
     items.forEach(function (item) {
     item.addEventListener('dragstart', startDrag);

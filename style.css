@@ -10,10 +10,17 @@
 * {
     font-family: 'Source Sans Pro', sans-serif;
 }
-#addtierdiv {
+#addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
     margin-bottom: 10px;
     align-items: center;
+}
+#addurldiv label, #addtextdiv label, #addimagediv label, #addtierdiv label {
+    width: 20vh;
+}
+#fileselect {
+    height: 5vh;
+    border: solid black 1px;
 }
 #addtierdiv div {
     display: flex;
@@ -80,4 +87,8 @@ tr, td, th {
 }
 #dragged {
     opacity: 0.4;
+}
+#tablehead {
+    background-color: black;
+    color: white;
 }
