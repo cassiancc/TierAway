@@ -4,75 +4,59 @@ let i = 0;
 let dropRunCount = 0;
 let items = "";
 let dropArray = [];
+class Tier{
+    constructor(color,suffix){
+        this.color = color;
+        this.suffix = suffix;
+        this.content = "";
+    }
+    render(id){
+        return `<tr id="${id}">
+        <th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
+        <td id="tierscontent" class="tiers">${this.content}</td>
+        <td class="tiersettings"><button onclick="tierRemove(${id})"><i class="fa fa-times" aria-hidden="true"></i>
+        Delete</button></td>
+        </tr>`;
+    }
+}
 let tierList = [
-    `<tr id="0">
-<th style="background-color: red;" class="tiers tierheader">S</td>
-<td id="tierscontent" class="tiers"></td>
-<td class="tiersettings"><button onclick="tierRemove(0)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`,
-    `<tr id="1">
-<th style="background-color: orange;" class="tiera tierheader">A</td>
-<td id="tieracontent" class="tiera"></td>
-<td class="tiersettings"><button onclick="tierRemove(1)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`,
-    `<tr id="2">
-<th style="background-color: #ffff00;" class="tierb tierheader">B</td>
-<td id="tierbcontent" class="tierb"></td>
-<td class="tiersettings"><button onclick="tierRemove(2)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`,
-    `<tr id="3">
-<th style="background-color: #D2F319;" class="tierc tierheader">C</td>
-<td id="tierccontent" class="tierc"></td>
-<td class="tiersettings"><button onclick="tierRemove(3)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`,
-    `<tr id="4">
-<th style="background-color: #A1C51D;" class="tierd tierheader">D</td>
-<td id="tierdcontent" class="tierd"></td>
-<td class="tiersettings"><button onclick="tierRemove(4)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`,
-    `<tr id="5">
-<th style="background-color: #6f9720;" class="tierf tierheader">F</td>
-<td id="tierfcontent" class="tierf"></td>
-<td class="tiersettings"><button onclick="tierRemove(5)"><i class="fa fa-times" aria-hidden="true"></i>
-Delete</button></td>
-</tr>`
-];
-tierList.forEach(function(tier) {
-    document.querySelector("tbody").innerHTML += tier;
+    new Tier("red","s"),
+    new Tier("orange","a"),
+    new Tier("#ffff00","b"),
+    new Tier("#D2F319","c"),
+    new Tier("#A1C51D","d"),
+    new Tier("#6f9720","f")
 
-})
+];
+function renderAll(){
+    document.querySelector("tbody").innerHTML = "";
+    tierList.forEach(function(tier,idx) {
+        //Modify rendered HTML
+        document.querySelector("tbody").innerHTML += tier.render(idx);
+
+    })
+}
+renderAll();
 
 function tierRemove(item) {
     tierList.splice(item, 1);
-    document.querySelector("tbody").innerHTML = "";
-    t = 0;
-
-    tierList.forEach(function(tier) {
-        tierList[t] = tierList[t].replace(/id="[0-9]"/g, `id="${t}"`);
-        tierList[t] = tierList[t].replace(/tierRemove\([0-9]\)/g, `tierRemove\(${t}\)`);
-        t = t + 1;
-
-    });
-    tierList.forEach(function(tier) {
-        document.querySelector("tbody").innerHTML += tier;
-    });
+    renderAll();
 }
 //add new tier
 function addTier() {
     tierName = document.getElementById("addtier").value;
     tierColour = document.getElementById("addtiercolour").value;
-    document.querySelector("tbody").innerHTML +=
-        `<tr id="tier${tierName}">
-        <th style="background-color: ${tierColour};" class="tier${tierName} tierheader">${tierName}</th>
-        <td id="tier${tierName}content" class="tier${tierName}"></td>
-    </tr>`;
+
+    //Modify rendered HTML
+    let tier = new Tier(tierColour,tierName);
+    tierList.push(new Tier(tierColour,tierName));
+    document.querySelector("tbody").innerHTML += tier.render(tierList.length-1);
 }
 //read image from file upload
+
+//The images created exist initially as elements local to the DOM
+//They could be re-represented once dragged into a tier
+//UNTIL THEN update the DOM API for tiers with a string "children"
 function imageRead(imageToRead) {
     closePlus();
     //check if it was triggered by the file upload
@@ -88,8 +72,7 @@ function imageRead(imageToRead) {
             fileLength = fileLength - 1;
         }
 
-    } else {
-        if (imageToRead != "") {
+    } else if (imageToRead != "") {
             console.log(imageToRead);
             imageArray.push(imageToRead);
             document.querySelector("#imageoptions").innerHTML += `
@@ -97,9 +80,7 @@ function imageRead(imageToRead) {
             i = i + 1;
         }
 
-    }
-
-
+    
     items = document.querySelectorAll('.potentialdrag');
     items.forEach(function(item) {
         item.addEventListener('dragstart', startDrag);
@@ -120,7 +101,11 @@ function endDrag(e) {
     let position = document.elementsFromPoint(posX, posY)
     position.forEach(function(element) {
         if (element.tagName == "TD") { //find a part of the table to insert
-            element.innerHTML += `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`;
+            //If its a TD, we know it has a TR above it
+            let template = `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`;
+            let id = element.parentElement.id;
+            tierList[id].children += template;
+            element.innerHTML += template;
             document.getElementById("dragged").remove();
 
         } else { //if isn't dragged into the table
