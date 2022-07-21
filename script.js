@@ -4,53 +4,68 @@ let i = 0;
 let dropRunCount = 0;
 let items = "";
 let dropArray = [];
+class TierList{
+    constructor(){
+        this.tiers = [];
+    }
+    addTier(tier){
+        tier.id = this.tiers.length;
+        this.tiers.push(tier);
+        document.querySelector("tbody").innerHTML += tier.render();
+    }
+    removeTierByID(tierID){
+        this.tiers.splice(tierID,1);
+        document.querySelector("tbody").innerHTML = "";
+        this.tiers.forEach(function(tier,idx){
+            tier.id = idx;
+            document.querySelector("tbody").innerHTML += tier.render();
+        });
+    }
+    renderAll(){
+        document.querySelector("tbody").innerHTML = "";
+        tierList.forEach(function(tier,idx) {
+            //Modify rendered HTML
+            document.querySelector("tbody").innerHTML += tier.render(idx);
+    
+        })
+    }
+}
 class Tier{
     constructor(color,suffix){
+        this.id = null;
         this.color = color;
         this.suffix = suffix;
-        this.content = "";
+        this.contentHTML = "";
     }
-    render(id){
-        return `<tr id="${id}">
+    render(){
+        return `<tr id="${this.id}">
         <th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
-        <td id="tierscontent" class="tiers">${this.content}</td>
-        <td class="tiersettings"><button onclick="tierRemove(${id})"><i class="fa fa-times" aria-hidden="true"></i>
+        <td id="tierscontent" class="tiers">${this.contentHTML}</td>
+        <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>
         </tr>`;
     }
+    set content(HTMLString){
+        this.contentHTML = HTMLString;
+        document.getElementById(this.id).innerHTML = `<th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
+        <td id="tierscontent" class="tiers">${this.contentHTML}</td>
+        <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
+        Delete</button></td>`
+    }
 }
-let tierList = [
-    new Tier("red","s"),
-    new Tier("orange","a"),
-    new Tier("#ffff00","b"),
-    new Tier("#D2F319","c"),
-    new Tier("#A1C51D","d"),
-    new Tier("#6f9720","f")
-
-];
-function renderAll(){
-    document.querySelector("tbody").innerHTML = "";
-    tierList.forEach(function(tier,idx) {
-        //Modify rendered HTML
-        document.querySelector("tbody").innerHTML += tier.render(idx);
-
-    })
-}
-renderAll();
-
-function tierRemove(item) {
-    tierList.splice(item, 1);
-    renderAll();
-}
+let tierList = new TierList();
+tierList.addTier(new Tier("red","s"));
+tierList.addTier(new Tier("orange","a"));
+tierList.addTier(new Tier("#ffff00","b"));
+tierList.addTier(new Tier("#D2F319","c"));
+tierList.addTier(new Tier("#A1C51D","d"));
+tierList.addTier(new Tier("#6f9720","f"));
 //add new tier
 function addTier() {
     tierName = document.getElementById("addtier").value;
     tierColour = document.getElementById("addtiercolour").value;
-
     //Modify rendered HTML
-    let tier = new Tier(tierColour,tierName);
-    tierList.push(new Tier(tierColour,tierName));
-    document.querySelector("tbody").innerHTML += tier.render(tierList.length-1);
+    tierList.addTier(new Tier(tierColour,tierName));
 }
 //read image from file upload
 
