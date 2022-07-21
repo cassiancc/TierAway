@@ -2,45 +2,29 @@
 <html>
     <head>
         <link rel="stylesheet" href="style.css">
-        <style>
-        </style>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+        <link rel="stylesheet" href="font-awesome/css/font-awesome.min.css">
         <title>Tier Away</title>
     </head>
     <body>
         <h1>Tier Away</h1>
-        <p>A simple way to easily create unique tier lists. No accounts, no hassle.</p>
-        
-        <div id="addtierdiv">
-            <label>Add Tier: </label>
-            <div>
-            <input type="text" name="addtier" placeholder="S Tier" id="addtier">
-            
-            <input type="color" name="addtiercolour" id="addtiercolour">
-            <button onclick="addTier()" id="addtierbutton">Add Tier</button>
-            </div>
-        </div>
-        <div id="addimagediv"><label>Add new image: </label><input multiple onchange="imageRead(`file`)" type="file" accept="image/*" id="fileselect">
-        </div>
-        <div id="addurldiv"><label>Add image from URL: </label><input type="url" name="urlselect" id="urlselect"><button onclick="imageRead(document.getElementById(`urlselect`).value)" id="addtierbutton">Add Image</button></div>
-        
-        <div id="addtextdiv"><label>Add text: </label><input type="text" name="textselect" id="textselect"><button onclick="addTier()" id="addtierbutton">Add Text</button></div>
-        
-
+        <p>Tier Away is a simple, open source tier list creation tool. No accounts, no public data, no prep work, no hassle.</p>
+        <p>Have a tier list idea that's too niche, something you're creating just for yourself or a few friends? Tier Away is perfect.</p>
+        <p>Creating a tier list is simple! Just hit the Plus button, and upload away.</p>
         <table id="tierlist"><thead><tr id="tablehead">
-            <th contenteditable="true" colspan="2">
+            <th class="header" contenteditable="true" colspan="2">
                 Tier List
-            </th><th><button>Add Element</button>
+            </th><th id="new" class="header" onclick="addNew()"><i class="fa fa-plus fa-2x"></i>
 
             </th>
         </tr></thead><tbody></tbody></table>
-        <!-- ADD MENU
-        <div>
-            <p>Add Image from Upload</p>
-            <p>Add Image from URL</p>
-            <p>Add Text to Tier list</p>
-            <p>Add new Tier</p>
-            <p>Import Tier List</p>
-        </div>-->
+        <div style="transition: opacity .3s; opacity: 0;" id="addDrop" class="hidden">
+            <button onclick="addSelection('upload')">Add Image from Upload</button>
+            <button onclick="addSelection('url')">Add Image from URL</button>
+            <button onclick="addSelection('text')">Add Text to Tier list</button>
+            <button onclick="addSelection('newtier')">Add new Tier</button>
+            <button onclick="addSelection('import')">Import Tier List (indev)</button>
+        </div>
        
         <div id="imageoptions">
 

@@ -7,20 +7,24 @@
         'GRAD' 0,
         'opsz' 48
     }
-* {
+body {
+    background-color: #18181b;
+    color: white;
     font-family: 'Source Sans Pro', sans-serif;
 }
 #addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
+    flex-direction: column;
     margin-bottom: 10px;
     align-items: center;
 }
 #addurldiv label, #addtextdiv label, #addimagediv label, #addtierdiv label {
     width: 20vh;
+    margin-bottom: 10px;
 }
 #fileselect {
     height: 5vh;
-    border: solid black 1px;
+    border: solid #393939 1px;
 }
 #addtierdiv div {
     display: flex;
@@ -76,9 +80,8 @@ tr, td, th {
 .tierheader {
     width: 7%;
     text-align: center;
-    background-color: red;
-    font-size: x-large;
-    font-weight: 400;
+    font-size: xx-large;
+    font-weight: 100;
 }
 .tiersettings {
     width: 7%;
@@ -89,6 +92,51 @@ tr, td, th {
     opacity: 0.4;
 }
 #tablehead {
-    background-color: black;
+    background-color: #1f1f1f;
+    color: white !important;
+}
+th:not(.header) {
+    color: black
+}
+#imageoptions {
+    min-height: 100px;
+}
+.hidden {
+    background-color: transparent;
+}
+.dropshown {
+    display: block;
+    position: absolute;
+    background-color: #1f1f1f;
+    padding: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    top: 25%;
+    left: 0;
+    right: 0;
+    width: 50%;
+    text-align: center;
+    border: #222222 solid 5px;
+    border-radius: 10px;
+}
+.dropshown button {
+    width: 100%;
+    margin-bottom: 10px;
+    margin-top: 10px;
+    font-size: large;
+    background-color: #222222;
+    color: white;
+    border-color: #393939;
+}
+.dropshown button:hover {
+    background-color: #2b2b2b;
+   border-color: #6b6b6b
+}
+#new {
+    color: #6b6b6b;
+    transition: color .1s;
+    
+}
+#new:hover {
     color: white;
 }
