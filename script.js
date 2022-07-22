@@ -69,14 +69,14 @@ function imageRead(imageToRead) {
         for (let f = 0;f < fileLength;f++) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             document.querySelector("#imageoptions").innerHTML += `
-            <div id="${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
         }
 
     } else if (imageToRead != "") {
             imageArray.push(imageToRead);
             document.querySelector("#imageoptions").innerHTML += `
-            <div id="${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
         }
 
