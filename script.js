@@ -122,11 +122,27 @@ function endDrag(e) {
 function addNew() {
     document.getElementById("addDrop").className = "dropshown";
     document.getElementById("addDrop").style.opacity = 1;
-    document.getElementById("addDrop").innerHTML = `<button onclick="addSelection('upload')">Add Image from Upload</button>
-    <button onclick="addSelection('url')">Add Image from URL</button>
-    <button onclick="addSelection('text')">Add Text to Tier list (indev)</button>
-    <button onclick="addSelection('newtier')">Add new Tier</button>
-    <button onclick="addSelection('import')">Import Tier List (indev)</button>`;
+    document.getElementById("addDrop").innerHTML = `
+    <button onclick="addSelection('upload')">
+        <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+        <p>Add Image from Upload</p>
+    </button>
+    <button onclick="addSelection('url')">
+        <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
+        <p>Add Image from URL</p>
+    </button>
+    <button onclick="addSelection('text')">
+        <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
+        <p>Add Text to Tier List</p>
+    </button>
+    <button onclick="addSelection('newtier')">
+    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+        <p>Add New Tier</p>
+    </button>
+    <button onclick="addSelection('import')">
+        <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
+        <p>Import Tier List (indev)</p>
+    </button>`;
 }
 
 function addSelection(select) {
