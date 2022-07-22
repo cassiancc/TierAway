@@ -81,17 +81,16 @@ function imageRead(imageToRead) {
         while (fileLength != 0) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             document.querySelector("#imageoptions").innerHTML += `
-            <img id="${i}" draggable="true" class="potentialdrag" src="${imageToRead}">`;
+            <div id="${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
             f = f + 1;
             fileLength = fileLength - 1;
         }
 
     } else if (imageToRead != "") {
-            console.log(imageToRead);
             imageArray.push(imageToRead);
             document.querySelector("#imageoptions").innerHTML += `
-            <img id="${i}" draggable="true" class="potentialdrag" src="${imageToRead[i]}">`;
+            <div id="${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
         }
 
@@ -116,7 +115,10 @@ function endDrag(e) {
     position.forEach(function(element) {
         if (element.tagName == "TD") { //find a part of the table to insert
             //If its a TD, we know it has a TR above it
-            let template = `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`;
+            let tempImage = document.querySelector("#dragged").style.backgroundImage
+            tempImage = tempImage.slice(5, -2)
+            let template = `<div draggable="true" class="potentialdrag" style="background-image: url(${tempImage});" ></div>`;
+
             let id = element.parentElement.id;
             tierList.tiers[id].children += template;
             element.innerHTML += template;
@@ -140,7 +142,6 @@ function endDrag(e) {
 }
 
 function addNew() {
-    console.log("add");
     document.getElementById("addDrop").className = "dropshown";
     document.getElementById("addDrop").style.opacity = 1;
     document.getElementById("addDrop").innerHTML = `<button onclick="addSelection('upload')">Add Image from Upload</button>
