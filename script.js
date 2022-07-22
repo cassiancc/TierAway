@@ -14,6 +14,7 @@ class TierList{
         this.counter++;
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
+        addListeners()
     }
     removeTierByID(tierID){
         let q;
@@ -82,10 +83,7 @@ function imageRead(imageToRead) {
 
     
     items = document.querySelectorAll('.potentialdrag');
-    items.forEach(function(item) {
-        item.addEventListener('dragstart', startDrag);
-        item.addEventListener('dragend', endDrag);
-    });
+    addListeners()
 }
 
 function startDrag() {
@@ -116,11 +114,7 @@ function endDrag(e) {
         }
     });
     //moved elements lose their event listeners after being dragged
-    items = document.querySelectorAll('.potentialdrag');
-    items.forEach(function(item) {
-        item.addEventListener('dragstart', startDrag);
-        item.addEventListener('dragend', endDrag);
-    });
+    addListeners()
 
 
 }
@@ -200,4 +194,11 @@ function findScreenCoords(mouseEvent) {
         dropRunCount = 0;
     }
 
+}
+function addListeners() {
+    items = document.querySelectorAll('.potentialdrag');
+    items.forEach(function(item) {
+        item.addEventListener('dragstart', startDrag);
+        item.addEventListener('dragend', endDrag);
+    });
 }
