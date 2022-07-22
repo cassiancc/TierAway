@@ -13,6 +13,9 @@ class TierList{
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
     }
+    addToTierByID(tierID,HTMLString){
+        this.tiers[tierID].content += HTMLString;
+    }
     removeTierByID(tierID){
         this.tiers.splice(tierID,1);
         document.querySelector("tbody").innerHTML = "";
@@ -52,6 +55,9 @@ class Tier{
         <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>`
     }
+    get content(){
+        return this.contentHTML;
+    }
 }
 let tierList = new TierList();
 tierList.addTier(new Tier("red","s"));
@@ -77,14 +83,11 @@ function imageRead(imageToRead) {
     //check if it was triggered by the file upload
     if (imageToRead == "file") {
         let fileLength = document.getElementById(`fileselect`).files.length;
-        let f = 0;
-        while (fileLength != 0) {
+        for (let f = 0;f < fileLength;f++) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             document.querySelector("#imageoptions").innerHTML += `
             <img id="${i}" draggable="true" class="potentialdrag" src="${imageToRead}">`;
             i = i + 1;
-            f = f + 1;
-            fileLength = fileLength - 1;
         }
 
     } else if (imageToRead != "") {
@@ -119,8 +122,7 @@ function endDrag(e) {
             //If its a TD, we know it has a TR above it
             let template = `<img class="potentialdrag" src="${document.querySelector("#dragged").src}">`;
             let id = element.parentElement.id;
-            tierList[id].children += template;
-            element.innerHTML += template;
+            tierList.addToTierByID(id,template);
             document.getElementById("dragged").remove();
 
         } else { //if isn't dragged into the table
