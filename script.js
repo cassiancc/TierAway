@@ -14,7 +14,7 @@ class TierList{
         document.querySelector("tbody").innerHTML += tier.render();
     }
     addToTierByID(tierID,HTMLString){
-        this.tiers[tierID].content += HTMLString;
+        this.tiers[tierID].addToContent(HTMLString);
     }
     removeTierByID(tierID){
         this.tiers.splice(tierID,1);
@@ -38,25 +38,22 @@ class Tier{
         this.id = null;
         this.color = color;
         this.suffix = suffix;
-        this.contentHTML = "";
+        this.content = "";
     }
     render(){
         return `<tr id="${this.id}">
         <th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
-        <td id="tierscontent" class="tiers">${this.contentHTML}</td>
+        <td id="tierscontent" class="tiers">${this.content}</td>
         <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>
         </tr>`;
     }
-    set content(HTMLString){
-        this.contentHTML = HTMLString;
+    addToContent(content){
+        this.content += content;
         document.getElementById(this.id).innerHTML = `<th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
-        <td id="tierscontent" class="tiers">${this.contentHTML}</td>
+        <td id="tierscontent" class="tiers">${this.content}</td>
         <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>`
-    }
-    get content(){
-        return this.contentHTML;
     }
 }
 let tierList = new TierList();
