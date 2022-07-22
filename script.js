@@ -7,30 +7,23 @@ let dropArray = [];
 class TierList{
     constructor(){
         this.tiers = [];
+        this.counter = 0;
     }
     addTier(tier){
-        tier.id = this.tiers.length;
+        tier.id = this.counter;
+        this.counter++;
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
     }
-    addToTierByID(tierID,HTMLString){
-        this.tiers[tierID].addToContent(HTMLString);
-    }
     removeTierByID(tierID){
-        this.tiers.splice(tierID,1);
-        document.querySelector("tbody").innerHTML = "";
-        this.tiers.forEach(function(tier,idx){
-            tier.id = idx;
-            document.querySelector("tbody").innerHTML += tier.render();
-        });
-    }
-    renderAll(){
-        document.querySelector("tbody").innerHTML = "";
-        tierList.forEach(function(tier,idx) {
-            //Modify rendered HTML
-            document.querySelector("tbody").innerHTML += tier.render(idx);
-    
-        })
+        let q;
+        for(q = 0;q<this.tiers.length;q++){
+            if(this.tiers[q].id == tierID){
+                break;
+            }
+        }
+        document.getElementById(tierID).remove();
+        this.tiers.splice(q,1);
     }
 }
 class Tier{
@@ -43,17 +36,10 @@ class Tier{
     render(){
         return `<tr id="${this.id}">
         <th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
-        <td id="tierscontent" class="tiers">${this.content}</td>
+        <td id="content-${this.id}" class="tiers">${this.content}</td>
         <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>
         </tr>`;
-    }
-    addToContent(content){
-        this.content += content;
-        document.getElementById(this.id).innerHTML = `<th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
-        <td id="tierscontent" class="tiers">${this.content}</td>
-        <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
-        Delete</button></td>`
     }
 }
 let tierList = new TierList();
@@ -119,8 +105,7 @@ function endDrag(e) {
             tempImage = tempImage.slice(5, -2)
             let template = `<div draggable="true" class="potentialdrag" style="background-image: url(${tempImage});" ></div>`;
 
-            let id = element.parentElement.id;
-            tierList.addToTierByID(id,template);
+            element.innerHTML += template;
             document.getElementById("dragged").remove();
 
         } else { //if isn't dragged into the table
