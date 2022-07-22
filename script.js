@@ -36,7 +36,7 @@ class Tier{
     }
     render(){
         return `<tr id="${this.id}">
-        <th style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
+        <th contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
         <td id="content-${this.id}" class="tiers">${this.content}</td>
         <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
         Delete</button></td>

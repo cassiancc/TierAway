@@ -162,3 +162,19 @@ th:not(.header) {
 #desc {
     margin-left: 10px;
 }
+footer {
+    background-color: black;
+    margin-left: auto;
+    margin-right: auto;
+    border-top: black 10px solid;
+    border-bottom: black 10px solid;
+    text-align: center;
+    position: bottom;
+    bottom:0;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+}
+footer a {
+    color: white
+}
