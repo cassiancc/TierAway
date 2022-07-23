@@ -113,7 +113,20 @@ th:not(.header) {
     min-height: 100px;
 }
 .hidden {
-    background-color: transparent;
+    display: none;
+    position: absolute;
+    background-color: #1f1f1f;
+    padding: 10vh;
+    margin-left: auto;
+    margin-right: auto;
+    top: 25%;
+    left: 0;
+    right: 0;
+    width: 50%;
+    text-align: center;
+    border: #222222 solid 5px;
+    border-radius: 10px;
+    justify-content: center;
 }
 .dropshown {
     display: flex;
@@ -132,6 +145,16 @@ th:not(.header) {
     justify-content: center;
 }
 .dropshown button {
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: large;
+    background-color: #222222;
+    color: white;
+    border-color: #393939;
+    flex-wrap: wrap;
+}
+.hidden button {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;

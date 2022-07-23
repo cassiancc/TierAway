@@ -143,6 +143,7 @@ function addNew() {
         <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
         <p>Import Tier List (indev)</p>
     </button>`;
+    document.querySelector("body").addEventListener('click', checkPlus);
 }
 
 function addSelection(select) {
@@ -189,26 +190,11 @@ function closePlus() {
 
 }
 
-function findScreenCoords(mouseEvent) {
-    var xpos;
-    var ypos;
-    if (mouseEvent) {
-        //FireFox
-        xpos = mouseEvent.screenX;
-        ypos = mouseEvent.screenY;
-    } else {
-        //IE
-        xpos = window.event.screenX;
-        ypos = window.event.screenY;
+function checkPlus() {
+    if (document.querySelector(".dropshown:hover") == null && document.querySelector("#new:hover") == null) {
+        closePlus()
     }
-    console.log();
-    dropRunCount += 1;
-    dropArray.push(document.elementFromPoint(xpos, ypos));
-    if (dropArray.length != 2 && dropRunCount != 1) {
-        closePlus();
-        dropArray = [];
-        dropRunCount = 0;
-    }
+    
 
 }
 function addListeners() {
