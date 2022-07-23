@@ -6,13 +6,15 @@
         'wght' 400,
         'GRAD' 0,
         'opsz' 48
-    }
+}
+/*body styling with the Theme*/
 body {
     background-color: #18181b;
     color: white;
     font-family: 'Source Sans Pro', sans-serif;
     margin: 0;
 }
+/*fancy header*/
 header {
     display:flex;
     background-color: black;
@@ -39,27 +41,12 @@ header {
 #addtierdiv div {
     display: flex;
 }
-#addtierdiv div input {
+/*new tier button margins*/
+#addtierdiv div input, #addtierdiv label {
     margin-right: 5px;
 }
-#addtierdiv label {
-    margin-right: 5px;
-}
-.drag {
-    position: absolute;
-    z-index: 2;
-    text-align: center;
-    width: 10vh;
-    height: 10vh;
-    border: solid white;
-    margin-top: auto;
-    margin-bottom: auto;
-    background-size: contain; 
-    background-repeat: no-repeat; 
-    background-position: center;
-}
+/*divs to style*/
 .potentialdrag {
-    z-index: 2;
     cursor: pointer;
     text-align: center;
     width: 10vh;
@@ -108,12 +95,12 @@ tr, td, th {
 }
 #tablehead {
     background-color: #1f1f1f;
-    color: white !important;
 }
 th:not(.header) {
     color: black
 }
-#imageoptions {
+/*style the uploaded image options*/
+#image-options {
     min-height: 100px;
 }
 .hidden {
@@ -132,6 +119,7 @@ th:not(.header) {
     border-radius: 10px;
     justify-content: center;
 }
+/*fancy popup menu*/
 .dropshown {
     display: flex;
     position: absolute;
@@ -148,7 +136,8 @@ th:not(.header) {
     border-radius: 10px;
     justify-content: center;
 }
-.dropshown button {
+/*popup menu buttons*/
+.dropshown button, .hidden button {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -158,39 +147,36 @@ th:not(.header) {
     border-color: #393939;
     flex-wrap: wrap;
 }
-.hidden button {
-    width: 100%;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    font-size: large;
-    background-color: #222222;
-    color: white;
-    border-color: #393939;
-    flex-wrap: wrap;
-}
+/*popup menu buttons hover*/
 .dropshown button:hover {
     background-color: #2b2b2b;
-   border-color: #6b6b6b
+    border-color: #6b6b6b
 }
-#new {
+/*transparent background/border on tier move button and delete tier buttons in the table*/
+#tier-move button, .del-tier {
+    background-color: transparent;
+    border-color: transparent;
+    
+}
+#new, #tier-move button, .del-tier {
     color: #6b6b6b;
     transition: color .1s;
     
 }
-#new:hover {
+/*white links and white table buttons*/
+#new:hover, #tier-move button:hover, .del-tier:hover, footer a{
     color: white;
 }
 
-#github:hover {
+#github:hover, footer a:hover {
     color: #d22d59
 }
-#github {
-    color: white;
-    text-decoration: none;
-}
-#desc {
+
+/*give margin to links*/
+#desc, #upload-images-info {
     margin-left: 10px;
 }
+/*fancy footer*/
 footer {
     background-color: black;
     margin-left: auto;
@@ -202,20 +188,21 @@ footer {
     bottom:0;
     width: 100%;
     display: flex;
-    justify-content: center;
-}
-footer a {
-    color: white
+    justify-content: space-between;
 }
 #tier-move {
     display: flex;
     flex-direction: column;
 }
-#tier-move button, .del-tier {
-    background-color: transparent;
-    border-color: transparent;
-    color: #6b6b6b;
+#copy {
+    padding-left: 1vh;
+    margin-top: 10px;
+    margin-bottom: 5px;
 }
-#tier-move button:hover, .del-tier:hover {
-    color: white
+/*style github*/
+#github {
+    text-decoration: none;
+    color: white;
+    padding-right: 2vh;
+    margin-bottom: 5px;
 }
