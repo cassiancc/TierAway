@@ -99,6 +99,10 @@ tr, td, th {
     background-color: #1f1f1f;
     text-align: center;
 }
+.tiersettings div {
+    display: flex;
+    width: 100%;
+}
 #dragged {
     opacity: 0.4;
 }
@@ -201,5 +205,17 @@ footer {
     justify-content: center;
 }
 footer a {
+    color: white
+}
+#tier-move {
+    display: flex;
+    flex-direction: column;
+}
+#tier-move button, .del-tier {
+    background-color: transparent;
+    border-color: transparent;
+    color: #6b6b6b;
+}
+#tier-move button:hover, .del-tier:hover {
     color: white
 }

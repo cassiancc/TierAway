@@ -16,6 +16,28 @@ class TierList{
         document.querySelector("tbody").innerHTML += tier.render();
         addListeners()
     }
+    render() {
+        document.querySelector("tbody").innerHTML = ""
+        let i = 0
+        tierList.tiers.forEach(function(tier) {
+            tier.id = i
+            document.querySelector("tbody").innerHTML += `
+            <tr id="${tier.id}">
+            <th contenteditable style="background-color: ${tier.color};" class="tier${tier.suffix} tierheader">${tier.suffix.toUpperCase()}</td>
+            <td id="content-${tier.id}" class="tiers">${tier.content}</td>
+            <td class="tiersettings">
+                <div>
+                <div id="tier-move">
+                    <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${tier.id})"></button>
+                    <button class="del-tier fa fa-times fa-2x" onclick="tierList.removeTierByID(${tier.id})">
+                </button>
+                    <button class="fa fa-chevron-down fa-2x" onclick="moveTierDown(${tier.id})"></button>
+                </div>
+                </div>
+            </td></tr>`;
+            i++;
+        })
+    }
     removeTierByID(tierID){
         let q;
         for(q = 0;q<this.tiers.length;q++){
@@ -38,9 +60,16 @@ class Tier{
         return `<tr id="${this.id}">
         <th contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
         <td id="content-${this.id}" class="tiers">${this.content}</td>
-        <td class="tiersettings"><button onclick="tierList.removeTierByID(${this.id})"><i class="fa fa-times" aria-hidden="true"></i>
-        Delete</button></td>
-        </tr>`;
+        <td class="tiersettings">
+            <div>
+            <div id="tier-move">
+                <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${this.id})"></button>
+                <button class="del-tier fa fa-times fa-2x" onclick="tierList.removeTierByID(${this.id})">
+            </button>
+                <button class="fa fa-chevron-down fa-2x" onclick="moveTierDown(${this.id})"></button>
+            </div>
+            </div>
+        </td></tr>`;
     }
 }
 let tierList = new TierList();
@@ -210,4 +239,28 @@ function addListeners() {
         item.addEventListener('dragstart', startDrag);
         item.addEventListener('dragend', endDrag);
     });
+}
+
+function moveTierUp(tier) {
+    if (tier != 0) {
+        //backup the tier that's being replaced
+        let backup = tierList.tiers[tier-1]
+        //move the tier
+        tierList.tiers.copyWithin(tier-1, tier, tier+1);
+        //replace the tier that's been copied by the backup tier
+        tierList.tiers[tier] = backup;
+        tierList.render()
+    }
+    
+}
+function moveTierDown(tier) {
+    if (tier != tierList.tiers.length-1) {
+        //backup the tier that's being replaced
+        let backup = tierList.tiers[tier+1]
+        //move the tier
+        tierList.tiers.copyWithin(tier+1, tier, tier+1);
+        //replace the tier that's been copied by the backup tier
+        tierList.tiers[tier] = backup;
+        tierList.render()
+    }
 }
