@@ -80,12 +80,12 @@ class Tier{
 let tierList = new TierList();
 
 //the default tiers, s-f
-tierList.addTier(new Tier("red","s"));
-tierList.addTier(new Tier("orange","a"));
-tierList.addTier(new Tier("#ffff00","b"));
-tierList.addTier(new Tier("#D2F319","c"));
-tierList.addTier(new Tier("#A1C51D","d"));
-tierList.addTier(new Tier("#6f9720","f"));
+tierList.addTier(new Tier("#e53e3e","s"));
+tierList.addTier(new Tier("#e8532a","a"));
+tierList.addTier(new Tier("#cba000","b"));
+tierList.addTier(new Tier("#86d300","c"));
+tierList.addTier(new Tier("#32bc53","d"));
+tierList.addTier(new Tier("#009376","f"));
 
 //add new tier
 function addTier() {
