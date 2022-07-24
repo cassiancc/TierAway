@@ -24,6 +24,24 @@ header {
     padding-right: 20px;
     border-bottom: #d22d59 5px solid;
 }
+header button {
+    color: #6b6b6b;
+    transition: color .1s;
+    white-space:nowrap;
+    border: #393939 solid 1px;
+    padding: 10px;
+    border-radius: 5px;
+    font-weight: bold;
+    background-color: #18181b;
+    font-size: medium;
+    
+
+}
+header button:hover {
+    color: white;
+    background-color: #222222;
+    border-color: #393939;
+}
 #addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
     flex-direction: column;
@@ -136,8 +154,37 @@ th:not(.header) {
     border-radius: 10px;
     justify-content: center;
 }
+/*fancy export menu*/
+.export-visible {
+    position: absolute;
+    background-color: #1f1f1f;
+    margin-left: auto;
+    margin-right: auto;
+    top: 25%;
+    left: 0;
+    right: 0;
+    width: 70%;
+    padding: 10px;
+    text-align: center;
+    border: #222222 solid 5px;
+    border-radius: 10px;
+    justify-content: center;
+}
+.export-visible img {
+    width: 100%;
+    padding-bottom: 10px;
+}
+.export-visible a {
+    background-color: white;
+    border: white solid 1px;
+    border-radius: 5px;
+    color: black;
+    margin-top: 10px;
+    padding: 5px;
+    text-decoration: none;
+}
 /*popup menu buttons*/
-.dropshown button, .hidden button {
+.dropshown button, .hidden button, .export-visible a {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -148,7 +195,7 @@ th:not(.header) {
     flex-wrap: wrap;
 }
 /*popup menu buttons hover*/
-.dropshown button:hover {
+.dropshown button:hover, .export-visible a:hover {
     background-color: #2b2b2b;
     border-color: #6b6b6b
 }
@@ -205,4 +252,7 @@ footer {
     color: white;
     padding-right: 2vh;
     margin-bottom: 5px;
+}
+.hide-from-export {
+    display: none;
 }

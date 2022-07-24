@@ -294,3 +294,43 @@ function moveTierDown(tier) {
         tierList.render()
     }
 }
+function tierExport() {
+    document.getElementById("export").className = "export-visible";
+    document.getElementById("export").style.opacity = 1
+    document.querySelectorAll('.tiersettings').forEach(function(item) {
+        item.classList.add("hide-from-export")
+    });
+    document.getElementById("new").classList.add("hide-from-export")
+    document.getElementById("export").innerHTML = "";
+    html2canvas(document.querySelector("#tierlist")).then(canvas => {
+        canvas.toBlob(function(blob) {
+            const url = URL.createObjectURL(blob)
+            document.getElementById("export").innerHTML += `<img src=${url}></img>`
+            document.getElementById("export").innerHTML += `<a href="${url}" download="tierlist.png"><i class="fa fa-download" aria-hidden="true"></i>
+            Download</a>`
+        })
+    document.querySelector("body").addEventListener('click', checkExport);
+    });
+
+}
+
+//closes the plus menu
+function closeExport() {
+    //hides away the plus menu. animations are a little busted but uh. woops.
+    document.getElementById("export").style.opacity = 0;
+    document.getElementById("export").className = "hidden";
+    document.querySelectorAll('.tiersettings').forEach(function(item) {
+        item.classList.remove("hide-from-export")
+    });
+    document.getElementById("new").classList.remove("hide-from-export")
+
+}
+//checks if the menu should be closed
+function checkExport() {
+    //check if user is hovering over the dropdown, or the plus button. closes if not.
+    if (document.querySelector(".export-visible:hover") == null && document.querySelector("#export-button:hover") == null) {
+        closeExport()
+    }
+    
+
+}
