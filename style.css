@@ -42,23 +42,96 @@ header button:hover {
     background-color: #222222;
     border-color: #393939;
 }
+/*popup menu buttons*/
+#button-panel button, .hidden button, .export-visible a {
+    width: 100%;
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: large;
+    background-color: #222222;
+    color: white;
+    border-color: #393939;
+    flex-wrap: wrap;
+}
+/*popup menu buttons hover*/
+#button-panel button:hover, .export-visible a:hover {
+    background-color: #2b2b2b;
+    border-color: #6b6b6b
+}
 #addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
+    width: 100%;
+    padding: 10px;
     flex-direction: column;
     margin-bottom: 10px;
     align-items: center;
+    min-height: 150px;
 }
 #addurldiv label, #addtextdiv label, #addimagediv label, #addtierdiv label {
-    width: 20vh;
+    font-size: 3vh;
     margin-bottom: 10px;
 }
 #fileselect {
-    height: 5vh;
+    height: 20vh;
+    width: 100%;
+    text-align: center;
     border: solid #393939 1px;
 }
-#addtierdiv div {
-    display: flex;
+#fileselect::file-selector-button {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    font-size: large;
+    background-color: transparent;
+    color: white;
+    border-color: transparent;
+    flex-wrap: wrap;
 }
+#fileselect:hover {
+    background-color: #2b2b2b;
+    border-color: #6b6b6b;
+    transition: border-color .1s;
+}
+#url-upload, #text-add {
+    display: flex;
+    width: 100%;
+}
+#add-tier-content {
+    display: flex;
+    width: 100%;
+}
+#url-upload button, #text-add button, #add-tier-button, #add-tier-colour  {
+    padding-bottom: 10px;
+    padding-top: 10px;
+    width: 40%;
+    height: 100%;
+    font-size: medium;
+    background-color: #222222;
+    color: white;
+    border-color: #393939;
+    flex-wrap: wrap;
+}
+/*popup menu buttons hover*/
+#url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover {
+    background-color: #2b2b2b;
+    border-color: #6b6b6b
+}
+#urlselect, #text-select, #add-tier{
+    width: 100%;
+    background-color: #222222;
+    color: white;
+    border-color: #393939;
+    margin-right: 10px;
+    
+    
+}
+#urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
+    background-color: #2b2b2b;
+    border-color: #6b6b6b;
+    outline: none;
+}
+
+
+
 /*new tier button margins*/
 #addtierdiv div input, #addtierdiv label {
     margin-right: 5px;
@@ -142,17 +215,20 @@ th:not(.header) {
     display: flex;
     position: absolute;
     background-color: #1f1f1f;
-    padding: 10vh;
     margin-left: auto;
     margin-right: auto;
     top: 25%;
     left: 0;
     right: 0;
-    width: 50%;
+    width: 80%;
     text-align: center;
     border: #222222 solid 5px;
     border-radius: 10px;
     justify-content: center;
+}
+#button-panel {
+    padding: 10vh;
+    display: flex;
 }
 /*fancy export menu*/
 .export-visible {
@@ -183,22 +259,7 @@ th:not(.header) {
     padding: 5px;
     text-decoration: none;
 }
-/*popup menu buttons*/
-.dropshown button, .hidden button, .export-visible a {
-    width: 100%;
-    padding-bottom: 10px;
-    padding-top: 10px;
-    font-size: large;
-    background-color: #222222;
-    color: white;
-    border-color: #393939;
-    flex-wrap: wrap;
-}
-/*popup menu buttons hover*/
-.dropshown button:hover, .export-visible a:hover {
-    background-color: #2b2b2b;
-    border-color: #6b6b6b
-}
+
 /*transparent background/border on tier move button and delete tier buttons in the table*/
 #tier-move button, .del-tier {
     background-color: transparent;

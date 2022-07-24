@@ -89,8 +89,8 @@ tierList.addTier(new Tier("#009376","f"));
 
 //add new tier
 function addTier() {
-    tierName = document.getElementById("addtier").value;
-    tierColour = document.getElementById("addtiercolour").value;
+    tierName = document.getElementById("add-tier").value;
+    tierColour = document.getElementById("add-tier-colour").value;
     //Modify rendered HTML
     tierList.addTier(new Tier(tierColour,tierName));
 }
@@ -177,36 +177,37 @@ function addSelection(select) {
     if (select == "upload") {
         //Add Image from Upload
         document.getElementById("addDrop").innerHTML =
-            `<div id="addimagediv">
-            <label>Add new image: </label>
+        `<div id="addimagediv">
+            <label>Add new Image: </label>
             <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect">
         </div>`;
         //Add Image from URL
     } else if (select == "url") {
         document.getElementById("addDrop").innerHTML =
-            `<div id="addurldiv">
-            <label>Add image from URL: </label>
-            <input type="url" name="urlselect" id="urlselect">
-            <button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button>
+        `<div id="addurldiv">
+            <label>Add Image from URL: </label>
+            <div id="url-upload"><input type="url" placeholder="http://example.com/" name="urlselect" id="urlselect">
+            <button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Text to Tier List
     } else if (select == "text") {
         document.getElementById("addDrop").innerHTML =
-            `<div id="addtextdiv">
-            <label>Add text: </label>
-            <input type="text" name="textselect" id="text-select">
-            <button onclick="addText()" id="add-text-button">Add Text</button>
+        `<div id="addtextdiv">
+            <label>Add Text: </label>
+            <div id="text-add">
+                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." name="textselect" id="text-select">
+                <button onclick="addText()" id="add-text-button">Add Text</button>
+            </div>
         </div>`;
         //Add New Tier
     } else if (select == "newtier") {
         document.getElementById("addDrop").innerHTML =
-            `<div id="addtierdiv">
+        `<div id="addtierdiv">
             <label>Add Tier: </label>
-            <div>
-            <input type="text" name="addtier" placeholder="S Tier" id="addtier">
-            
-            <input type="color" name="addtiercolour" id="addtiercolour">
-            <button onclick="addTier()" id="addtierbutton">Add Tier</button>
+            <div id="add-tier-content">
+                <input type="text" name="add-tier" placeholder="S Tier" id="add-tier">
+                <input type="color" value="#780063" name="add-tier-colour" id="add-tier-colour">
+                <button onclick="addTier()" id="add-tier-button">Add Tier</button>
             </div>
         </div>`;
     } else {
@@ -220,26 +221,28 @@ function openPlus() {
     document.getElementById("addDrop").className = "dropshown";
     document.getElementById("addDrop").style.opacity = 1;
     document.getElementById("addDrop").innerHTML = `
-    <button onclick="addSelection('upload')">
-        <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
-        <p>Add Image from Upload</p>
-    </button>
-    <button onclick="addSelection('url')">
-        <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
-        <p>Add Image from URL</p>
-    </button>
-    <button onclick="addSelection('text')">
-        <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
-        <p>Add Text to Tier List</p>
-    </button>
-    <button onclick="addSelection('newtier')">
-    <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-        <p>Add New Tier</p>
-    </button>
-    <button onclick="addSelection('import')">
-        <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
-        <p>Import Tier List (indev)</p>
-    </button>`;
+    <div id="button-panel">
+        <button onclick="addSelection('upload')">
+            <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+            <p>Add Image from Upload</p>
+        </button>
+        <button onclick="addSelection('url')">
+            <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
+            <p>Add Image from URL</p>
+        </button>
+        <button onclick="addSelection('text')">
+            <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
+            <p>Add Text to Tier List</p>
+        </button>
+        <button onclick="addSelection('newtier')">
+        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+            <p>Add New Tier</p>
+        </button>
+        <button onclick="addSelection('import')">
+            <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
+            <p>Import Tier List (indev)</p>
+        </button>
+    </div`;
     document.querySelector("body").addEventListener('click', checkPlus);
 }
 //closes the plus menu
