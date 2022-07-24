@@ -8,3 +8,5 @@ Creating a tier list couldn't be easier. Just head to the site, click the Plus b
 
 # Libraries
 HTML2Canvas 1.4.1, used for image exports under the MIT License: https://html2canvas.hertzen.com/
+
+Font Awesome 4, used under the SIL OFL 1.1 License https://fontawesome.com/v4/license/
