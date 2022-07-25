@@ -103,6 +103,9 @@ function addTier() {
 //They could be re-represented once dragged into a tier
 //UNTIL THEN update the DOM API for tiers with a string "children"
 function imageRead(imageToRead) {
+    if (document.getElementById("upload-images-info").style.display != "none") {
+        document.getElementById("upload-images-info").style.display = "none"   
+    }
     closePlus();
     //check if it was triggered by the file upload
     if (imageToRead == "file") {
@@ -131,6 +134,9 @@ function imageRead(imageToRead) {
 
 //creates a draggable text element
 function addText() {
+    if (document.getElementById("upload-images-info").style.display != "none") {
+        document.getElementById("upload-images-info").style.display = "none"   
+    }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
             <div draggable="true" class="potentialdrag" >${text}</div>`;

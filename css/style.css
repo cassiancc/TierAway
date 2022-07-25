@@ -205,6 +205,18 @@ th:not(.header) {
 /*style the uploaded image options*/
 #image-options {
     min-height: 100px;
+    display: flex;
+    position: fixed;
+    bottom: 0;
+    background-color: black;
+    width: 100%;
+    border-top: black solid 10px;
+    min-height: min-content;
+    overflow: hidden;
+}
+#image-options div {
+    display:block;
+    min-height: min-content;
 }
 .hidden {
     display: none;
