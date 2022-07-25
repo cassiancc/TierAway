@@ -90,7 +90,6 @@ tierList.addTier(new Tier("#cba000","b"));
 tierList.addTier(new Tier("#86d300","c"));
 tierList.addTier(new Tier("#32bc53","d"));
 tierList.addTier(new Tier("#009376","f"));
-
 //add new tier
 function addTier() {
     tierName = document.getElementById("add-tier").value;
@@ -315,8 +314,11 @@ function tierExport() {
             document.getElementById("export").innerHTML += `<img src=${url}></img>`
             document.getElementById("export").innerHTML += `<a href="${url}" download="tierlist.png"><i class="fa fa-download" aria-hidden="true"></i>
             Download</a>`
+            exportTiers()
+    
         })
     document.querySelector("body").addEventListener('click', checkExport);
+    
     });
 
 }
@@ -340,4 +342,38 @@ function checkExport() {
     }
     
 
+}
+
+function exportTiers() {
+    let exportString = tierList.tiers.length
+    tierList.tiers.forEach(function(tier) {
+        exportString += `${tier.color}§${tier.suffix}§`
+    })
+    let fileData = new Blob([exportString], {type: 'text/plain'});
+    const url = URL.createObjectURL(fileData)
+        document.getElementById("export").innerHTML += 
+        `<a href="${url}" download="list.txt"><i class="fa fa-download" aria-hidden="true"></i>Export Tier List</a>`
+    return exportString;
+}
+function importTiers(input) {
+    tierList.tiers = [];
+    let numberOfTiers = input.charAt(0)
+    input = input.slice(1)
+    for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
+        // Runs however many times is specified in input tiers
+        //import tier colour
+        let endColour = input.search("§")
+        let tierImportColour = input.slice(0, endColour)
+        input = input.slice(endColour+1)
+        //import tier suffix
+        let endSuffix = input.search("§")
+        let tierImportSuffix = input.slice(0, endSuffix)
+        input = input.slice(endSuffix+1)
+        //add the tier
+        tierList.addTier(new Tier(tierImportColour, tierImportSuffix));
+        console.log(tierImportColour, tierImportSuffix)
+    
+      }
+    //re-render the tier list
+    tierList.render()
 }
