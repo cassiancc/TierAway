@@ -217,6 +217,12 @@ th:not(.header) {
 #image-options div {
     display:block;
     min-height: min-content;
+    margin: 5px;
+}
+#trash {
+    padding: 5px;
+    color: #6b6b6b;
+    transition: color .1s;
 }
 .hidden {
     display: none;

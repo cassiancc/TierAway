@@ -106,6 +106,9 @@ function imageRead(imageToRead) {
     if (document.getElementById("upload-images-info").style.display != "none") {
         document.getElementById("upload-images-info").style.display = "none"   
     }
+    if (document.getElementById("trash") == null) {
+        document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
+    }
     closePlus();
     //check if it was triggered by the file upload
     if (imageToRead == "file") {
@@ -143,7 +146,16 @@ function addText() {
     addListeners()
     closePlus()
 }
-
+//adds the necessary event listeners for the Drag
+function addListeners() {
+    //find all draggable elements
+    let items = document.querySelectorAll('.potentialdrag');
+    items.forEach(function(item) {
+        item.addEventListener('dragstart', startDrag);
+        item.addEventListener('drag', whileDrag);
+        item.addEventListener('dragend', endDrag);
+    });
+}
 //starts the drag process by setting an id on the element being dragged
 function startDrag() {
     this.id = 'dragged';
@@ -170,6 +182,8 @@ function endDrag(e) {
             //remove the successfully dragged element
             document.getElementById("dragged").remove();
 
+        } else if (element.id == "trash") {
+            document.getElementById("dragged").remove();    
         }
     });
     //if an element is dragged to the wrong place it may stay dragged/transculent
@@ -269,15 +283,6 @@ function checkPlus() {
     }
     
 
-}
-//adds the necessary event listeners for the Drag
-function addListeners() {
-    //find all draggable elements
-    let items = document.querySelectorAll('.potentialdrag');
-    items.forEach(function(item) {
-        item.addEventListener('dragstart', startDrag);
-        item.addEventListener('dragend', endDrag);
-    });
 }
 //moves a tier up
 function moveTierUp(tier) {
@@ -401,3 +406,10 @@ window.onscroll = function() {
         document.getElementById("image-options").style.position = "fixed"
     }
 }
+//keyboard accessible export close
+window.onkeydown= function(key){
+    if (key.keyCode == 27){
+        closePlus()
+        closeExport()
+    };
+};
