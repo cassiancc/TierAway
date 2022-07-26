@@ -351,20 +351,29 @@ function checkExport() {
 }
 
 function exportTiers() {
-    let exportString = tierList.tiers.length
+    let tierTitle = document.querySelector(".header").outerText
+    let exportString = `${tierTitle}§`
+    //tier list length
+    exportString += tierList.tiers.length
+    //tier list color code and suffix
     tierList.tiers.forEach(function(tier) {
         exportString += `${tier.color}§${tier.suffix}§`
     })
+    //generate file
     let fileData = new Blob([exportString], {type: 'text/plain'});
     const url = URL.createObjectURL(fileData)
         document.getElementById("export").innerHTML += 
-        `<a href="${url}" download="list.txt"><i class="fa fa-download" aria-hidden="true"></i>Export Tier List</a>`
+        `<a href="${url}" download="${tierTitle}.txt"><i class="fa fa-download" aria-hidden="true"></i>Export Tier List</a>`
     return exportString;
 }
 function importTiers(input) {
+    //clear the default tiers
     tierList.tiers = [];
-    let numberOfTiers = input.charAt(0)
-    input = input.slice(1)
+    //find the name
+    document.querySelector(".header").textContent = input.slice(0, input.search("§"))
+    //find the number of tiers
+    let numberOfTiers = input.charAt(input.search("§")+1)
+    input = input.slice(input.search("§")+2)
     for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
         // Runs however many times is specified in input tiers
         //import tier colour
