@@ -383,3 +383,12 @@ function importTiers(input) {
     //re-render the tier list
     tierList.render()
 }
+let setHeight = document.body.offsetHeight
+window.onscroll = function() {
+    if ((window.innerHeight + Math.ceil(window.scrollY)) >= setHeight) {
+        document.getElementById("image-options").style.position = "static"
+    }
+    else {
+        document.getElementById("image-options").style.position = "fixed"
+    }
+}
