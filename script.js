@@ -152,7 +152,6 @@ function addListeners() {
     let items = document.querySelectorAll('.potentialdrag');
     items.forEach(function(item) {
         item.addEventListener('dragstart', startDrag);
-        item.addEventListener('drag', whileDrag);
         item.addEventListener('dragend', endDrag);
     });
 }
