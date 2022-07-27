@@ -398,7 +398,7 @@ function importTiers(input) {
 }
 let setHeight = document.body.offsetHeight
 window.onscroll = function() {
-    if ((window.innerHeight + Math.ceil(window.scrollY)) >= setHeight) {
+    if ((window.innerHeight + Math.ceil(window.scrollY)-60) >= setHeight) {
         document.getElementById("image-options").style.position = "static"
     }
     else {
@@ -412,3 +412,24 @@ window.onkeydown= function(key){
         closeExport()
     };
 };
+window.addEventListener("load", function(){
+    if (sessionStorage.theme == "light") {
+        changeTheme()
+    }
+});
+  
+
+function changeTheme() {
+    if (document.getElementById("theme-style").className == "dark-mode") {
+        document.getElementById("theme-style").className = "light-mode"
+        document.getElementById("theme-style").href = "/css/light.css"
+        document.getElementById("change-theme-button").className = "fa fa-sun-o"
+        sessionStorage.theme = "light"
+    }
+    else {
+        document.getElementById("theme-style").className = "dark-mode"
+        document.getElementById("theme-style").href = "/css/dark.css"
+        document.getElementById("change-theme-button").className = "fa fa-moon-o"
+        sessionStorage.theme = "dark"
+    }
+}

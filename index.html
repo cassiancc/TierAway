@@ -5,7 +5,8 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <link rel="stylesheet" href="css/style.css">
+        <link id="desktop-style"d rel="stylesheet" href="css/desktop.css">
+        <link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">
         <link rel="shortcut icon" href="/favicon.ico" type="image/x-icon">
         <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
         <link rel="stylesheet" href="lib/font-awesome/css/font-awesome.min.css">
@@ -33,6 +34,7 @@
         </div>
         <div style="transition: opacity .3s; opacity: 0;" id="export" class="hidden">
         </div>
+        <div id="padding"></div>
         <div id="image-options">
             <p id="upload-images-info">Uploaded images will appear here. Click the <i class="fa fa-plus " aria-hidden="true"> Plus</i> to get started!</p>
         
@@ -42,7 +44,10 @@
         <script type="text/javascript" src="lib/html2canvas.js"></script>
     <footer>
         <p id="copy">Tier Away was designed by <a href="https://congodsted.com">Con Godsted</a> &copy; 2022, with help from <a href="https://luketrenaman.com">Luke Trenaman</a>.<br> Tier Away is licensed under the <a href="https://github.com/ConGodsted/TierAway/blob/main/LICENSE.md">GNU General Public License v3.0.</a></p>
-        <a target="_blank" href="https://github.com/ConGodsted/TierAway" id="github" class="fa fa-github fa-3x" aria-hidden="true"></a>
+        <div>
+            <button id="change-theme-button" class="fa fa-moon-o fa-2x" onclick="changeTheme()"></button>
+            <a target="_blank" href="https://github.com/ConGodsted/TierAway" id="github" class="fa fa-github fa-3x" aria-hidden="true"></a>
+        </div>
 
     </footer>
     </body>

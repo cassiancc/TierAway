@@ -1,0 +1,97 @@
+/*
+    Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
+    Copyright (C) 2022 Con Godsted
+*/
+
+/*fancy header*/
+header {
+    border: transparent;
+    border-bottom: #d22d59 solid;
+}
+header button {
+    color: #6b6b6b;
+    border-color: #393939;
+}
+
+
+
+/*6b6b6b BORDER*/
+#button-panel button:hover, .export-visible a:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover, #fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover {
+    border-color: #949494;
+}
+/*TRANSPARENT BORDER*/
+#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    border-color: transparent;
+}
+
+
+
+/*TRANSPARENT BACKGROUND*/
+#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    background-color: transparent;
+}
+/*WHITE BACKGROUND*/
+.export-visible a {
+    background-color: black;
+}
+/*222222 BORDER*/
+.hidden, .dropshown, .export-visible {
+    border-color: #dddddd;
+}
+/*393939 BORDER*/
+#button-panel button, .hidden button, .export-visible a, header button:hover, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, #fileselect {
+    border-color: #c6c6c6;
+}
+/*BLACK BORDER*/
+table, tr, td, th {
+    border-color: black;
+}
+/*BLACK BORDER*/
+footer {
+    border-color: white;
+}
+
+/*2b2b2b BACKGROUND*/
+#fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
+    background-color: #d4d4d4;
+}
+
+/*18181b BACKGROUND*/
+body, header button {
+    background-color: #e7e7e4;
+}
+/*1f1f1f BACKGROUND*/
+.dropshown, .hidden, .export-visible, .tiersettings, #tablehead, .export-visible a {
+    background-color: #e0e0e0;
+}
+/*222222 BACKGROUND*/
+#url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, #button-panel button, .hidden button, #button-panel button, .hidden button, header button:hover {
+    background-color: #dddddd;
+}
+/*393939 BACKGROUND*/
+table {
+    background-color: #393939;
+}
+/*BLACK BACKGROUND*/
+footer, #image-options, header {
+    background-color: white;
+}
+
+
+/*WHITE TEXT*/
+#github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, #button-panel button, .hidden button, .export-visible a, #fileselect::file-selector-button, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier  {
+    color: black;
+}
+
+/*RED TEXT*/
+#github:hover, footer a:hover, #change-theme-button:hover {
+    color: #d22d59
+}
+/*6b6b6b TEXT*/
+#trash, #new, #tier-move button, .del-tier {
+    color: #6b6b6b;
+}
+/*BLACK TEXT*/
+th:not(.header), .export-visible a {
+    color: black
+}
