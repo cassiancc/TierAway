@@ -18,7 +18,7 @@ body {
     
 }
 /*SOLID BORDERS*/
-.hidden, .dropshown, .export-visible, tr, td, th, table, #fileselect, header, header button, footer, .export-visible a {
+.hidden, .dropshown, .export-visible, tr, td, th, table, #fileselect, header, header button, footer, .export-visible a, .export-visible button {
     border-style: solid;
 }
 .hidden, .dropshown, .export-visible, header {
@@ -29,7 +29,7 @@ table {
     border-width:  3px;
 }
 
-tr, td, th, .export-visible a {
+tr, td, th, .export-visible a, .export-visible button {
     border-width: 2px;
 }
 #fileselect, header button {
@@ -53,8 +53,11 @@ header {
     padding-left: 20px;
     padding-right: 20px;
 }
+#export-buttons {
+    display: flex;
+}
 header button {
-    transition: color .1s;
+    transition: color .01s;
     white-space:nowrap;
     padding: 10px;
     border-radius: 5px;
@@ -63,7 +66,7 @@ header button {
 
 }
 /*popup menu buttons*/
-#button-panel button, .hidden button, .export-visible a {
+#button-panel button, .hidden button, .export-visible a, .export-visible button {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -244,7 +247,7 @@ table {
     width: 100%;
     padding-bottom: 10px;
 }
-.export-visible a {
+.export-visible a, .export-visible button {
     margin-top: 10px;
     padding: 5px;
     text-decoration: none;

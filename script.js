@@ -3,7 +3,7 @@
     Copyright (C) 2022 Con Godsted
 */
 //declare global variables
-let imageArray = [];
+let linkArray = [];
 let i = 0;
 
 //begin luke's fancy tier list class
@@ -114,10 +114,10 @@ function imageRead(imageToRead) {
     if (imageToRead == "file") {
         let fileLength = document.getElementById(`fileselect`).files.length;
         for (let f = 0;f < fileLength;f++) {
+            //add the image to the exportable zip
+            zip.file(document.getElementById(`fileselect`).files[f].name ,document.getElementById(`fileselect`).files[f])
             //create a blob link for the image
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
-            //add the blob link to the list of images -- for later exporting
-            imageArray.push(imageToRead);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
             <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
@@ -126,7 +126,7 @@ function imageRead(imageToRead) {
     //if not it's a url to be parsed and added to image options
     } else if (imageToRead != "") {
             //the image already has a link so add it to the list of images -- for later exporting
-            imageArray.push(imageToRead);
+            linkArray.push(imageToRead);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
             <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
@@ -310,7 +310,7 @@ function moveTierDown(tier) {
         tierList.render()
     }
 }
-function tierExport() {
+function openExport() {
     document.getElementById("export").className = "export-visible";
     document.getElementById("export").style.opacity = 1
     document.querySelectorAll('.tiersettings').forEach(function(item) {
@@ -322,9 +322,17 @@ function tierExport() {
         canvas.toBlob(function(blob) {
             const url = URL.createObjectURL(blob)
             document.getElementById("export").innerHTML += `<img src=${url}></img>`
-            document.getElementById("export").innerHTML += `<a href="${url}" download="tierlist.png"><i class="fa fa-download" aria-hidden="true"></i>
-            Download</a>`
-            exportTiers()
+            document.getElementById("export").innerHTML += `
+            <div id="export-buttons">
+                <a href="${url}" download="tierlist.png">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    Download/Share Image
+                </a>
+                <button onclick="exportTiers()">
+                    <i class="fa fa-download" aria-hidden="true"></i>
+                    Export Template
+                </button>
+            </div>`
     
         })
     document.querySelector("body").addEventListener('click', checkExport);
@@ -354,9 +362,10 @@ function checkExport() {
 
 }
 
-function exportTiers() {
+async function exportTiers() {
     let tierTitle = document.querySelector(".header").outerText
     let exportString = `${tierTitle}§`
+    let exportLinks = "";
     //tier list length
     exportString += tierList.tiers.length
     //tier list color code and suffix
@@ -365,10 +374,20 @@ function exportTiers() {
     })
     //generate file
     let fileData = new Blob([exportString], {type: 'text/plain'});
-    const url = URL.createObjectURL(fileData)
-        document.getElementById("export").innerHTML += 
-        `<a href="${url}" download="${tierTitle}.txt"><i class="fa fa-download" aria-hidden="true"></i>Export Tier List</a>`
-    return exportString;
+    
+    //zip.file('test.png', testFile)
+    //generate zip with jszip
+    zip.file("tiers.txt", fileData)
+    
+    linkArray.forEach(function(link) {
+        exportLinks += link + "§";
+    })
+    zip.file("links.txt", exportLinks)
+    zip.generateAsync({type:"blob"})
+    .then(function(content) {
+        // see FileSaver.js
+        saveAs(content, `${tierTitle}.zip`);
+    });
 }
 function importTiers(input) {
     //clear the default tiers
@@ -405,20 +424,29 @@ window.onscroll = function() {
         document.getElementById("image-options").style.position = "fixed"
     }
 }
-//keyboard accessible export close
+//keyboard accessible tier list creation
 window.onkeydown= function(key){
+    
+    //esc key - close plus or export menu
     if (key.keyCode == 27){
         closePlus()
         closeExport()
+    }
+    //+ key - open plus mini-menu
+    else if (key.keyCode == 61){
+        openPlus()
     };
 };
+var zip;
+//
 window.addEventListener("load", function(){
+    zip = new JSZip();
     if (sessionStorage.theme == "light") {
         changeTheme()
     }
 });
   
-
+//change theme from dark to light
 function changeTheme() {
     if (document.getElementById("theme-style").className == "dark-mode") {
         document.getElementById("theme-style").className = "light-mode"
@@ -433,3 +461,4 @@ function changeTheme() {
         sessionStorage.theme = "dark"
     }
 }
+

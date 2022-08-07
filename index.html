@@ -15,7 +15,7 @@
     <body>
         <header>
             <h1>Tier Away</h1>
-            <button id="export-button" onclick="tierExport()"><i class="fa fa-download" aria-hidden="true"></i>
+            <button id="export-button" onclick="openExport()"><i class="fa fa-download" aria-hidden="true"></i>
                 Download</button>
         </header>
         <div id="desc">
@@ -26,7 +26,7 @@
         <table id="tierlist"><thead><tr id="tablehead">
             <th class="header" contenteditable="true" colspan="2">
                 Tier List
-            </th><th id="new" class="header" onclick="openPlus()"><i class="fa fa-plus fa-2x"></i>
+            </th><th id="new" title="Click here (or press +) to add to the tier list." class="header" onclick="openPlus()"><i class="fa fa-plus fa-2x"></i>
 
             </th>
         </tr></thead><tbody></tbody></table>
@@ -41,6 +41,8 @@
         </div>
         <script src="script.js">
         </script>
+        <script src="/lib/FileSaver.js"></script>
+        <script src="/lib/jszip.js"></script>
         <script type="text/javascript" src="lib/html2canvas.js"></script>
     <footer>
         <p id="copy">Tier Away was designed by <a href="https://congodsted.com">Con Godsted</a> &copy; 2022, with help from <a href="https://luketrenaman.com">Luke Trenaman</a>.<br> Tier Away is licensed under the <a href="https://github.com/ConGodsted/TierAway/blob/main/LICENSE.md">GNU General Public License v3.0.</a></p>
@@ -48,7 +50,6 @@
             <button id="change-theme-button" class="fa fa-moon-o fa-2x" onclick="changeTheme()"></button>
             <a target="_blank" href="https://github.com/ConGodsted/TierAway" id="github" class="fa fa-github fa-3x" aria-hidden="true"></a>
         </div>
-
     </footer>
     </body>
 </html>
