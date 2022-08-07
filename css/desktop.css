@@ -82,16 +82,19 @@ header button {
     align-items: center;
     min-height: 150px;
 }
-#addurldiv label, #addtextdiv label, #addimagediv label, #addtierdiv label {
+#addurldiv label, #addtextdiv p, #addimagediv label, #addtierdiv label {
     font-size: 3vh;
     margin-bottom: 10px;
 }
-#fileselect {
+#addtextdiv label {
+    margin-top: 10px;
+}
+#fileselect, #import-fileselect {
     height: 20vh;
     width: 100%;
     text-align: center;
 }
-#fileselect::file-selector-button {
+#fileselect::file-selector-button, #import-fileselect::file-selector-button {
     padding-bottom: 10px;
     padding-top: 10px;
     font-size: large;

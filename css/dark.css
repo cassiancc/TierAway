@@ -24,14 +24,14 @@ header button {
     border-color: #6b6b6b;
 }
 /*TRANSPARENT BORDER*/
-#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+#fileselect::file-selector-button, #import-fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
     border-color: transparent;
 }
 
 
 
 /*TRANSPARENT BACKGROUND*/
-#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+#fileselect::file-selector-button, #import-fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
     background-color: transparent;
 }
 /*222222 BORDER*/
@@ -48,10 +48,8 @@ footer, table, tr, td, th {
 }
 
 
-
-
 /*2b2b2b BACKGROUND*/
-#fileselect:hover, #url-upload button:hover, .export-visible a:hover, .export-visible button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
+#fileselect:hover, #import-fileselect:hover, #url-upload button:hover, .export-visible a:hover, .export-visible button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
     background-color: #2b2b2b;
 }
 
@@ -78,7 +76,7 @@ footer, #image-options, header {
 
 
 /*WHITE TEXT*/
-#change-theme-button, #github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, #button-panel button, .hidden button, .export-visible a, .export-visible button, #fileselect::file-selector-button, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier  {
+#change-theme-button, #github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, #button-panel button, .hidden button, .export-visible a, .export-visible button, #fileselect::file-selector-button, #import-fileselect::file-selector-button, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier  {
     color: white;
 }
 

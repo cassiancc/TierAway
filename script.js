@@ -143,8 +143,13 @@ function addText() {
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
             <div draggable="true" class="potentialdrag" >${text}</div>`;
+    
     addListeners()
-    closePlus()
+    if (document.getElementById("keep-alive-text").checked == false) {
+        closePlus()
+    }
+    
+    
 }
 //adds the necessary event listeners for the Drag
 function addListeners() {
@@ -200,14 +205,14 @@ function addSelection(select) {
         //Add Image from Upload
         document.getElementById("addDrop").innerHTML =
         `<div id="addimagediv">
-            <label>Add new Image: </label>
+            <label>Add Image from File Upload</label>
             <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect">
         </div>`;
         //Add Image from URL
     } else if (select == "url") {
         document.getElementById("addDrop").innerHTML =
         `<div id="addurldiv">
-            <label>Add Image from URL: </label>
+            <label>Add Image from URL</label>
             <div id="url-upload"><input type="url" placeholder="http://example.com/" name="urlselect" id="urlselect">
             <button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button></div>
         </div>`;
@@ -215,22 +220,32 @@ function addSelection(select) {
     } else if (select == "text") {
         document.getElementById("addDrop").innerHTML =
         `<div id="addtextdiv">
-            <label>Add Text: </label>
+            <p>Add Text to Tier List</p>
             <div id="text-add">
                 <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." name="textselect" id="text-select">
                 <button onclick="addText()" id="add-text-button">Add Text</button>
+                
+                
             </div>
+            <label><input type="checkbox" id="keep-alive-text">Keep Alive (use for multiple text elements)</label>
         </div>`;
         //Add New Tier
     } else if (select == "newtier") {
         document.getElementById("addDrop").innerHTML =
         `<div id="addtierdiv">
-            <label>Add Tier: </label>
+            <label>Add New Tier</label>
             <div id="add-tier-content">
                 <input type="text" name="add-tier" placeholder="S Tier" id="add-tier">
                 <input type="color" value="#780063" name="add-tier-colour" id="add-tier-colour">
                 <button onclick="addTier()" id="add-tier-button">Add Tier</button>
             </div>
+        </div>`;
+    }
+    else if (select = "import") {
+        document.getElementById("addDrop").innerHTML =
+        `<div id="addimagediv">
+            <label>Import Tier List Template</label>
+            <input onchange="importTiers()" type="file" accept=".zip" id="import-fileselect">
         </div>`;
     } else {
         document.getElementById.innerHTML = select;
@@ -389,31 +404,38 @@ async function exportTiers() {
         saveAs(content, `${tierTitle}.zip`);
     });
 }
-function importTiers(input) {
-    //clear the default tiers
-    tierList.tiers = [];
-    //find the name
-    document.querySelector(".header").textContent = input.slice(0, input.search("§"))
-    //find the number of tiers
-    let numberOfTiers = input.charAt(input.search("§")+1)
-    input = input.slice(input.search("§")+2)
-    for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
-        // Runs however many times is specified in input tiers
-        //import tier colour
-        let endColour = input.search("§")
-        let tierImportColour = input.slice(0, endColour)
-        input = input.slice(endColour+1)
-        //import tier suffix
-        let endSuffix = input.search("§")
-        let tierImportSuffix = input.slice(0, endSuffix)
-        input = input.slice(endSuffix+1)
-        //add the tier
-        tierList.addTier(new Tier(tierImportColour, tierImportSuffix));
-        console.log(tierImportColour, tierImportSuffix)
+async function importTiers() {
+    let importedfile = document.getElementById("import-fileselect").files[0];
+    let jsziplogic = zip.loadAsync(importedfile).then(function (zip) {
+        //read tiers.txt
+        return zip.file("tiers.txt").async("text");
+      }).then(function (input) {
+        //clear the default tiers
+        tierList.tiers = [];
+        //find the name
+        document.querySelector(".header").textContent = input.slice(0, input.search("§"))
+        //find the number of tiers
+        let numberOfTiers = input.charAt(input.search("§")+1)
+        input = input.slice(input.search("§")+2)
+        for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
+            // Runs however many times is specified in input tiers
+            //import tier colour
+            let endColour = input.search("§")
+            let tierImportColour = input.slice(0, endColour)
+            input = input.slice(endColour+1)
+            //import tier suffix
+            let endSuffix = input.search("§")
+            let tierImportSuffix = input.slice(0, endSuffix)
+            input = input.slice(endSuffix+1)
+            //add the tier
+            tierList.addTier(new Tier(tierImportColour, tierImportSuffix));
+            console.log(tierImportColour, tierImportSuffix)
+        
+        }
+        //re-render the tier list
+        tierList.render()
+    });
     
-      }
-    //re-render the tier list
-    tierList.render()
 }
 let setHeight = document.body.offsetHeight
 window.onscroll = function() {
