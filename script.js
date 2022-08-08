@@ -277,7 +277,7 @@ function openPlus() {
         </button>
         <button onclick="addSelection('import')">
             <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
-            <p>Import Tier List (indev)</p>
+            <p>Import Tier List Template</p>
         </button>
     </div`;
     document.querySelector("body").addEventListener('click', checkPlus);
@@ -406,7 +406,7 @@ async function exportTiers() {
 }
 async function importTiers() {
     let importedfile = document.getElementById("import-fileselect").files[0];
-    let jsziplogic = zip.loadAsync(importedfile).then(function (zip) {
+    zip.loadAsync(importedfile).then(function (zip) {
         //read tiers.txt
         return zip.file("tiers.txt").async("text");
       }).then(function (input) {
@@ -434,6 +434,25 @@ async function importTiers() {
         }
         //re-render the tier list
         tierList.render()
+        console.log(zip.files)
+        //import uploaded images
+        zip.forEach(async function(file) {
+            if (document.getElementById("upload-images-info").style.display != "none") {
+                document.getElementById("upload-images-info").style.display = "none"   
+            }
+            if (document.getElementById("trash") == null) {
+                document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
+            }
+            if (file.search(".txt") == -1) {
+                
+                let file2 = await zip.file(file).async("blob")
+                //console.log(file2)
+                imageToRead = URL.createObjectURL(file2);
+                document.querySelector("#image-options").innerHTML += `
+                <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+            }
+            
+        })
     });
     
 }
