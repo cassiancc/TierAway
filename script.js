@@ -203,27 +203,27 @@ function endDrag(e) {
 function addSelection(select) {
     if (select == "upload") {
         //Add Image from Upload
-        document.getElementById("addDrop").innerHTML =
+        document.getElementById("plus").innerHTML =
         `<div id="addimagediv">
-            <label>Add Image from File Upload</label>
-            <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect">
+            <label class="menu-header">Add Image from File Upload</label>
+            <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
         </div>`;
         //Add Image from URL
     } else if (select == "url") {
-        document.getElementById("addDrop").innerHTML =
+        document.getElementById("plus").innerHTML =
         `<div id="addurldiv">
-            <label>Add Image from URL</label>
-            <div id="url-upload"><input type="url" placeholder="http://example.com/" name="urlselect" id="urlselect">
-            <button onclick="imageRead(document.getElementById('urlselect').value)" id="addtierbutton">Add Image</button></div>
+            <label class="menu-header">Add Image from URL</label>
+            <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border">
+            <button onclick="imageRead(document.getElementById('urlselect').value)" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Text to Tier List
     } else if (select == "text") {
-        document.getElementById("addDrop").innerHTML =
+        document.getElementById("plus").innerHTML =
         `<div id="addtextdiv">
             <p>Add Text to Tier List</p>
             <div id="text-add">
-                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." name="textselect" id="text-select">
-                <button onclick="addText()" id="add-text-button">Add Text</button>
+                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border" id="text-select">
+                <button onclick="addText()" class="button" id="add-text-button">Add Text</button>
                 
                 
             </div>
@@ -231,21 +231,21 @@ function addSelection(select) {
         </div>`;
         //Add New Tier
     } else if (select == "newtier") {
-        document.getElementById("addDrop").innerHTML =
+        document.getElementById("plus").innerHTML =
         `<div id="addtierdiv">
-            <label>Add New Tier</label>
+            <label class="menu-header">Add New Tier</label>
             <div id="add-tier-content">
-                <input type="text" name="add-tier" placeholder="S Tier" id="add-tier">
-                <input type="color" value="#780063" name="add-tier-colour" id="add-tier-colour">
-                <button onclick="addTier()" id="add-tier-button">Add Tier</button>
+                <input type="text" class="button-border main-text" placeholder="S Tier" id="add-tier">
+                <input type="color" value="#780063" class="button-border" id="add-tier-colour">
+                <button onclick="addTier()" class="button" id="add-tier-button">Add Tier</button>
             </div>
         </div>`;
     }
     else if (select = "import") {
-        document.getElementById("addDrop").innerHTML =
+        document.getElementById("plus").innerHTML =
         `<div id="addimagediv">
-            <label>Import Tier List Template</label>
-            <input onchange="importTiers()" type="file" accept=".zip" id="import-fileselect">
+            <label class="menu-header">Import Tier List Template</label>
+            <input onchange="importTiers()" type="file" accept=".zip" id="import-fileselect" class="input-upload">
         </div>`;
     } else {
         document.getElementById.innerHTML = select;
@@ -255,27 +255,27 @@ function addSelection(select) {
 
 //opens the plus menu
 function openPlus() {
-    document.getElementById("addDrop").className = "dropshown";
-    document.getElementById("addDrop").style.opacity = 1;
-    document.getElementById("addDrop").innerHTML = `
+    document.getElementById("plus").className = "visible-drop";
+    document.getElementById("plus").style.opacity = 1;
+    document.getElementById("plus").innerHTML = `
     <div id="button-panel">
-        <button onclick="addSelection('upload')">
+        <button class="menu-button button" onclick="addSelection('upload')">
             <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
             <p>Add Image from Upload</p>
         </button>
-        <button onclick="addSelection('url')">
+        <button class="menu-button button" onclick="addSelection('url')">
             <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
             <p>Add Image from URL</p>
         </button>
-        <button onclick="addSelection('text')">
+        <button class="menu-button button" onclick="addSelection('text')">
             <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
             <p>Add Text to Tier List</p>
         </button>
-        <button onclick="addSelection('newtier')">
-        <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+        <button class="menu-button button" onclick="addSelection('newtier')">
+            <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
             <p>Add New Tier</p>
         </button>
-        <button onclick="addSelection('import')">
+        <button class="menu-button button" onclick="addSelection('import')">
             <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
             <p>Import Tier List Template</p>
         </button>
@@ -285,14 +285,14 @@ function openPlus() {
 //closes the plus menu
 function closePlus() {
     //hides away the plus menu. animations are a little busted but uh. woops.
-    document.getElementById("addDrop").style.opacity = 0;
-    document.getElementById("addDrop").className = "hidden";
+    document.getElementById("plus").style.opacity = 0;
+    document.getElementById("plus").className = "hidden";
 
 }
 //checks if the menu should be closed
 function checkPlus() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector(".dropshown:hover") == null && document.querySelector("#new:hover") == null) {
+    if (document.querySelector("#plus.visible-drop:hover") == null && document.querySelector("#new:hover") == null) {
         closePlus()
     }
     
@@ -326,7 +326,7 @@ function moveTierDown(tier) {
     }
 }
 function openExport() {
-    document.getElementById("export").className = "export-visible";
+    document.getElementById("export").className = "visible-drop";
     document.getElementById("export").style.opacity = 1
     document.querySelectorAll('.tiersettings').forEach(function(item) {
         item.classList.add("hide-from-export")
@@ -339,11 +339,11 @@ function openExport() {
             document.getElementById("export").innerHTML += `<img src=${url}></img>`
             document.getElementById("export").innerHTML += `
             <div id="export-buttons">
-                <a href="${url}" download="tierlist.png">
+                <a class="button" href="${url}" download="tierlist.png">
                     <i class="fa fa-download" aria-hidden="true"></i>
                     Download/Share Image
                 </a>
-                <button onclick="exportTiers()">
+                <button class="button" onclick="exportTiers()">
                     <i class="fa fa-download" aria-hidden="true"></i>
                     Export Template
                 </button>
@@ -370,7 +370,7 @@ function closeExport() {
 //checks if the menu should be closed
 function checkExport() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector(".export-visible:hover") == null && document.querySelector("#export-button:hover") == null) {
+    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
         closeExport()
     }
     
@@ -492,13 +492,13 @@ function changeTheme() {
     if (document.getElementById("theme-style").className == "dark-mode") {
         document.getElementById("theme-style").className = "light-mode"
         document.getElementById("theme-style").href = "/css/light.css"
-        document.getElementById("change-theme-button").className = "fa fa-sun-o"
+        document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
         sessionStorage.theme = "light"
     }
     else {
         document.getElementById("theme-style").className = "dark-mode"
         document.getElementById("theme-style").href = "/css/dark.css"
-        document.getElementById("change-theme-button").className = "fa fa-moon-o"
+        document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
         sessionStorage.theme = "dark"
     }
 }

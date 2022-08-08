@@ -6,17 +6,14 @@
 /*fancy header*/
 header {
     border: transparent;
-    border-bottom: #d22d59 solid;
+    border-bottom: black solid;
 }
-header button {
-    color: #6b6b6b;
-    border-color: #393939;
-}
+
 
 
 
 /*6b6b6b BORDER*/
-#button-panel button:hover, .export-visible a:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover, #fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover {
+.menu-button:hover, .visible-drop a:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover, #fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover {
     border-color: #949494;
 }
 /*TRANSPARENT BORDER*/
@@ -31,15 +28,15 @@ header button {
     background-color: transparent;
 }
 /*WHITE BACKGROUND*/
-.export-visible a {
+.visible-drop a {
     background-color: black;
 }
 /*222222 BORDER*/
-.hidden, .dropshown, .export-visible {
+.visible-drop {
     border-color: #dddddd;
 }
 /*393939 BORDER*/
-#button-panel button, .hidden button, .export-visible a, header button:hover, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, #fileselect {
+.button, #add-tier-colour, #urlselect, #text-select, #add-tier, #fileselect {
     border-color: #c6c6c6;
 }
 /*BLACK BORDER*/
@@ -57,15 +54,15 @@ footer {
 }
 
 /*18181b BACKGROUND*/
-body, header button {
+body, .header-button {
     background-color: #e7e7e4;
 }
 /*1f1f1f BACKGROUND*/
-.dropshown, .hidden, .export-visible, .tiersettings, #tablehead, .export-visible a {
+.dropshown, .hidden, .visible-drop, .tiersettings, #tablehead, .visible-drop a {
     background-color: #e0e0e0;
 }
 /*222222 BACKGROUND*/
-#url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, #button-panel button, .hidden button, #button-panel button, .hidden button, header button:hover {
+#url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, .menu-button, .hidden button, .menu-button, header button:hover {
     background-color: #dddddd;
 }
 /*393939 BACKGROUND*/
@@ -79,19 +76,23 @@ footer, #image-options, header {
 
 
 /*WHITE TEXT*/
-#github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, #button-panel button, .hidden button, .export-visible a, #fileselect::file-selector-button, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier  {
+.button, #github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
     color: black;
 }
 
 /*RED TEXT*/
 #github:hover, footer a:hover, #change-theme-button:hover {
-    color: #d22d59
+    color: #55091d
 }
 /*6b6b6b TEXT*/
 #trash, #new, #tier-move button, .del-tier {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/
-th:not(.header), .export-visible a {
+th:not(.header), .dropshown a {
     color: black
+}
+.header-button {
+    color: #6b6b6b;
+    border-color: #393939;
 }

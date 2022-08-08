@@ -17,23 +17,24 @@ body {
     margin: 0;
     
 }
-/*SOLID BORDERS*/
-.hidden, .dropshown, .export-visible, tr, td, th, table, #fileselect, header, header button, footer, .export-visible a, .export-visible button {
-    border-style: solid;
-}
-.hidden, .dropshown, .export-visible, header {
+
+.hidden, .visible-drop, header {
     border-width: 5px;
+    border-style: solid;
 }
 
 table {
     border-width:  3px;
+    border-style: solid;
 }
 
-tr, td, th, .export-visible a, .export-visible button {
+tr, td, th, #export a, .button {
     border-width: 2px;
+    border-style: solid;
 }
-#fileselect, header button {
+.input-upload {
     border-width: 1px;
+    border-style: solid;
 }
 #change-theme-button {
     font-size: 2.5em;
@@ -44,6 +45,7 @@ footer {
     border-width: 0px;
     border-top-width: 10px;
     border-bottom-width: 10px;
+    border-style: solid;
 }
 /*fancy header*/
 header {
@@ -56,17 +58,19 @@ header {
 #export-buttons {
     display: flex;
 }
-header button {
+#header-buttons .button {
     transition: color .01s;
     white-space:nowrap;
     padding: 10px;
     border-radius: 5px;
     font-weight: bold;
     font-size: medium;
+    margin-left: 5px;
+    margin-right: 5px;
 
 }
 /*popup menu buttons*/
-#button-panel button, .hidden button, .export-visible a, .export-visible button {
+.menu-button, .hidden button, #export .button {
     width: 100%;
     padding-bottom: 10px;
     padding-top: 10px;
@@ -82,7 +86,7 @@ header button {
     align-items: center;
     min-height: 150px;
 }
-#addurldiv label, #addtextdiv p, #addimagediv label, #addtierdiv label {
+.menu-header {
     font-size: 3vh;
     margin-bottom: 10px;
 }
@@ -94,7 +98,7 @@ header button {
     width: 100%;
     text-align: center;
 }
-#fileselect::file-selector-button, #import-fileselect::file-selector-button {
+.input-upload::file-selector-button {
     padding-bottom: 10px;
     padding-top: 10px;
     font-size: large;
@@ -116,7 +120,7 @@ header button {
     font-size: medium;
     flex-wrap: wrap;
 }
-#urlselect, #text-select, #add-tier{
+#urlselect, #text-select, #add-tier {
     width: 100%;
     margin-right: 10px;
     
@@ -199,10 +203,7 @@ table {
 .hidden {
     display: none;
     position: absolute;
-    background-color: #1f1f1f;
     padding: 10vh;
-    margin-left: auto;
-    margin-right: auto;
     top: 25%;
     left: 0;
     right: 0;
@@ -211,29 +212,12 @@ table {
     border-radius: 10px;
     justify-content: center;
 }
-/*fancy popup menu*/
-.dropshown {
-    display: flex;
-    position: absolute;
-    margin-left: auto;
-    margin-right: auto;
-    top: 25%;
-    left: 0;
-    right: 0;
-    width: 80%;
-    text-align: center;
-    border: #222222 solid 5px;
-    border-radius: 10px;
-    justify-content: center;
-}
 #button-panel {
     padding: 10vh;
     display: flex;
 }
-/*fancy export menu*/
-.export-visible {
+.visible-drop {
     position: absolute;
-    background-color: #1f1f1f;
     margin-left: auto;
     margin-right: auto;
     top: 25%;
@@ -242,20 +226,24 @@ table {
     width: 70%;
     padding: 10px;
     text-align: center;
-    border: #222222 solid 5px;
     border-radius: 10px;
     justify-content: center;
 }
-.export-visible img {
+#export img {
     width: 100%;
     padding-bottom: 10px;
 }
-.export-visible a, .export-visible button {
+#export.visible-drop .button {
     margin-top: 10px;
     padding: 5px;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+.button {
     text-decoration: none;
     margin-left: 5px;
     margin-right: 5px;
+    cursor: pointer;
 }
 
 /*transparent background/border on tier move button and delete tier buttons in the table*/
