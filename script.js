@@ -490,14 +490,14 @@ window.addEventListener("load", function(){
 //change theme from dark to light
 function changeTheme() {
     if (document.getElementById("theme-style").className == "dark-mode") {
-        document.getElementById("theme-style").className = "light-mode"
-        document.getElementById("theme-style").href = "/css/light.css"
+        document.getElementById("theme-style").remove()
+        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
         document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
         sessionStorage.theme = "light"
     }
     else {
-        document.getElementById("theme-style").className = "dark-mode"
-        document.getElementById("theme-style").href = "/css/dark.css"
+        document.getElementById("theme-style").remove()
+        document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
         document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
         sessionStorage.theme = "dark"
     }
