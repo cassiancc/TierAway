@@ -120,7 +120,7 @@ function imageRead(imageToRead) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
         }
     //if not it's a url to be parsed and added to image options
@@ -129,7 +129,7 @@ function imageRead(imageToRead) {
             linkArray.push(imageToRead);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             i = i + 1;
         }
     addListeners()
@@ -142,7 +142,7 @@ function addText() {
     }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
-            <div draggable="true" class="potentialdrag" >${text}</div>`;
+            <div draggable="true" class="potential-drag" >${text}</div>`;
     
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
@@ -154,10 +154,12 @@ function addText() {
 //adds the necessary event listeners for the Drag
 function addListeners() {
     //find all draggable elements
-    let items = document.querySelectorAll('.potentialdrag');
+    let items = document.querySelectorAll('.potential-drag');
     items.forEach(function(item) {
         item.addEventListener('dragstart', startDrag);
         item.addEventListener('dragend', endDrag);
+        item.addEventListener('touchstart', startDrag);
+        item.addEventListener('touchend', endTouch);
     });
 }
 //starts the drag process by setting an id on the element being dragged
@@ -172,7 +174,7 @@ function endDrag(e) {
     //check what the mouse is hovering over
     let position = document.elementsFromPoint(posX, posY)
     position.forEach(function(element) {
-        if (element.tagName == "TD") { //find a part of the table to insert
+        if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
             //If its a TD, we know it has a TR above it
             //if the element has text, copy it
             let content = document.getElementById("dragged").innerHTML
@@ -180,7 +182,7 @@ function endDrag(e) {
             let tempImage = document.getElementById("dragged").style.backgroundImage
             //trim the blob() off
             tempImage = tempImage.slice(5, -2)
-            let template = `<div draggable="true" class="potentialdrag" style="background-image: url(${tempImage});" >${content}</div>`;
+            let template = `<div draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
             //remove the successfully dragged element
@@ -441,7 +443,7 @@ async function importTiers() {
                 document.getElementById("upload-images-info").style.display = "none"   
             }
             if (document.getElementById("trash") == null) {
-                document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
+                document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o fa-4x" aria-hidden="true"></i></div>`
             }
             if (file.search(".txt") == -1) {
                 
@@ -449,7 +451,7 @@ async function importTiers() {
                 //console.log(file2)
                 imageToRead = URL.createObjectURL(file2);
                 document.querySelector("#image-options").innerHTML += `
-                <div id="img-${i}" draggable="true" class="potentialdrag" style="background-image: url(${imageToRead});" ></div>`;
+                <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             }
             
         })
@@ -482,7 +484,7 @@ var zip;
 //
 window.addEventListener("load", function(){
     zip = new JSZip();
-    if (sessionStorage.theme == "light") {
+    if (localStorage.theme == "light") {
         changeTheme()
     }
 });
@@ -493,13 +495,47 @@ function changeTheme() {
         document.getElementById("theme-style").remove()
         document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
         document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
-        sessionStorage.theme = "light"
+        localStorage.theme = "light"
     }
     else {
         document.getElementById("theme-style").remove()
         document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
         document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
-        sessionStorage.theme = "dark"
+        localStorage.theme = "dark"
     }
 }
 
+let touchX;
+let touchY;
+
+
+function endTouch(e) {
+    touchX = e.changedTouches[0].clientX
+    touchY = e.changedTouches[0].clientY
+    //console.log(document.elementFromPoint(touchX, touchY))
+    let position = document.elementsFromPoint(touchX, touchY)
+    position.forEach(function(element) {
+        if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
+            //If its a TD, we know it has a TR above it
+            //if the element has text, copy it
+            let content = document.getElementById("dragged").innerHTML
+            //if the element has a background image, copy it
+            let tempImage = document.getElementById("dragged").style.backgroundImage
+            //trim the blob() off
+            tempImage = tempImage.slice(5, -2)
+            let template = `<div draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
+            //add the element to the table!
+            element.innerHTML += template;
+            //remove the successfully dragged element
+            document.getElementById("dragged").remove();
+
+        } else if (element.id == "trash") {
+            document.getElementById("dragged").remove();    
+        }
+    });
+    //if an element is dragged to the wrong place it may stay dragged/transculent
+    if (document.getElementById('dragged')) {
+        document.getElementById("dragged").id = "";
+    }
+    addListeners()
+}

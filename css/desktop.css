@@ -137,7 +137,7 @@ header {
     margin-right: 5px;
 }
 /*divs to style*/
-.potentialdrag {
+.potential-drag {
     cursor: pointer;
     text-align: center;
     width: 10vh;
