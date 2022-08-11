@@ -4,7 +4,8 @@
 */
 //declare global variables
 let linkArray = [];
-let i = 0;
+let uploadID = 0;
+let tempID;
 
 //begin luke's fancy tier list class
 class TierList{
@@ -120,8 +121,8 @@ function imageRead(imageToRead) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
-            i = i + 1;
+            <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+            uploadID += 1;
         }
     //if not it's a url to be parsed and added to image options
     } else if (imageToRead != "") {
@@ -129,8 +130,8 @@ function imageRead(imageToRead) {
             linkArray.push(imageToRead);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
-            i = i + 1;
+            <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+            uploadID += 1;
         }
     addListeners()
 }
@@ -142,7 +143,7 @@ function addText() {
     }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
-            <div draggable="true" class="potential-drag" >${text}</div>`;
+            <div id="img-${uploadID}" draggable="true" class="potential-drag" >${text}</div>`;
     
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
@@ -164,6 +165,7 @@ function addListeners() {
 }
 //starts the drag process by setting an id on the element being dragged
 function startDrag() {
+    tempID = this.id;
     this.id = 'dragged';
 }
 //ends the drag process, deletes the old element, and creates a new one
@@ -182,7 +184,7 @@ function endDrag(e) {
             let tempImage = document.getElementById("dragged").style.backgroundImage
             //trim the blob() off
             tempImage = tempImage.slice(5, -2)
-            let template = `<div draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
+            let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
             //remove the successfully dragged element
@@ -194,7 +196,7 @@ function endDrag(e) {
     });
     //if an element is dragged to the wrong place it may stay dragged/transculent
     if (document.getElementById('dragged')) {
-        document.getElementById("dragged").id = "";
+        document.getElementById("dragged").id = tempID;
     }
     //moved elements lose their event listeners after being dragged
     addListeners()
@@ -451,7 +453,7 @@ async function importTiers() {
                 //console.log(file2)
                 imageToRead = URL.createObjectURL(file2);
                 document.querySelector("#image-options").innerHTML += `
-                <div id="img-${i}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+                <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             }
             
         })
@@ -523,7 +525,7 @@ function endTouch(e) {
             let tempImage = document.getElementById("dragged").style.backgroundImage
             //trim the blob() off
             tempImage = tempImage.slice(5, -2)
-            let template = `<div draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
+            let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
             //remove the successfully dragged element
@@ -535,7 +537,7 @@ function endTouch(e) {
     });
     //if an element is dragged to the wrong place it may stay dragged/transculent
     if (document.getElementById('dragged')) {
-        document.getElementById("dragged").id = "";
+        document.getElementById("dragged").id = tempID
     }
     addListeners()
 }
