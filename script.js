@@ -187,6 +187,7 @@ function endDrag(e) {
             let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
+            tierList.tiers[document.getElementById(element.id).id.split("-")[1]].content = element.innerHTML
             //remove the successfully dragged element
             document.getElementById("dragged").remove();
 
@@ -382,7 +383,7 @@ function checkExport() {
 }
 
 async function exportTiers() {
-    let tierTitle = document.querySelector(".header").outerText
+    let tierTitle = document.getElementById("list-header").outerText
     let exportString = `${tierTitle}§`
     let exportLinks = "";
     //tier list length
@@ -417,7 +418,7 @@ async function importTiers() {
         //clear the default tiers
         tierList.tiers = [];
         //find the name
-        document.querySelector(".header").textContent = input.slice(0, input.search("§"))
+        document.getElementById("list-header").textContent = input.slice(0, input.search("§"))
         //find the number of tiers
         let numberOfTiers = input.charAt(input.search("§")+1)
         input = input.slice(input.search("§")+2)
@@ -507,14 +508,10 @@ function changeTheme() {
     }
 }
 
-let touchX;
-let touchY;
-
-
 function endTouch(e) {
-    touchX = e.changedTouches[0].clientX
-    touchY = e.changedTouches[0].clientY
-    //console.log(document.elementFromPoint(touchX, touchY))
+    //find the touch
+    let touchX = e.changedTouches[0].clientX
+    let touchY = e.changedTouches[0].clientY
     let position = document.elementsFromPoint(touchX, touchY)
     position.forEach(function(element) {
         if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
@@ -528,6 +525,7 @@ function endTouch(e) {
             let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
+            tierList.tiers[document.getElementById(element.id).id.split("-")[1]].content = element.innerHTML
             //remove the successfully dragged element
             document.getElementById("dragged").remove();
 
