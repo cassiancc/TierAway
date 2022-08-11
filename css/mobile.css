@@ -1,13 +1,13 @@
 #button-panel {
-    padding: 5%;
+    padding: 1vh;
     display: flex;
+    flex-direction: column;
 }
-/*style the uploaded image options*/
 #image-options {
     min-height: 100px;
     display: flex;
     position: fixed;
-    bottom: 0;
+    bottom: 100px;
     width: 100%;
     min-height: min-content;
     overflow: hidden;
@@ -17,13 +17,13 @@ footer {
     margin-left: auto;
     margin-right: auto;
     text-align: center;
-    position: bottom;
+    position: fixed;
     bottom:0;
     width: 100%;
     display: flex;
     justify-content: space-between;
 }
 td, th {
-    width: 8vh;
-    height: 8vh;
+    width: 5vh;
+    height: 5vh;
 }
