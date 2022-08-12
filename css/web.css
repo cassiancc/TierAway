@@ -126,8 +126,11 @@ header {
     
     
 }
-#urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
+#urlselect:hover, #text-select:hover {
     outline: none;
+}
+#urlselect:focus, #text-select:focus {
+    outline: solid white 1px;
 }
 
 
@@ -257,7 +260,4 @@ table {
     text-decoration: none;
     padding-right: 2vh;
     margin-bottom: 5px;
-}
-.hide-from-export {
-    display: none;
 }

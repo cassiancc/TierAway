@@ -24,6 +24,9 @@ footer {
     justify-content: space-between;
 }
 td, th {
-    width: 8vh;
+    width: 10vh;
+    height: 10vh;
+}
+#header, #add {
     height: 8vh;
 }

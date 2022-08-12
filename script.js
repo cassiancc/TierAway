@@ -3,7 +3,7 @@
     Copyright (C) 2022 Con Godsted
 */
 //declare global variables
-let linkArray = [];
+let zipArray = [];
 let uploadID = 0;
 let tempID;
 
@@ -32,7 +32,7 @@ class TierList{
             <tr id="${tier.id}">
             <th contenteditable style="background-color: ${tier.color};" class="tier${tier.suffix} tierheader">${tier.suffix.toUpperCase()}</td>
             <td id="content-${tier.id}" class="tiers">${tier.content}</td>
-            <td class="tiersettings">
+            <td data-html2canvas-ignore class="tiersettings">
                 <div>
                 <div id="tier-move">
                     <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${tier.id})"></button>
@@ -69,7 +69,7 @@ class Tier{
         return `<tr id="${this.id}">
         <th contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
         <td id="content-${this.id}" class="tiers">${this.content}</td>
-        <td class="tiersettings">
+        <td data-html2canvas-ignore class="tiersettings">
             <div>
             <div id="tier-move">
                 <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${this.id})"></button>
@@ -116,7 +116,7 @@ function imageRead(imageToRead) {
         let fileLength = document.getElementById(`fileselect`).files.length;
         for (let f = 0;f < fileLength;f++) {
             //add the image to the exportable zip
-            zip.file(document.getElementById(`fileselect`).files[f].name ,document.getElementById(`fileselect`).files[f])
+            zipArray.push({"id":uploadID, "file":document.getElementById(`fileselect`).files[f]})
             //create a blob link for the image
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             //turn the image into a draggable div
@@ -124,15 +124,27 @@ function imageRead(imageToRead) {
             <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             uploadID += 1;
         }
-    //if not it's a url to be parsed and added to image options
-    } else if (imageToRead != "") {
-            //the image already has a link so add it to the list of images -- for later exporting
-            linkArray.push(imageToRead);
-            //turn the image into a draggable div
-            document.querySelector("#image-options").innerHTML += `
-            <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
-            uploadID += 1;
-        }
+    }
+    //check if its a url that needs to be parsed
+    else if (imageToRead != "") {
+        //turn the image into a draggable div
+        document.querySelector("#image-options").innerHTML += `
+        <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+        uploadID += 1;
+    }
+    ///triggered by copy paste
+    else {
+        //add the image to the exportable zip
+        zipArray.push({"id":uploadID, "file":imageToRead})
+        //create a blob link for the image
+        imageToRead = URL.createObjectURL(imageToRead);
+        //turn the image into a draggable div
+        document.querySelector("#image-options").innerHTML += `
+        <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+        uploadID += 1;
+    
+    }
+    
     addListeners()
 }
 
@@ -221,6 +233,13 @@ function addSelection(select) {
             <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border">
             <button onclick="imageRead(document.getElementById('urlselect').value)" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
+        //Add Image from Clipboard
+    } else if (select == "clip") {
+        document.getElementById("plus").innerHTML =
+        `<div id="addurldiv">
+            <label class="menu-header">Add Image from Clipboard</label>
+            <p>Paste (ctrl-v/cmd-v) to upload image.</p>
+            </div>`;
         //Add Text to Tier List
     } else if (select == "text") {
         document.getElementById("plus").innerHTML =
@@ -268,9 +287,9 @@ function openPlus() {
             <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
             <p>Add Image from Upload</p>
         </button>
-        <button class="menu-button button" onclick="addSelection('url')">
-            <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
-            <p>Add Image from URL</p>
+        <button class="menu-button button" onclick="addSelection('clip')">
+            <i class="fa fa-clipboard fa-2x" aria-hidden="true"></i>
+            <p>Add Image from Clipboard</p>
         </button>
         <button class="menu-button button" onclick="addSelection('text')">
             <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
@@ -285,21 +304,17 @@ function openPlus() {
             <p>Import Tier List Template</p>
         </button>
     </div`;
-    document.querySelector("body").addEventListener('click', checkPlus);
+    document.querySelector("body").addEventListener('click', closePlus);
 }
+
 //closes the plus menu
 function closePlus() {
-    //hides away the plus menu. animations are a little busted but uh. woops.
-    document.getElementById("plus").style.opacity = 0;
-    document.getElementById("plus").className = "hidden";
-
-}
-//checks if the menu should be closed
-function checkPlus() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
     if (document.querySelector("#plus.visible-drop:hover") == null && document.querySelector("#new:hover") == null) {
-        closePlus()
-    }
+        //hides away the plus menu. animations are a little busted but uh. woops.
+        document.getElementById("plus").style.opacity = 0;
+        document.getElementById("plus").className = "hidden";
+}
     
 
 }
@@ -333,12 +348,10 @@ function moveTierDown(tier) {
 function openExport() {
     document.getElementById("export").className = "visible-drop";
     document.getElementById("export").style.opacity = 1
-    document.querySelectorAll('.tiersettings').forEach(function(item) {
-        item.classList.add("hide-from-export")
-    });
-    document.getElementById("new").classList.add("hide-from-export")
     document.getElementById("export").innerHTML = "";
-    html2canvas(document.querySelector("#tierlist")).then(canvas => {
+    html2canvas(document.querySelector("#tierlist"), {
+        scale: 2
+    }).then(canvas => {
         canvas.toBlob(function(blob) {
             const url = URL.createObjectURL(blob)
             document.getElementById("export").innerHTML += `<img src=${url}></img>`
@@ -355,7 +368,7 @@ function openExport() {
             </div>`
     
         })
-    document.querySelector("body").addEventListener('click', checkExport);
+    document.querySelector("body").addEventListener('click', closeExport);
     
     });
 
@@ -363,20 +376,11 @@ function openExport() {
 
 //closes the plus menu
 function closeExport() {
-    //hides away the plus menu. animations are a little busted but uh. woops.
-    document.getElementById("export").style.opacity = 0;
-    document.getElementById("export").className = "hidden";
-    document.querySelectorAll('.tiersettings').forEach(function(item) {
-        item.classList.remove("hide-from-export")
-    });
-    document.getElementById("new").classList.remove("hide-from-export")
-
-}
-//checks if the menu should be closed
-function checkExport() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
-        closeExport()
+    if (document.querySelector("#export.visible-drop:hover") == null && document.querySelector("#export-button:hover") == null) {
+        //hides away the export menu. animations are a little busted but uh. woops.
+        document.getElementById("export").style.opacity = 0;
+        document.getElementById("export").className = "hidden";
     }
     
 
@@ -392,17 +396,19 @@ async function exportTiers() {
     tierList.tiers.forEach(function(tier) {
         exportString += `${tier.color}§${tier.suffix}§`
     })
-    //generate file
+    //generate table file
     let fileData = new Blob([exportString], {type: 'text/plain'});
     
-    //zip.file('test.png', testFile)
     //generate zip with jszip
     zip.file("tiers.txt", fileData)
-    
-    linkArray.forEach(function(link) {
-        exportLinks += link + "§";
+    //images
+    let f = 0;
+    zipArray.forEach(function() {
+        zip.file(zipArray[i].file.name, zipArray[i].file)
+        f++
     })
     zip.file("links.txt", exportLinks)
+    //create file
     zip.generateAsync({type:"blob"})
     .then(function(content) {
         // see FileSaver.js
@@ -539,3 +545,14 @@ function endTouch(e) {
     }
     addListeners()
 }
+document.onpaste = function(event) {
+    //read all items from clipboard
+    let items = event.clipboardData.items;
+    //check items for image data
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") == 0) {
+        //upload the image into menu function
+        imageRead(items[i].getAsFile())
+      }
+    }
+  }
