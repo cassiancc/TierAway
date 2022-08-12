@@ -206,7 +206,11 @@ function endDrag(e) {
             let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
             //add the element to the table!
             element.innerHTML += template;
-            tierList.tiers[document.getElementById(element.id).id.split("-")[1]].content = element.innerHTML
+            let i = 0
+            tierList.tiers.forEach(function(tier) {
+                tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
+                i++
+            })
             //remove the successfully dragged element
             document.getElementById("dragged").remove();
 
@@ -318,17 +322,23 @@ function openPlus() {
             <p>Add Image from URL (legacy)</p>
         </button>`
     }
-    document.querySelector("body").addEventListener('click', closePlus);
+    document.querySelector("body").addEventListener('click', checkPlus);
 }
 
 //closes the plus menu
 function closePlus() {
+    //hides away the plus menu. animations are a little busted but uh. woops.
+    document.getElementById("plus").style.opacity = 0;
+    document.getElementById("plus").className = "hidden";
+
+}
+//checks if the menu should be closed
+function checkPlus() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
     if (document.querySelector("#plus.visible-drop:hover") == null && document.querySelector("#new:hover") == null) {
-        //hides away the plus menu. animations are a little busted but uh. woops.
-        document.getElementById("plus").style.opacity = 0;
-        document.getElementById("plus").className = "hidden";
-}}
+        closePlus()
+    }
+}
 
 //opens the plus menu
 function openSettings() {
@@ -359,6 +369,7 @@ function moveTierUp(tier) {
         tierList.tiers[tier] = backup;
         //renders the new list
         tierList.render()
+        addListeners()
     }
     
 }
@@ -373,6 +384,7 @@ function moveTierDown(tier) {
         tierList.tiers[tier] = backup;
         //renders the new list
         tierList.render()
+        addListeners()
     }
 }
 function openExport() {
@@ -398,7 +410,7 @@ function openExport() {
             </div>`
     
         })
-    document.querySelector("body").addEventListener('click', closeExport);
+    document.querySelector("body").addEventListener('click', checkExport);
     
     });
 
@@ -406,14 +418,20 @@ function openExport() {
 
 //closes the plus menu
 function closeExport() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#export.visible-drop:hover") == null && document.querySelector("#export-button:hover") == null) {
-        //hides away the export menu. animations are a little busted but uh. woops.
-        document.getElementById("export").style.opacity = 0;
-        document.getElementById("export").className = "hidden";
-    }
-    
+    //hides away the plus menu. animations are a little busted but uh. woops.
+    document.getElementById("export").style.opacity = 0;
+    document.getElementById("export").className = "hidden";
+    document.querySelectorAll('.tiersettings').forEach(function(item) {
+        item.classList.remove("hide-from-export")
+    });
+    document.getElementById("new").classList.remove("hide-from-export")
 
+}
+//checks if the menu should be closed
+function checkExport() {
+    //check if user is hovering over the dropdown, or the plus button. closes if not.
+    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
+        closeExport() }
 }
 
 async function exportTiers() {

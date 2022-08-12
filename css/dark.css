@@ -88,3 +88,6 @@ footer, #image-options, header {
 th:not(.header) {
     color: black
 }
+.settings-grid p {
+    border: solid 1px white;
+}
