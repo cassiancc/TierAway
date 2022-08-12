@@ -22,10 +22,10 @@
                     <i class="fa fa-download" aria-hidden="true"></i>
                      Download
                 </button>
-                <a draggable="false" href="https://github.com/ConGodsted/TierAway#readme" target="_blank" class="header-button button" id="help-button">
+                <button draggable="false" onclick="openSettings()" target="_blank" class="header-button button" id="settings-button">
                     <i class="fa fa-question" aria-hidden="true"></i>
-                     Help
-                </a>
+                     Settings
+                </button>
             </div>
         </header>
         <div id="desc">
@@ -43,6 +43,22 @@
         <div style="transition: opacity .3s; opacity: 0;" id="plus" class="hidden">
         </div>
         <div style="transition: opacity .3s; opacity: 0;" id="export" class="hidden">
+        </div>
+        <div style="transition: opacity .3s; opacity: 0;" id="settings" class="hidden">
+            <h2>Keyboard Navigation Reference</h2>
+            <div class="settings-grid">
+                <p>Esc</p>
+                <p>Close Export/Plus/Settings Menu</p>
+            </div>
+            <div class="settings-grid">
+                <p>+</p>
+                <p>Open Plus Menu</p>
+            </div>
+            <h2>Beta Features</h2>
+            <div style="display: flex;">
+                <button onclick="changeSetting('url')" id="url-images-toggle" class="button menu-button">Enable URL Images</button>
+                <p>Enable URL image upload. Warning! These images will not yet appear in exports. Use for fun/testing.</p>
+            </div>
         </div>
         <div id="padding"></div>
         <div id="image-options">

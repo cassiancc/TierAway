@@ -7,6 +7,13 @@ let zipArray = [];
 let uploadID = 0;
 let tempID;
 
+//declare settings global variables
+let enableURL = localStorage.enableURL
+if (localStorage.enableURL != "true") {
+    enableURL = "false";
+}
+
+
 //begin luke's fancy tier list class
 class TierList{
     constructor(){
@@ -304,6 +311,13 @@ function openPlus() {
             <p>Import Tier List Template</p>
         </button>
     </div`;
+    if (enableURL == "true") {
+        document.getElementById("button-panel").innerHTML += 
+        `<button class="menu-button button" onclick="addSelection('clip')">
+            <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
+            <p>Add Image from URL (legacy)</p>
+        </button>`
+    }
     document.querySelector("body").addEventListener('click', closePlus);
 }
 
@@ -314,6 +328,22 @@ function closePlus() {
         //hides away the plus menu. animations are a little busted but uh. woops.
         document.getElementById("plus").style.opacity = 0;
         document.getElementById("plus").className = "hidden";
+}}
+
+//opens the plus menu
+function openSettings() {
+    document.getElementById("settings").className = "visible-drop";
+    document.getElementById("settings").style.opacity = 1;
+    document.querySelector("body").addEventListener('click', closeSettings);
+}
+
+//closes the plus menu
+function closeSettings() {
+    //check if user is hovering over the dropdown, or the plus button. closes if not.
+    if (document.querySelector("#settings.visible-drop:hover") == null && document.querySelector("#settings-button:hover") == null) {
+        //hides away the plus menu. animations are a little busted but uh. woops.
+        document.getElementById("settings").style.opacity = 0;
+        document.getElementById("settings").className = "hidden";
 }
     
 
@@ -511,6 +541,19 @@ function changeTheme() {
         document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
         document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
         localStorage.theme = "dark"
+    }
+}
+
+function changeSetting(setting) {
+    if (setting = "url" && enableURL == "false") {
+        enableURL = "true"
+        localStorage.enableURL = "true"
+        document.getElementById("url-images-toggle").innerHTML = "Disable URL Images"
+    }
+    else if (setting = "url" && enableURL == "true") {
+        enableURL = "false"
+        localStorage.enableURL = "false"
+        document.getElementById("url-images-toggle").innerHTML = "Enable URL Images"
     }
 }
 

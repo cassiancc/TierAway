@@ -261,3 +261,12 @@ table {
     padding-right: 2vh;
     margin-bottom: 5px;
 }
+.settings-grid {
+    display: flex;
+    justify-content: space-evenly;
+}
+.settings-grid p {
+    padding: 10px;
+    width: 100%;
+    border: solid 1px white;
+}
