@@ -215,7 +215,17 @@ function endDrag(e) {
             document.getElementById("dragged").remove();
 
         } else if (element.id == "trash") {
-            document.getElementById("dragged").remove();    
+            //find element id to be removed
+            let trashID = tempID.split("-")[1];
+            let i = 0;
+            zipArray.forEach(function(element) {
+                //match up element id with array id
+                if (element.id == trashID) {
+                    zipArray.splice(i, 1)
+                }
+                i++
+            })
+            document.getElementById("dragged").remove();
         }
     });
     //if an element is dragged to the wrong place it may stay dragged/transculent
