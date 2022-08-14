@@ -6,6 +6,8 @@
 let zipArray = [];
 let uploadID = 0;
 let tempID;
+let posX;
+let posY;
 
 //declare settings global variables
 let enableURL = localStorage.enableURL
@@ -187,55 +189,66 @@ function startDrag() {
     tempID = this.id;
     this.id = 'dragged';
 }
-//ends the drag process, deletes the old element, and creates a new one
+//ends drag - drag and drop api
 function endDrag(e) {
     //find the mouse
     posX = e.clientX;
     posY = e.clientY;
-    //check what the mouse is hovering over
-    let position = document.elementsFromPoint(posX, posY)
-    position.forEach(function(element) {
-        if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
-            //If its a TD, we know it has a TR above it
-            //if the element has text, copy it
-            let content = document.getElementById("dragged").innerHTML
-            //if the element has a background image, copy it
-            let tempImage = document.getElementById("dragged").style.backgroundImage
-            //trim the blob() off
-            tempImage = tempImage.slice(5, -2)
-            let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
-            //add the element to the table!
-            element.innerHTML += template;
-            let i = 0
-            tierList.tiers.forEach(function(tier) {
-                tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
-                i++
-            })
-            //remove the successfully dragged element
-            document.getElementById("dragged").remove();
+    moveElement()
+    
+}
+//ends drag - touch api
+function endTouch(e) {
+    //find the touch
+    posX = e.changedTouches[0].clientX
+    posY = e.changedTouches[0].clientY
+    moveElement()
+}
 
-        } else if (element.id == "trash") {
-            //find element id to be removed
-            let trashID = tempID.split("-")[1];
-            let i = 0;
-            zipArray.forEach(function(element) {
-                //match up element id with array id
-                if (element.id == trashID) {
-                    zipArray.splice(i, 1)
-                }
-                i++
-            })
-            document.getElementById("dragged").remove();
-        }
-    });
-    //if an element is dragged to the wrong place it may stay dragged/transculent
-    if (document.getElementById('dragged')) {
-        document.getElementById("dragged").id = tempID;
+//ends the drag process, deletes the old element, and creates a new one
+function moveElement() {
+//check what the mouse is hovering over
+let position = document.elementsFromPoint(posX, posY)
+position.forEach(function(element) {
+    if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
+        //If its a TD, we know it has a TR above it
+        //copy a representation of the element
+        let content = document.getElementById("dragged").outerHTML
+        //remove the old id
+        content = content.slice(content.search("draggable"))
+        //add the new id
+        content = `<div id=${tempID} ${content}`
+        //add it to the array
+        element.innerHTML += content
+        //update the tier list array
+        let i = 0
+        tierList.tiers.forEach(function() {
+            tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
+            i++
+        })
+        //remove the successfully dragged element
+        document.getElementById("dragged").remove();
+
+    } else if (element.id == "trash") {
+        //find element id to be removed
+        let trashID = tempID.split("-")[1];
+        let i = 0;
+        zipArray.forEach(function(element) {
+            //match up element id with array id
+            if (element.id == trashID) {
+                zipArray.splice(i, 1)
+            }
+            i++
+        })
+        document.getElementById("dragged").remove();
     }
-    //moved elements lose their event listeners after being dragged
-    addListeners()
-
-
+});
+//if an element is dragged to the wrong place it may stay dragged/transculent
+if (document.getElementById('dragged')) {
+    document.getElementById("dragged").id = tempID;
+}
+//moved elements lose their event listeners after being dragged
+addListeners()
 }
 
 function addSelection(select) {
@@ -585,37 +598,7 @@ function changeSetting(setting) {
     }
 }
 
-function endTouch(e) {
-    //find the touch
-    let touchX = e.changedTouches[0].clientX
-    let touchY = e.changedTouches[0].clientY
-    let position = document.elementsFromPoint(touchX, touchY)
-    position.forEach(function(element) {
-        if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
-            //If its a TD, we know it has a TR above it
-            //if the element has text, copy it
-            let content = document.getElementById("dragged").innerHTML
-            //if the element has a background image, copy it
-            let tempImage = document.getElementById("dragged").style.backgroundImage
-            //trim the blob() off
-            tempImage = tempImage.slice(5, -2)
-            let template = `<div id="${tempID}" draggable="true" class="potential-drag" style="background-image: url(${tempImage});" >${content}</div>`;
-            //add the element to the table!
-            element.innerHTML += template;
-            tierList.tiers[document.getElementById(element.id).id.split("-")[1]].content = element.innerHTML
-            //remove the successfully dragged element
-            document.getElementById("dragged").remove();
 
-        } else if (element.id == "trash") {
-            document.getElementById("dragged").remove();    
-        }
-    });
-    //if an element is dragged to the wrong place it may stay dragged/transculent
-    if (document.getElementById('dragged')) {
-        document.getElementById("dragged").id = tempID
-    }
-    addListeners()
-}
 document.onpaste = function(event) {
     //read all items from clipboard
     let items = event.clipboardData.items;
