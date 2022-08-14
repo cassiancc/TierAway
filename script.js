@@ -327,7 +327,7 @@ function openPlus() {
     </div`;
     if (enableURL == "true") {
         document.getElementById("button-panel").innerHTML += 
-        `<button class="menu-button button" onclick="addSelection('clip')">
+        `<button class="menu-button button" onclick="addSelection('url')">
             <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
             <p>Add Image from URL (legacy)</p>
         </button>`
