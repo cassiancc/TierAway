@@ -31,26 +31,13 @@ class TierList{
         addListeners()
         closePlus()
     }
-    //RE-RENDERS THE ENTIRE TIER LIST. this is not good code but it works for now.
+    //re-renders the tier list when tier order changes
     render() {
         document.querySelector("tbody").innerHTML = ""
         let i = 0
         tierList.tiers.forEach(function(tier) {
             tier.id = i
-            document.querySelector("tbody").innerHTML += `
-            <tr id="${tier.id}">
-            <th contenteditable style="background-color: ${tier.color};" class="tier${tier.suffix} tierheader">${tier.suffix.toUpperCase()}</td>
-            <td id="content-${tier.id}" class="tiers">${tier.content}</td>
-            <td data-html2canvas-ignore class="tiersettings">
-                <div>
-                <div id="tier-move">
-                    <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${tier.id})"></button>
-                    <button class="del-tier fa fa-times fa-2x" onclick="tierList.removeTierByID(${tier.id})">
-                </button>
-                    <button class="fa fa-chevron-down fa-2x" onclick="moveTierDown(${tier.id})"></button>
-                </div>
-                </div>
-            </td></tr>`;
+            document.querySelector("tbody").innerHTML += tierList.tiers[i].render()
             i++;
         })
     }
@@ -243,12 +230,12 @@ position.forEach(function(element) {
         document.getElementById("dragged").remove();
     }
 });
-//if an element is dragged to the wrong place it may stay dragged/transculent
-if (document.getElementById('dragged')) {
-    document.getElementById("dragged").id = tempID;
-}
-//moved elements lose their event listeners after being dragged
-addListeners()
+    //if an element is dragged to the wrong place it may stay dragged/transculent
+    if (document.getElementById('dragged')) {
+        document.getElementById("dragged").id = tempID;
+    }
+    //moved elements lose their event listeners after being dragged
+    addListeners()
 }
 
 function addSelection(select) {
