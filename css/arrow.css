@@ -3,27 +3,25 @@
     Copyright (C) 2022 Con Godsted
 */
 /*body styling with the Theme*/
-
+@import url('https://fonts.googleapis.com/css2?family=Cantarell&display=swap');
 html {
     scrollbar-color: #393939 #1f1f1f; 
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Cantarell', sans-serif;
     
 }
 /*fancy header*/
 header, .title-header {
     border: transparent;
-    border-bottom: #d22d59 solid;
+    border-bottom: #e89f30 solid;
 }
-
-
 
 
 /*6b6b6b BORDER*/
 .button:hover, #export-buttons .button:hover, .input-upload:hover, .button-border:hover {
-    border-color: #6b6b6b;
+    border-color: #e89f30;
 }
 /*TRANSPARENT BORDER*/
-.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button, footer  {
     border-color: transparent;
 }
 
@@ -42,27 +40,30 @@ header, .title-header {
     border-color: #393939;
 }
 /*BLACK BORDER*/
-footer, table, tr, td, th {
+table, tr, td, th {
     border-color: black;
 }
 
 
 /*2b2b2b BACKGROUND*/
 .button:hover, #add-tier:hover {
-    background-color: #2b2b2b;
+    background-color: #e0e0e0;
 }
 
 /*18181b BACKGROUND*/
 body, .header-button {
-    background-color: #18181b;
+    background-color: white;
 }
 /*1f1f1f BACKGROUND*/
-.visible-drop, .tiersettings, #tablehead {
+.visible-drop {
+    background-color: #e0e0e0;
+}
+.tiersettings, #tablehead {
     background-color: #1f1f1f;
 }
 /*222222 BACKGROUND*/
 .button, #add-tier-colour, #urlselect, #text-select, #add-tier {
-    background-color: #222222;
+    background-color: #dddddd;
 }
 /*393939 BACKGROUND*/
 table {
@@ -70,20 +71,22 @@ table {
 }
 /*BLACK BACKGROUND*/
 footer, #image-options, header, .title-header {
-    background-color: black;
+    background-color: #405731;
 }
 
 /*WHITE TEXT*/
-.button, .main-text, #new:hover, #tier-move button:hover, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button {
+.button, .main-text, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button, #desc p, .header-button {
+    color: black;
+}
+#new:hover, #tier-move button:hover, #list-header, h1, .title-header, footer .main-text, footer, p#upload-images-info {
     color: white;
 }
-
 /*RED TEXT*/
 #github:hover, footer a:hover, #change-theme-button:hover {
-    color: #d22d59
+    color: #e89f30
 }
 /*6b6b6b TEXT*/
-#trash, #new, #tier-move button, .del-tier, .header-button {
+#trash, #new, #tier-move button, .del-tier {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/
@@ -91,5 +94,5 @@ th:not(.header) {
     color: black
 }
 .settings-grid p {
-    border-color: white;
+    border-color: black;
 }

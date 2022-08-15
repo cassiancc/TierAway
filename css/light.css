@@ -100,5 +100,5 @@ th:not(.header), .dropshown a {
     border-color: #393939;
 }
 .settings-grid p {
-    border: solid 1px black;
+    border-color: black;
 }

@@ -596,7 +596,10 @@ var zip;
 window.addEventListener("load", function(){
     zip = new JSZip();
     if (localStorage.theme == "light") {
-        changeSetting("theme")
+        changeSetting("theme-light")
+    }
+    else if (localStorage.theme == "green") {
+        changeSetting("theme-green")
     }
 });
   
@@ -627,7 +630,7 @@ function changeSetting(setting) {
             localStorage.enableAnimations = "false"
             document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
         }}
-    //theme settings
+    //toggle dark/light theme
     else if (setting == "theme") {
         //dark to light
         if (document.getElementById("theme-style").className == "dark-mode") {
@@ -642,9 +645,38 @@ function changeSetting(setting) {
             document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
             document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
             localStorage.theme = "dark"
-        }}
-    
-    
+        }
+    }
+    //change theme directly
+    if (setting == "theme-dark") {
+        document.getElementById("theme-style").remove()
+        document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
+        document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
+        document.querySelectorAll(".theme-button i").forEach(function(element) {
+            element.className = "fa fa-times"
+        })
+        document.getElementById("dark-icon").className = 'fa fa-check'
+        localStorage.theme = "dark"
+    }
+    else if (setting == "theme-light") {
+        document.getElementById("theme-style").remove()
+        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
+        document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
+        document.querySelectorAll(".theme-button i").forEach(function(element) {
+            element.className = "fa fa-times"
+        })
+        document.getElementById("light-icon").className = 'fa fa-check'
+        localStorage.theme = "light"
+    }
+    else if (setting == "theme-green") {
+        document.getElementById("theme-style").remove()
+        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/arrow.css">`
+        document.querySelectorAll(".theme-button i").forEach(function(element) {
+            element.className = "fa fa-times"
+        })
+        document.getElementById("green-icon").className = 'fa fa-check'
+        localStorage.theme = "green"
+    }
 }
 
 
@@ -658,4 +690,4 @@ document.onpaste = function(event) {
         imageRead(items[i].getAsFile())
       }
     }
-  }
+}

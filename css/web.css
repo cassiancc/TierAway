@@ -16,12 +16,19 @@ body {
     margin: 0;
     
 }
+.theme-button {
+    margin: 5px;
+    width: 50%;
+}
 
 .hidden, .visible-drop, header {
     border-width: 5px;
 }
+.settings-grid p {
+    border: solid 1px;
+}
 table {
-    border-width:  3px;
+    border-width: 3px;
     border-style: solid;
 }
 
@@ -100,11 +107,7 @@ header {
     font-size: large;
     flex-wrap: wrap;
 }
-#url-upload, #text-add {
-    display: flex;
-    width: 100%;
-}
-#add-tier-content {
+#url-upload, #text-add, #add-tier-content {
     display: flex;
     width: 100%;
 }

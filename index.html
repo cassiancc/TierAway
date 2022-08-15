@@ -45,8 +45,25 @@
         <div style="transition: opacity .3s; opacity: 0;" id="export" class="hidden">
         </div>
         <div style="transition: opacity .3s; opacity: 0;" id="settings" class="hidden">
-            <h2 class="title-header"><i class="fa fa-cog" aria-hidden="true"></i>
-                 Settings and Info</h2>
+            <h2 class="title-header">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                 Settings and Info
+            </h2>
+            <h3 class="left-header">Theme Settings</h3>
+            <div style="display: flex;">
+                <button onclick="changeSetting('theme-dark')" class="button menu-button theme-button">
+                    <i id="dark-icon" class="fa fa-check" aria-hidden="true"></i>
+                     Dark
+                </button>
+                <button onclick="changeSetting('theme-light')" class="button menu-button theme-button">
+                    <i id="light-icon" class="fa fa-times" aria-hidden="true"></i>
+                     Light
+                </button>
+                <button onclick="changeSetting('theme-green')" class="button menu-button theme-button">
+                    <i id="green-icon" class="fa fa-times" aria-hidden="true"></i>
+                     Green
+                </button>
+            </div>
             <h3 class="left-header">Keyboard Navigation Reference</h3>
             <div class="settings-grid">
                 <p>Esc</p>
@@ -58,12 +75,17 @@
             </div>
             <h3 class="left-header">Beta Features</h3>
             <div>
-                <button onclick="changeSetting('url')" id="url-images-toggle" class="button menu-button"><i class="fa fa-check" aria-hidden="true"></i>
-                    Enable URL Images</button>
+                <button onclick="changeSetting('url')" id="url-images-toggle" class="button menu-button">
+                    <i class="fa fa-check" aria-hidden="true"></i>
+                    Enable URL Images
+                </button>
                 <p>Enable URL image upload. Warning! These images will not yet appear in exports. Use for fun/testing.</p>
             </div>
             <div>
-                <button onclick="changeSetting('animations')" id="animations-toggle" class="button menu-button"><i class="fa fa-times" aria-hidden="true"></i> Disable Animations</button>
+                <button onclick="changeSetting('animations')" id="animations-toggle" class="button menu-button">
+                    <i class="fa fa-times" aria-hidden="true"></i>
+                     Disable Animations
+                </button>
                 <p>Enable/disable animations. This applies to the fade in/out on popup openings.</p>
             </div>
         </div>
