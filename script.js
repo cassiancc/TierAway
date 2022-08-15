@@ -122,7 +122,8 @@ function imageRead(imageToRead) {
         }
     }
     //check if its a url that needs to be parsed
-    else if (imageToRead != "") {
+    else if (imageToRead == "url") {
+        imageToRead = document.getElementById('urlselect').value
         //turn the image into a draggable div
         document.querySelector("#image-options").innerHTML += `
         <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
@@ -252,7 +253,7 @@ function addSelection(select) {
         `<div id="addurldiv">
             <label class="menu-header">Add Image from URL</label>
             <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border">
-            <button onclick="imageRead(document.getElementById('urlselect').value)" class="button" id="addtierbutton">Add Image</button></div>
+            <button onclick="imageRead('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Image from Clipboard
     } else if (select == "clip") {
@@ -462,7 +463,7 @@ async function exportTiers() {
     //images
     let f = 0;
     zipArray.forEach(function() {
-        zip.file(zipArray[i].file.name, zipArray[i].file)
+        zip.file(zipArray[f].file.name, zipArray[f].file)
         f++
     })
     zip.file("links.txt", exportLinks)
