@@ -324,6 +324,10 @@ function openMenu(menu) {
     
     if (menu == "plus") {
         document.getElementById("plus").innerHTML = `
+        <h2 class="left-header">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add to Tier List
+        </h2>
         <div id="button-panel">
             <button class="menu-button button" onclick="addSelection('upload')">
                 <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
@@ -359,13 +363,13 @@ function openMenu(menu) {
         document.querySelector("body").addEventListener('click', checkSettings);
     }
     else if (menu == "export") {
-        html2canvas(document.querySelector("#tierlist"), {
-            scale: 2
-        }).then(canvas => {
-            canvas.toBlob(function(blob) {
-                const url = URL.createObjectURL(blob)
-                document.getElementById("export").innerHTML += `<img src=${url}></img>`
-                document.getElementById("export").innerHTML += `
+        let url;
+        document.getElementById("export").innerHTML = `
+                <h2 class="left-header">
+                    <i class="fa fa-share-alt" aria-hidden="true"></i>
+                    Download and Share Tier List
+                </h2>
+                <div id="export-image"></div>
                 <div id="export-buttons">
                     <a class="button" href="${url}" download="tierlist.png">
                         <i class="fa fa-download" aria-hidden="true"></i>
@@ -376,7 +380,12 @@ function openMenu(menu) {
                         Export Template
                     </button>
                 </div>`
-        
+        html2canvas(document.querySelector("#tierlist"), {
+            scale: 2
+        }).then(canvas => {
+            canvas.toBlob(function(blob) {
+                url = URL.createObjectURL(blob)
+                document.getElementById("export-image").innerHTML = `<img src=${url}></img>`
             })
         document.querySelector("body").addEventListener('click', checkExport);
         
@@ -388,7 +397,7 @@ function openMenu(menu) {
 
 //closes the specified menu
 function closeMenu(menu) {
-    if (enableAnimations == true) {
+    if (enableAnimations == "true") {
         let opacity = parseFloat(document.getElementById(menu).style.opacity)
         setInterval(function(){
             if (opacity >= -5) {
@@ -427,7 +436,7 @@ function checkSettings() {
 //checks if the export menu should be closed
 function checkExport() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
+    if (document.querySelector("#export.visible-drop:hover") == null && document.querySelector("#export-button:hover") == null) {
         closeMenu("export") 
     };
 }
@@ -560,6 +569,7 @@ window.onkeydown= function(key){
     if (key.keyCode == 27){
         closeMenu("plus")
         closeMenu("export")
+        closeMenu("settings")
     }
     //+ key - open plus mini-menu
     else if (key.keyCode == 61){
@@ -595,22 +605,22 @@ function changeSetting(setting) {
     if (setting == "url" && enableURL == "false") {
         enableURL = "true"
         localStorage.enableURL = "true"
-        document.getElementById("url-images-toggle").innerHTML = "Disable URL Images"
+        document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable URL Images`
     }
     else if (setting == "url" && enableURL == "true") {
         enableURL = "false"
         localStorage.enableURL = "false"
-        document.getElementById("url-images-toggle").innerHTML = "Enable URL Images"
+        document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable URL Images`
     }
     else if (setting == "animations" && enableAnimations == "false") {
         enableAnimations = "true"
         localStorage.enableAnimations = "true"
-        document.getElementById("animations-toggle").innerHTML = "Disable Animations"
+        document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable Animations`
     }
     else if (setting == "animations" && enableAnimations == "true") {
         enableAnimations = "false"
         localStorage.enableAnimations = "false"
-        document.getElementById("animations-toggle").innerHTML = "Enable Animations"
+        document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
     }
 }
 

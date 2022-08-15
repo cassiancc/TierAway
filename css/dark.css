@@ -6,9 +6,11 @@
 
 html {
     scrollbar-color: #393939 #1f1f1f; 
+    font-family: 'Source Sans Pro', sans-serif;
+    
 }
 /*fancy header*/
-header {
+header, h2.left-header {
     border: transparent;
     border-bottom: #d22d59 solid;
 }
@@ -67,7 +69,7 @@ table {
     background-color: #393939;
 }
 /*BLACK BACKGROUND*/
-footer, #image-options, header {
+footer, #image-options, header, h2.left-header {
     background-color: black;
 }
 
