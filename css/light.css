@@ -102,3 +102,6 @@ th:not(.header), .dropshown a {
 .settings-grid p {
     border-color: black;
 }
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: black;
+}

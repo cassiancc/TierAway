@@ -150,6 +150,19 @@ function imageRead(imageToRead) {
     addListeners()
 }
 
+//clipboard image upload
+document.onpaste = function(event) {
+    //read all items from clipboard
+    let items = event.clipboardData.items;
+    //check items for image data
+    for (let i = 0; i < items.length; i++) {
+      if (items[i].type.indexOf("image") == 0) {
+        //upload the image into menu function
+        imageRead(items[i].getAsFile())
+      }
+    }
+}
+
 //creates a draggable text element
 function addText() {
     if (document.getElementById("upload-images-info").style.display != "none") {
@@ -679,15 +692,3 @@ function changeSetting(setting) {
     }
 }
 
-
-document.onpaste = function(event) {
-    //read all items from clipboard
-    let items = event.clipboardData.items;
-    //check items for image data
-    for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf("image") == 0) {
-        //upload the image into menu function
-        imageRead(items[i].getAsFile())
-      }
-    }
-}

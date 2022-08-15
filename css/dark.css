@@ -93,3 +93,6 @@ th:not(.header) {
 .settings-grid p {
     border-color: white;
 }
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: white;
+}

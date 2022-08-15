@@ -61,6 +61,9 @@ body, .header-button {
 .tiersettings, #tablehead {
     background-color: #1f1f1f;
 }
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: #e89f30;
+}
 /*222222 BACKGROUND*/
 .button, #add-tier-colour, #urlselect, #text-select, #add-tier {
     background-color: #dddddd;

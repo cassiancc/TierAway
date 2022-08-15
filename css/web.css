@@ -128,7 +128,7 @@ header {
 #urlselect:hover, #text-select:hover {
     outline: none;
 }
-#urlselect:focus, #text-select:focus, #add-tier:focus {
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
     outline: solid white 1px;
 }
 
