@@ -76,7 +76,6 @@ header {
 }
 #addtierdiv, #addurldiv, #addtextdiv, #addimagediv {
     display: flex;
-    width: 100%;
     padding: 10px;
     flex-direction: column;
     margin-bottom: 10px;
@@ -113,7 +112,7 @@ header {
     padding-bottom: 10px;
     padding-top: 10px;
     width: 40%;
-    height: 100%;
+    height: 40px;
     font-size: medium;
     flex-wrap: wrap;
 }
@@ -126,7 +125,7 @@ header {
 #urlselect:hover, #text-select:hover {
     outline: none;
 }
-#urlselect:focus, #text-select:focus {
+#urlselect:focus, #text-select:focus, #add-tier:focus {
     outline: solid white 1px;
 }
 
@@ -210,7 +209,7 @@ table {
     border-radius: 10px;
     justify-content: center;
 }
-h2.left-header {
+.title-header {
     padding: 10px;
 }
 .visible-drop div, .visible-drop h3 {

@@ -248,30 +248,39 @@ function addSelection(select) {
     if (select == "upload") {
         //Add Image from Upload
         document.getElementById("plus").innerHTML =
-        `<div id="addimagediv">
-            <label class="menu-header">Add Image from File Upload</label>
+        `<h2 class="title-header menu-header">
+            <i class="fa fa-file-image-o" aria-hidden="true"></i> Add Image from File Upload
+        </h2>
+        <div id="addimagediv">
             <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
         </div>`;
         //Add Image from URL
     } else if (select == "url") {
         document.getElementById("plus").innerHTML =
-        `<div id="addurldiv">
-            <label class="menu-header">Add Image from URL</label>
+        `<h2 class="title-header menu-header">Add Image from URL</h2>
+        <div id="addurldiv">
             <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border">
             <button onclick="imageRead('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Image from Clipboard
     } else if (select == "clip") {
         document.getElementById("plus").innerHTML =
-        `<div id="addurldiv">
-            <label class="menu-header">Add Image from Clipboard</label>
+        `<h2 class="title-header menu-header">
+            <i class="fa fa-clipboard" aria-hidden="true"></i>
+             Add Image from Clipboard
+        </h2>
+        <div id="addurldiv">
             <p>Paste (ctrl-v/cmd-v) to upload image.</p>
             </div>`;
         //Add Text to Tier List
     } else if (select == "text") {
         document.getElementById("plus").innerHTML =
-        `<div id="addtextdiv">
-            <p>Add Text to Tier List</p>
+            `<h2 class="title-header menu-header">
+                <i class="fa fa-file-text" aria-hidden="true"></i>
+                 Add Text to Tier List
+            </h2>
+            <div id="addtextdiv">
+            
             <div id="text-add">
                 <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border" id="text-select">
                 <button onclick="addText()" class="button" id="add-text-button">Add Text</button>
@@ -283,8 +292,11 @@ function addSelection(select) {
         //Add New Tier
     } else if (select == "newtier") {
         document.getElementById("plus").innerHTML =
-        `<div id="addtierdiv">
-            <label class="menu-header">Add New Tier</label>
+        `<h2 class="title-header menu-header">
+            <i class="fa fa-plus" aria-hidden="true"></i>
+            Add New Tier
+        </h2>
+        <div id="addtierdiv">
             <div id="add-tier-content">
                 <input type="text" class="button-border main-text" placeholder="S Tier" id="add-tier">
                 <input type="color" value="#780063" class="button-border" id="add-tier-colour">
@@ -294,8 +306,11 @@ function addSelection(select) {
     }
     else if (select = "import") {
         document.getElementById("plus").innerHTML =
-        `<div id="addimagediv">
-            <label class="menu-header">Import Tier List Template</label>
+        `<h2 class="title-header menu-header">
+            <i class="fa fa-upload" aria-hidden="true"></i>
+            Import Tier List Template
+        </h2>
+        <div id="addimagediv">
             <input onchange="importTiers()" type="file" accept=".zip" id="import-fileselect" class="input-upload">
         </div>`;
     } else {
@@ -324,7 +339,7 @@ function openMenu(menu) {
     
     if (menu == "plus") {
         document.getElementById("plus").innerHTML = `
-        <h2 class="left-header">
+        <h2 class="title-header">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Add to Tier List
         </h2>
@@ -365,7 +380,7 @@ function openMenu(menu) {
     else if (menu == "export") {
         let url;
         document.getElementById("export").innerHTML = `
-                <h2 class="left-header">
+                <h2 class="title-header">
                     <i class="fa fa-share-alt" aria-hidden="true"></i>
                     Download and Share Tier List
                 </h2>
@@ -581,47 +596,55 @@ var zip;
 window.addEventListener("load", function(){
     zip = new JSZip();
     if (localStorage.theme == "light") {
-        changeTheme()
+        changeSetting("theme")
     }
 });
   
-//change theme from dark to light
-function changeTheme() {
-    if (document.getElementById("theme-style").className == "dark-mode") {
-        document.getElementById("theme-style").remove()
-        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
-        document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
-        localStorage.theme = "light"
-    }
-    else {
-        document.getElementById("theme-style").remove()
-        document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
-        document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
-        localStorage.theme = "dark"
-    }
-}
+
 
 function changeSetting(setting) {
-    if (setting == "url" && enableURL == "false") {
-        enableURL = "true"
-        localStorage.enableURL = "true"
-        document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable URL Images`
-    }
-    else if (setting == "url" && enableURL == "true") {
-        enableURL = "false"
-        localStorage.enableURL = "false"
-        document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable URL Images`
-    }
-    else if (setting == "animations" && enableAnimations == "false") {
-        enableAnimations = "true"
-        localStorage.enableAnimations = "true"
-        document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable Animations`
-    }
-    else if (setting == "animations" && enableAnimations == "true") {
-        enableAnimations = "false"
-        localStorage.enableAnimations = "false"
-        document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
-    }
+    //deprecated url upload
+    if (setting == "url") {
+        if (enableURL == "false") {
+            enableURL = "true"
+            localStorage.enableURL = "true"
+            document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable URL Images`
+        }
+        else {
+            enableURL = "false"
+            localStorage.enableURL = "false"
+            document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable URL Images`
+        }}
+    //animation settings
+    else if (setting == "animations") {
+        if (enableAnimations == "false") {
+            enableAnimations = "true"
+            localStorage.enableAnimations = "true"
+            document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable Animations`
+        }
+        else {
+            enableAnimations = "false"
+            localStorage.enableAnimations = "false"
+            document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
+        }}
+    //theme settings
+    else if (setting == "theme") {
+        //dark to light
+        if (document.getElementById("theme-style").className == "dark-mode") {
+            document.getElementById("theme-style").remove()
+            document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
+            document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
+            localStorage.theme = "light"
+        }
+        //light to dark
+        else {
+            document.getElementById("theme-style").remove()
+            document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
+            document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
+            localStorage.theme = "dark"
+        }}
+    
+    
 }
 
 

@@ -30,7 +30,7 @@ td, th {
 #header, #add {
     height: 8vh;
 }
-h2.left-header {
+.title-header {
     font-size: xx-large;
     margin: 0;
 }

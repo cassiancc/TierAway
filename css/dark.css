@@ -10,7 +10,7 @@ html {
     
 }
 /*fancy header*/
-header, h2.left-header {
+header, .title-header {
     border: transparent;
     border-bottom: #d22d59 solid;
 }
@@ -69,7 +69,7 @@ table {
     background-color: #393939;
 }
 /*BLACK BACKGROUND*/
-footer, #image-options, header, h2.left-header {
+footer, #image-options, header, .title-header {
     background-color: black;
 }
 
