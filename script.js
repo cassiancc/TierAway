@@ -14,6 +14,11 @@ let enableURL = localStorage.enableURL
 if (localStorage.enableURL != "true") {
     enableURL = "false";
 }
+//declare settings global variables
+let enableAnimations = localStorage.enableAnimations
+if (localStorage.enableAnimations != "false") {
+    enableAnimations = "true";
+}
 
 
 //begin luke's fancy tier list class
@@ -29,7 +34,7 @@ class TierList{
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
         addListeners()
-        closePlus()
+        closeMenu("plus")
     }
     //re-renders the tier list when tier order changes
     render() {
@@ -106,7 +111,7 @@ function imageRead(imageToRead) {
     if (document.getElementById("trash") == null) {
         document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
     }
-    closePlus();
+    closeMenu("plus");
     //check if it was triggered by the file upload
     if (imageToRead == "file") {
         let fileLength = document.getElementById(`fileselect`).files.length;
@@ -156,7 +161,7 @@ function addText() {
     
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
-        closePlus()
+        closeMenu("plus")
     }
     
     
@@ -299,76 +304,136 @@ function addSelection(select) {
 
 }
 
-//opens the plus menu
-function openPlus() {
-    document.getElementById("plus").className = "visible-drop";
-    document.getElementById("plus").style.opacity = 1;
-    document.getElementById("plus").innerHTML = `
-    <div id="button-panel">
-        <button class="menu-button button" onclick="addSelection('upload')">
-            <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
-            <p>Add Image from Upload</p>
-        </button>
-        <button class="menu-button button" onclick="addSelection('clip')">
-            <i class="fa fa-clipboard fa-2x" aria-hidden="true"></i>
-            <p>Add Image from Clipboard</p>
-        </button>
-        <button class="menu-button button" onclick="addSelection('text')">
-            <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
-            <p>Add Text to Tier List</p>
-        </button>
-        <button class="menu-button button" onclick="addSelection('newtier')">
-            <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
-            <p>Add New Tier</p>
-        </button>
-        <button class="menu-button button" onclick="addSelection('import')">
-            <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
-            <p>Import Tier List Template</p>
-        </button>
-    </div`;
-    if (enableURL == "true") {
-        document.getElementById("button-panel").innerHTML += 
-        `<button class="menu-button button" onclick="addSelection('url')">
-            <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
-            <p>Add Image from URL (legacy)</p>
-        </button>`
+//opens the specified menu
+function openMenu(menu) {
+    document.getElementById(menu).className = "visible-drop";
+    if (enableAnimations == "true") {
+        document.getElementById(menu).style.opacity = 0;
+        let opacity = parseFloat(document.getElementById(menu).style.opacity)
+        setInterval(function(){
+            if (opacity <= 1) {
+                opacity += 1
+                document.getElementById(menu).style.opacity = opacity
+            }
+        }, 15)
     }
-    document.querySelector("body").addEventListener('click', checkPlus);
+    else {
+        document.getElementById(menu).style.opacity = 1;
+    }
+    
+    
+    if (menu == "plus") {
+        document.getElementById("plus").innerHTML = `
+        <div id="button-panel">
+            <button class="menu-button button" onclick="addSelection('upload')">
+                <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
+                <p>Add Image from Upload</p>
+            </button>
+            <button class="menu-button button" onclick="addSelection('clip')">
+                <i class="fa fa-clipboard fa-2x" aria-hidden="true"></i>
+                <p>Add Image from Clipboard</p>
+            </button>
+            <button class="menu-button button" onclick="addSelection('text')">
+                <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
+                <p>Add Text to Tier List</p>
+            </button>
+            <button class="menu-button button" onclick="addSelection('newtier')">
+                <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
+                <p>Add New Tier</p>
+            </button>
+            <button class="menu-button button" onclick="addSelection('import')">
+                <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
+                <p>Import Tier List Template</p>
+            </button>
+        </div`;
+        if (enableURL == "true") {
+            document.getElementById("button-panel").innerHTML += 
+            `<button class="menu-button button" onclick="addSelection('url')">
+                <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
+                <p>Add Image from URL (legacy)</p>
+            </button>`
+        }
+        document.querySelector("body").addEventListener('click', checkPlus);
+    }
+    else if (menu == "settings") {
+        document.querySelector("body").addEventListener('click', checkSettings);
+    }
+    else if (menu == "export") {
+        html2canvas(document.querySelector("#tierlist"), {
+            scale: 2
+        }).then(canvas => {
+            canvas.toBlob(function(blob) {
+                const url = URL.createObjectURL(blob)
+                document.getElementById("export").innerHTML += `<img src=${url}></img>`
+                document.getElementById("export").innerHTML += `
+                <div id="export-buttons">
+                    <a class="button" href="${url}" download="tierlist.png">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        Download/Share Image
+                    </a>
+                    <button class="button" onclick="exportTiers()">
+                        <i class="fa fa-download" aria-hidden="true"></i>
+                        Export Template
+                    </button>
+                </div>`
+        
+            })
+        document.querySelector("body").addEventListener('click', checkExport);
+        
+        });
+    }
+    
 }
 
-//closes the plus menu
-function closePlus() {
-    //hides away the plus menu. animations are a little busted but uh. woops.
-    document.getElementById("plus").style.opacity = 0;
-    document.getElementById("plus").className = "hidden";
 
+//closes the specified menu
+function closeMenu(menu) {
+    if (enableAnimations == true) {
+        let opacity = parseFloat(document.getElementById(menu).style.opacity)
+        setInterval(function(){
+            if (opacity >= -5) {
+                opacity -= 1
+                document.getElementById(menu).style.opacity = opacity;
+                if (opacity <= -5) {
+                    document.getElementById(menu).className = "hidden";
+                }
+            }
+          }, 15)
+    }
+    else {
+        document.getElementById(menu).style.opacity = 0;
+        document.getElementById(menu).className = "hidden";
+    }
+    
 }
+
 //checks if the menu should be closed
 function checkPlus() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
     if (document.querySelector("#plus.visible-drop:hover") == null && document.querySelector("#new:hover") == null) {
-        closePlus()
+        closeMenu("plus")
     }
 }
 
-//opens the plus menu
-function openSettings() {
-    document.getElementById("settings").className = "visible-drop";
-    document.getElementById("settings").style.opacity = 1;
-    document.querySelector("body").addEventListener('click', closeSettings);
-}
 
 //closes the plus menu
-function closeSettings() {
+function checkSettings() {
     //check if user is hovering over the dropdown, or the plus button. closes if not.
     if (document.querySelector("#settings.visible-drop:hover") == null && document.querySelector("#settings-button:hover") == null) {
-        //hides away the plus menu. animations are a little busted but uh. woops.
-        document.getElementById("settings").style.opacity = 0;
-        document.getElementById("settings").className = "hidden";
+        closeMenu("settings")
+    }
 }
-    
 
+//checks if the export menu should be closed
+function checkExport() {
+    //check if user is hovering over the dropdown, or the plus button. closes if not.
+    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
+        closeMenu("export") 
+    };
 }
+
+
+
 //moves a tier up
 function moveTierUp(tier) {
     if (tier != 0) {
@@ -398,57 +463,11 @@ function moveTierDown(tier) {
         addListeners()
     }
 }
-function openExport() {
-    document.getElementById("export").className = "visible-drop";
-    document.getElementById("export").style.opacity = 1
-    document.getElementById("export").innerHTML = "";
-    html2canvas(document.querySelector("#tierlist"), {
-        scale: 2
-    }).then(canvas => {
-        canvas.toBlob(function(blob) {
-            const url = URL.createObjectURL(blob)
-            document.getElementById("export").innerHTML += `<img src=${url}></img>`
-            document.getElementById("export").innerHTML += `
-            <div id="export-buttons">
-                <a class="button" href="${url}" download="tierlist.png">
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                    Download/Share Image
-                </a>
-                <button class="button" onclick="exportTiers()">
-                    <i class="fa fa-download" aria-hidden="true"></i>
-                    Export Template
-                </button>
-            </div>`
-    
-        })
-    document.querySelector("body").addEventListener('click', checkExport);
-    
-    });
-
-}
-
-//closes the plus menu
-function closeExport() {
-    //hides away the plus menu. animations are a little busted but uh. woops.
-    document.getElementById("export").style.opacity = 0;
-    document.getElementById("export").className = "hidden";
-    document.querySelectorAll('.tiersettings').forEach(function(item) {
-        item.classList.remove("hide-from-export")
-    });
-    document.getElementById("new").classList.remove("hide-from-export")
-
-}
-//checks if the menu should be closed
-function checkExport() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#export.drop-shown:hover") == null && document.querySelector("#export-button:hover") == null) {
-        closeExport() }
-}
 
 async function exportTiers() {
+    //tier list title
     let tierTitle = document.getElementById("list-header").outerText
     let exportString = `${tierTitle}§`
-    let exportLinks = "";
     //tier list length
     exportString += tierList.tiers.length
     //tier list color code and suffix
@@ -466,7 +485,6 @@ async function exportTiers() {
         zip.file(zipArray[f].file.name, zipArray[f].file)
         f++
     })
-    zip.file("links.txt", exportLinks)
     //create file
     zip.generateAsync({type:"blob"})
     .then(function(content) {
@@ -540,12 +558,12 @@ window.onkeydown= function(key){
     
     //esc key - close plus or export menu
     if (key.keyCode == 27){
-        closePlus()
-        closeExport()
+        closeMenu("plus")
+        closeMenu("export")
     }
     //+ key - open plus mini-menu
     else if (key.keyCode == 61){
-        openPlus()
+        openMenu("plus")
     };
 };
 var zip;
@@ -574,15 +592,25 @@ function changeTheme() {
 }
 
 function changeSetting(setting) {
-    if (setting = "url" && enableURL == "false") {
+    if (setting == "url" && enableURL == "false") {
         enableURL = "true"
         localStorage.enableURL = "true"
         document.getElementById("url-images-toggle").innerHTML = "Disable URL Images"
     }
-    else if (setting = "url" && enableURL == "true") {
+    else if (setting == "url" && enableURL == "true") {
         enableURL = "false"
         localStorage.enableURL = "false"
         document.getElementById("url-images-toggle").innerHTML = "Enable URL Images"
+    }
+    else if (setting == "animations" && enableAnimations == "false") {
+        enableAnimations = "true"
+        localStorage.enableAnimations = "true"
+        document.getElementById("animations-toggle").innerHTML = "Disable Animations"
+    }
+    else if (setting == "animations" && enableAnimations == "true") {
+        enableAnimations = "false"
+        localStorage.enableAnimations = "false"
+        document.getElementById("animations-toggle").innerHTML = "Enable Animations"
     }
 }
 

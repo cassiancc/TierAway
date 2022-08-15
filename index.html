@@ -18,11 +18,11 @@
         <header>
             <h1>Tier Away</h1>
             <div id="header-buttons">
-                <button class="header-button button" id="export-button" onclick="openExport()">
+                <button class="header-button button" id="export-button" onclick="openMenu('export')">
                     <i class="fa fa-download" aria-hidden="true"></i>
                      Download
                 </button>
-                <button draggable="false" onclick="openSettings()" target="_blank" class="header-button button" id="settings-button">
+                <button draggable="false" onclick="openMenu(`settings`)" target="_blank" class="header-button button" id="settings-button">
                     <i class="fa fa-question" aria-hidden="true"></i>
                      Settings
                 </button>
@@ -36,7 +36,7 @@
         <table id="tierlist"><thead><tr id="tablehead">
             <th id="list-header" class="header" contenteditable="true" colspan="2">
                 Tier List
-            </th><th data-html2canvas-ignore id="new" title="Click here (or press +) to add to the tier list." class="header" onclick="openPlus()"><i class="fa fa-plus fa-2x"></i>
+            </th><th data-html2canvas-ignore id="new" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>
 
             </th>
         </tr></thead><tbody></tbody></table>
@@ -58,6 +58,10 @@
             <div style="display: flex;">
                 <button onclick="changeSetting('url')" id="url-images-toggle" class="button menu-button">Enable URL Images</button>
                 <p>Enable URL image upload. Warning! These images will not yet appear in exports. Use for fun/testing.</p>
+            </div>
+            <div style="display: flex;">
+                <button onclick="changeSetting('animations')" id="animations-toggle" class="button menu-button">Disable Animations</button>
+                <p>Enable/disable animations.</p>
             </div>
         </div>
         <div id="padding"></div>
