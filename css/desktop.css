@@ -34,3 +34,6 @@ td, th {
     font-size: xx-large;
     margin: 0;
 }
+#about-button {
+    display: none;
+}

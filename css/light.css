@@ -79,12 +79,12 @@ footer, #image-options, header {
 
 
 /*WHITE TEXT*/
-.button, #github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
+.button, .github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
     color: black;
 }
 
 /*RED TEXT*/
-#github:hover, footer a:hover, #change-theme-button:hover {
+.github:hover, footer a:hover, #change-theme-button:hover {
     color: #55091d
 }
 /*6b6b6b TEXT*/

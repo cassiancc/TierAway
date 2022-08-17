@@ -132,7 +132,9 @@ header {
     outline: solid 1px;
 }
 
-
+#theme-buttons {
+    display: flex;
+}
 
 /*new tier button margins*/
 #addtierdiv div input, #addtierdiv label {
@@ -259,7 +261,7 @@ table {
     margin-bottom: 5px;
 }
 /*style github*/
-#github {
+.github {
     text-decoration: none;
     padding-right: 2vh;
     margin-bottom: 5px;

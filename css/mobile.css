@@ -7,8 +7,9 @@
     min-height: 100px;
     display: flex;
     position: fixed;
-    bottom: 100px;
+    bottom: 0px;
     width: 100%;
+    font-size: 40px;
     min-height: min-content;
     overflow: hidden;
 }
@@ -23,7 +24,25 @@ footer {
     display: flex;
     justify-content: space-between;
 }
-td, th {
-    width: 5vh;
-    height: 5vh;
+td, th, .potential-drag {
+    width: 7vh;
+    height: 7vh;
+}
+#theme-buttons {
+    flex-direction: column;
+}
+#desc {
+    font-size: 14px;
+}
+footer {
+    display: none;
+}
+body {
+    overscroll-behavior: contain;
+}
+#about {
+    font-size: 40px;
+}
+#github-mobile {
+    margin-bottom: 20px;
 }

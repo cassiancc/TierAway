@@ -422,6 +422,9 @@ function openMenu(menu) {
         
         });
     }
+    else if (menu == "about") {
+        document.querySelector("body").addEventListener('click', checkAbout);
+    }
     
 }
 
@@ -471,6 +474,14 @@ function checkExport() {
         closeMenu("export") 
     };
 }
+//checks if the about menu should be closed
+function checkAbout() {
+    //check if user is hovering over the dropdown, or the plus button. closes if not.
+    if (document.querySelector("#about.visible-drop:hover") == null && document.querySelector("#about-button:hover") == null) {
+        closeMenu("about") 
+    };
+}
+
 
 
 
@@ -486,6 +497,10 @@ function moveTierUp(tier) {
         //renders the new list
         tierList.render()
         addListeners()
+        if (document.getElementById("dragged")) {
+            document.getElementById("dragged").remove();
+        }
+        
     }
     
 }
@@ -501,6 +516,9 @@ function moveTierDown(tier) {
         //renders the new list
         tierList.render()
         addListeners()
+        if (document.getElementById("dragged")) {
+            document.getElementById("dragged").remove();
+        }
     }
 }
 
