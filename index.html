@@ -34,7 +34,7 @@
             <p>Creating a tier list is simple! Just hit the Plus button, and upload away.</p>
         </div>
         <table id="tierlist"><thead><tr id="tablehead">
-            <th id="list-header" class="header" contenteditable="true" colspan="2">
+            <th oninput="screenTitle()" id="list-header" class="header" contenteditable="true" colspan="2">
                 Tier List
             </th><th data-html2canvas-ignore id="new" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>
 
@@ -62,6 +62,14 @@
                 <button onclick="changeSetting('theme-green')" class="button menu-button theme-button">
                     <i id="green-icon" class="fa fa-times" aria-hidden="true"></i>
                      Green
+                </button>
+                <button onclick="changeSetting('theme-luke')" class="button menu-button theme-button">
+                    <i id="luke-icon" class="fa fa-times" aria-hidden="true"></i>
+                     LT
+                </button>
+                <button onclick="changeSetting('theme-terminal')" class="button menu-button theme-button">
+                    <i id="terminal-icon" class="fa fa-times" aria-hidden="true"></i>
+                     Terminal
                 </button>
             </div>
             <h3 class="left-header">Keyboard Navigation Reference</h3>

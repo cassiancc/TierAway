@@ -1,0 +1,104 @@
+/*
+    Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
+    Copyright (C) 2022 Con Godsted
+*/
+/*body styling with the Theme*/
+@import url('https://fonts.googleapis.com/css2?family=Cantarell&display=swap');
+html {
+    scrollbar-color: #393939 #1f1f1f; 
+    font-family: 'Cantarell', sans-serif;
+    
+}
+/*fancy header*/
+header, .title-header {
+    border: transparent;
+    border-bottom: #e89f30 solid;
+}
+
+
+/*6b6b6b BORDER*/
+.button:hover, #export-buttons .button:hover, .input-upload:hover, .button-border:hover {
+    border-color: #e89f30;
+}
+/*TRANSPARENT BORDER*/
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button, footer  {
+    border-color: transparent;
+}
+
+
+
+/*TRANSPARENT BACKGROUND*/
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    background-color: transparent;
+}
+/*222222 BORDER*/
+.hidden, .visible-drop {
+    border-color: #222222;
+}
+/*393939 BORDER*/
+.button, .button-border, .input-upload {
+    border-color: #393939;
+}
+/*BLACK BORDER*/
+table, tr, td, th {
+    border-color: black;
+}
+
+
+/*2b2b2b BACKGROUND*/
+.button:hover, #add-tier:hover {
+    background-color: #e0e0e0;
+}
+
+/*18181b BACKGROUND*/
+body, .header-button {
+    background-color: white;
+}
+/*1f1f1f BACKGROUND*/
+.visible-drop {
+    background-color: #e0e0e0;
+}
+.tiersettings, #tablehead {
+    background-color: #1f1f1f;
+}
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: #e89f30;
+}
+/*222222 BACKGROUND*/
+.button, #add-tier-colour, #urlselect, #text-select, #add-tier {
+    background-color: #dddddd;
+}
+/*393939 BACKGROUND*/
+table {
+    background-color: #393939;
+}
+/*BLACK BACKGROUND*/
+footer, #image-options, header, .title-header {
+    background-color: #405731;
+}
+
+/*WHITE TEXT*/
+.button, .main-text, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button, #desc p, .header-button {
+    color: black;
+}
+#new:hover, #trash, #tier-move button:hover, #list-header, h1, .title-header, footer .main-text, footer, p#upload-images-info {
+    color: white;
+}
+/*RED TEXT*/
+ #github:hover, footer a:hover, #change-theme-button:hover {
+    color: #e89f30
+}
+/*6b6b6b TEXT*/
+ #new, #tier-move button, .del-tier {
+    color: #6b6b6b;
+}
+.button {
+    font-family: 'Cantarell', sans-serif;
+}
+/*BLACK TEXT*/
+th:not(.header) {
+    color: black
+}
+.settings-grid p {
+    border-color: black;
+}

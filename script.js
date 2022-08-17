@@ -5,6 +5,9 @@
 //declare global variables
 let zipArray = [];
 let uploadID = 0;
+let setHeight = document.body.offsetHeight
+let setWidth = document.body.offsetWidth
+let dist = -60;
 let tempID;
 let posX;
 let posY;
@@ -581,9 +584,14 @@ async function importTiers() {
     });
     
 }
-let setHeight = document.body.offsetHeight
+
 window.onscroll = function() {
-    if ((window.innerHeight + Math.ceil(window.scrollY)-60) >= setHeight) {
+    if (setWidth != document.body.offsetWidth) {
+        setHeight = document.body.offsetHeight
+        setWidth = document.body.offsetWidth
+        dist = 60
+    }
+    if ((window.innerHeight + dist + Math.ceil(window.scrollY)) >= setHeight) {
         document.getElementById("image-options").style.position = "static"
     }
     else {
@@ -608,12 +616,10 @@ var zip;
 //
 window.addEventListener("load", function(){
     zip = new JSZip();
-    if (localStorage.theme == "light") {
-        changeSetting("theme-light")
+    if (localStorage.theme != undefined) {
+        changeSetting(`theme-${localStorage.theme}`)
     }
-    else if (localStorage.theme == "green") {
-        changeSetting("theme-green")
-    }
+    
 });
   
 
@@ -661,34 +667,34 @@ function changeSetting(setting) {
         }
     }
     //change theme directly
-    if (setting == "theme-dark") {
+    else if (setting.search("theme-") != -1) {
+        //find theme
+        theme = setting.slice(setting.search("-") + 1)
+        //remove old theme
         document.getElementById("theme-style").remove()
-        document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
-        document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
+        //add new theme
+        document.querySelector("head").innerHTML += `<link id="theme-style" rel="stylesheet" href="css/${theme}.css">`
+        //untoggle theme button
         document.querySelectorAll(".theme-button i").forEach(function(element) {
             element.className = "fa fa-times"
         })
-        document.getElementById("dark-icon").className = 'fa fa-check'
-        localStorage.theme = "dark"
-    }
-    else if (setting == "theme-light") {
-        document.getElementById("theme-style").remove()
-        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
-        document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
-        document.querySelectorAll(".theme-button i").forEach(function(element) {
-            element.className = "fa fa-times"
-        })
-        document.getElementById("light-icon").className = 'fa fa-check'
-        localStorage.theme = "light"
-    }
-    else if (setting == "theme-green") {
-        document.getElementById("theme-style").remove()
-        document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/arrow.css">`
-        document.querySelectorAll(".theme-button i").forEach(function(element) {
-            element.className = "fa fa-times"
-        })
-        document.getElementById("green-icon").className = 'fa fa-check'
-        localStorage.theme = "green"
+        //toggle new theme button
+        document.getElementById(`${theme}-icon`).className = 'fa fa-check'
+        //update dark/light toggle
+        if (setting == "theme-dark") {
+            document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
+        }
+        else if (setting == "theme-light") {
+            document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
+            
+        }
+        //save theme
+        localStorage.theme = theme
     }
 }
 
+//match up tier list title with tab title
+function screenTitle() {
+    document.querySelector('title').innerHTML = `Tier Away - ${document.getElementById("list-header").innerText}`
+}
+screenTitle()

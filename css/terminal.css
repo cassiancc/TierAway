@@ -1,0 +1,102 @@
+/*
+    Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
+    Copyright (C) 2022 Con Godsted
+*/
+/*body styling with the Theme*/
+
+html {
+    scrollbar-color: #393939 #1f1f1f; 
+    font-family: monospace;
+    
+}
+/*fancy header*/
+header, .title-header {
+    border: transparent;
+    border-bottom: #2dd243 solid;
+}
+
+
+
+
+/*6b6b6b BORDER*/
+.button:hover, #export-buttons .button:hover, .input-upload:hover, .button-border:hover {
+    border-color: #2dd243;
+}
+/*TRANSPARENT BORDER*/
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    border-color: transparent;
+}
+
+
+
+/*TRANSPARENT BACKGROUND*/
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    background-color: transparent;
+}
+/*222222 BORDER*/
+.hidden, .visible-drop {
+    border-color: #222222;
+}
+/*393939 BORDER*/
+.button, .button-border, .input-upload {
+    border-color: #393939;
+}
+/*BLACK BORDER*/
+footer, table, tr, td, th {
+    border-color: black;
+}
+
+
+/*2b2b2b BACKGROUND*/
+.button:hover, #add-tier:hover {
+    background-color: #2b2b2b;
+}
+
+/*18181b BACKGROUND*/
+body, .header-button {
+    background-color: black;
+}
+/*1f1f1f BACKGROUND*/
+.visible-drop, .tiersettings, #tablehead {
+    background-color: #1f1f1f;
+}
+/*222222 BACKGROUND*/
+.button, #add-tier-colour, #urlselect, #text-select, #add-tier {
+    background-color: #222222;
+}
+/*393939 BACKGROUND*/
+table {
+    background-color: #393939;
+}
+/*BLACK BACKGROUND*/
+footer, #image-options, header, .title-header {
+    background-color: black;
+}
+
+/*WHITE TEXT*/
+.button, .main-text, #new:hover, #tier-move button:hover, .del-tier:hover, .input-upload::file-selector-button {
+    color: #2dd243;
+    
+}
+.button {
+    font-family: monospace;
+}
+
+/*RED TEXT*/
+#github:hover, footer a:hover, #change-theme-button:hover {
+    color: #2dd243
+}
+/*6b6b6b TEXT*/
+#trash, #new, #tier-move button, .del-tier, .header-button {
+    color: #6b6b6b;
+}
+/*BLACK TEXT*/
+th:not(.header) {
+    color: black
+}
+.settings-grid p {
+    border-color: #2dd243;
+}
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: #2dd243;
+}

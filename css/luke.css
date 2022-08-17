@@ -1,27 +1,30 @@
+
 /*
     Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
     Copyright (C) 2022 Con Godsted
 */
 /*body styling with the Theme*/
-@import url('https://fonts.googleapis.com/css2?family=Cantarell&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
 html {
     scrollbar-color: #393939 #1f1f1f; 
-    font-family: 'Cantarell', sans-serif;
-    
+    font-family: 'Inter', sans-serif;
 }
+
 /*fancy header*/
 header, .title-header {
     border: transparent;
-    border-bottom: #e89f30 solid;
+    border-bottom: #E69138 solid;
 }
+
+
 
 
 /*6b6b6b BORDER*/
 .button:hover, #export-buttons .button:hover, .input-upload:hover, .button-border:hover {
-    border-color: #e89f30;
+    border-color: #6b6b6b;
 }
 /*TRANSPARENT BORDER*/
-.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button, footer  {
+.input-upload::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
     border-color: transparent;
 }
 
@@ -40,33 +43,29 @@ header, .title-header {
     border-color: #393939;
 }
 /*BLACK BORDER*/
-table, tr, td, th {
+footer, table, tr, td, th {
     border-color: black;
 }
 
 
 /*2b2b2b BACKGROUND*/
 .button:hover, #add-tier:hover {
-    background-color: #e0e0e0;
+    background-color: #2b2b2b;
 }
-
+#desc {
+    text-transform: lowercase;
+}
 /*18181b BACKGROUND*/
 body, .header-button {
-    background-color: white;
+    background-color: #0F1120;
 }
 /*1f1f1f BACKGROUND*/
-.visible-drop {
-    background-color: #e0e0e0;
-}
-.tiersettings, #tablehead {
+.visible-drop, .tiersettings, #tablehead {
     background-color: #1f1f1f;
-}
-#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
-    outline-color: #e89f30;
 }
 /*222222 BACKGROUND*/
 .button, #add-tier-colour, #urlselect, #text-select, #add-tier {
-    background-color: #dddddd;
+    background-color: #222222;
 }
 /*393939 BACKGROUND*/
 table {
@@ -74,22 +73,20 @@ table {
 }
 /*BLACK BACKGROUND*/
 footer, #image-options, header, .title-header {
-    background-color: #405731;
+    background-color: #090b18;
 }
 
 /*WHITE TEXT*/
-.button, .main-text, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button, #desc p, .header-button {
-    color: black;
-}
-#new:hover, #tier-move button:hover, #list-header, h1, .title-header, footer .main-text, footer, p#upload-images-info {
+.button, .main-text, #new:hover, #tier-move button:hover, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button {
     color: white;
 }
+
 /*RED TEXT*/
 #github:hover, footer a:hover, #change-theme-button:hover {
-    color: #e89f30
+    color: #d22d59
 }
 /*6b6b6b TEXT*/
-#trash, #new, #tier-move button, .del-tier {
+#trash, #new, #tier-move button, .del-tier, .header-button {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/
@@ -97,5 +94,8 @@ th:not(.header) {
     color: black
 }
 .settings-grid p {
-    border-color: black;
+    border-color: white;
+}
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: white;
 }
