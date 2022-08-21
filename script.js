@@ -3,14 +3,22 @@
     Copyright (C) 2022 Con Godsted
 */
 //declare global variables
+//export logic - arrays and upload counter
 let zipArray = [];
+let textArray = [];
 let uploadID = 0;
+//image option position logic
+let dist = -60;
 let setHeight = document.body.offsetHeight
 let setWidth = document.body.offsetWidth
-let dist = -60;
-let tempID;
+//drag logic
 let posX;
 let posY;
+let tempID;
+//element that opened menu identifier
+let elementConfigure;
+
+
 
 //declare settings global variables
 let enableURL = localStorage.enableURL
@@ -107,10 +115,13 @@ function addTier() {
 //The images created exist initially as elements local to the DOM
 //They could be re-represented once dragged into a tier
 //UNTIL THEN update the DOM API for tiers with a string "children"
-function imageRead(imageToRead) {
+function addImage(imageToRead) {
     if (document.getElementById("upload-images-info").style.display != "none") {
         document.getElementById("upload-images-info").style.display = "none"   
-        document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
+        document.getElementById("image-options").innerHTML += `
+        <div id="trash">
+            <i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i>
+        </div>`
 
     }
     closeMenu("plus");
@@ -120,6 +131,7 @@ function imageRead(imageToRead) {
         for (let f = 0;f < fileLength;f++) {
             //add the image to the exportable zip
             zipArray.push({"id":uploadID, "file":document.getElementById(`fileselect`).files[f]})
+            textArray.push({"id":uploadID, "content":""})
             //create a blob link for the image
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             //turn the image into a draggable div
@@ -140,6 +152,7 @@ function imageRead(imageToRead) {
     else {
         //add the image to the exportable zip
         zipArray.push({"id":uploadID, "file":imageToRead})
+        textArray.push({"id":uploadID, "content":""})
         //create a blob link for the image
         imageToRead = URL.createObjectURL(imageToRead);
         //turn the image into a draggable div
@@ -148,7 +161,6 @@ function imageRead(imageToRead) {
         uploadID += 1;
     
     }
-    
     addListeners()
 }
 
@@ -160,7 +172,7 @@ document.onpaste = function(event) {
     for (let i = 0; i < items.length; i++) {
       if (items[i].type.indexOf("image") == 0) {
         //upload the image into menu function
-        imageRead(items[i].getAsFile())
+        addImage(items[i].getAsFile())
       }
     }
 }
@@ -172,8 +184,11 @@ function addText() {
     }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
-            <div onclick="openMenu('element', this)" id="img-${uploadID}" draggable="true" class="potential-drag"><p class="drag-text">${text}</p></div>`;
-    
+        <div onclick="openMenu('element', this)" id="img-${uploadID}" draggable="true" class="potential-drag">
+            <p class="drag-text">${text}</p>
+        </div>`;
+    textArray.push({"id":uploadID, "content":text})
+    uploadID += 1;
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
         closeMenu("plus")
@@ -196,6 +211,7 @@ function addListeners() {
 function startDrag() {
     tempID = this.id;
     this.id = 'dragged';
+    closeMenu("element")
 }
 //ends drag - drag and drop api
 function endDrag(e) {
@@ -257,8 +273,7 @@ position.forEach(function(element) {
         document.getElementById("dragged").id = tempID;
     }
     //moved elements lose their event listeners after being dragged
-    addListeners()
-    closeMenu("element")
+    addListeners();
     
 }
 
@@ -270,7 +285,7 @@ function addSelection(select) {
             <i class="fa fa-file-image-o" aria-hidden="true"></i> Add Image from File Upload
         </h2>
         <div id="addimagediv">
-            <input multiple onchange="imageRead('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
+            <input multiple onchange="addImage('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
         </div>`;
         //Add Image from URL
     } else if (select == "url") {
@@ -278,7 +293,7 @@ function addSelection(select) {
         `<h2 class="title-header menu-header">Add Image from URL</h2>
         <div id="addurldiv">
             <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border text-input">
-            <button onclick="imageRead('url')" class="button" id="addtierbutton">Add Image</button></div>
+            <button onclick="addImage('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Image from Clipboard
     } else if (select == "clip") {
@@ -433,7 +448,7 @@ function openMenu(menu, element) {
         else {
             document.getElementById("add-text-to-image").value = ""
         }
-        document.getElementById("preview").innerHTML = `${content} <div style="display:flex;"><button class="button menu-button" id="replace-image">Add/Replace Image from Upload</button><button class="button menu-button" onclick="deleteFromSettings()">Delete Element</button></div>`
+        document.getElementById("preview").innerHTML = `${content} <div style="display:flex;"><button class="button menu-button" onclick="deleteFromSettings()">Delete Element</button></div>`
 
         
 
@@ -444,11 +459,15 @@ function openMenu(menu, element) {
     
 }
 
-let elementConfigure;
-
 function changeText() {
     document.querySelector(".preview").innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
     elementConfigure.innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
+    textArray.forEach(function(element) {
+        if (elementConfigure.id.split("-")[1] == element.id) {
+            element.content = document.getElementById("add-text-to-image").value
+        }
+    })
+    
 }
 function changeTextColour() {
     document.querySelector(`#${elementConfigure.id} p`).style.color = document.getElementById("text-colour-picker").value
@@ -497,7 +516,6 @@ function checkMenu(menu) {
     if (menu == "element") {
         if (document.querySelector(`#${menu}.visible-drop:hover`) == null && document.querySelector(`.potential-drag:hover`) == null) {
             closeMenu(menu)
-            console.log("test")
         }
         
     }
@@ -566,6 +584,11 @@ async function exportTiers() {
         zip.file(zipArray[f].file.name, zipArray[f].file)
         f++
     })
+    //text elements
+    textArray.forEach(function() {
+        zip.file(`${textArray[f].id}.txt`, textArray[f].content)
+        f++
+    })
     //create file
     zip.generateAsync({type:"blob"})
     .then(function(content) {
@@ -615,7 +638,6 @@ async function importTiers() {
             if (file.search(".txt") == -1) {
                 
                 let file2 = await zip.file(file).async("blob")
-                //console.log(file2)
                 imageToRead = URL.createObjectURL(file2);
                 document.querySelector("#image-options").innerHTML += `
                 <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
