@@ -79,7 +79,7 @@ footer, #image-options, header {
 
 
 /*WHITE TEXT*/
-.button, .github, #new:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
+.button, .github, #plus-button:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
     color: black;
 }
 
@@ -88,7 +88,7 @@ footer, #image-options, header {
     color: #55091d
 }
 /*6b6b6b TEXT*/
-#trash, #new, #tier-move button, .del-tier {
+#trash, #plus-button, #tier-move button, .del-tier {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/

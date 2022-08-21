@@ -77,7 +77,7 @@ footer, #image-options, header, .title-header {
 }
 
 /*WHITE TEXT*/
-.button, .main-text, #new:hover, #tier-move button:hover, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button {
+.button, .main-text, #plus-button:hover, #tier-move button:hover, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button {
     color: white;
 }
 
@@ -86,7 +86,7 @@ footer, #image-options, header, .title-header {
     color: #d22d59
 }
 /*6b6b6b TEXT*/
-#trash, #new, #tier-move button, .del-tier, .header-button {
+#trash, #plus-button, #tier-move button, .del-tier, .header-button {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/

@@ -61,7 +61,7 @@ body, .header-button {
     background-color: #1f1f1f;
 }
 /*222222 BACKGROUND*/
-.button, #add-tier-colour, #urlselect, #text-select, #add-tier {
+.button, #add-tier-colour, .text-input, #add-tier {
     background-color: #222222;
 }
 /*393939 BACKGROUND*/
@@ -74,7 +74,7 @@ footer, #image-options, header, .title-header {
 }
 
 /*WHITE TEXT*/
-.button, .main-text, #new:hover, #tier-move button:hover, .del-tier:hover, .input-upload::file-selector-button {
+.button, .main-text, #plus-button:hover, #tier-move button:hover, .del-tier:hover, .input-upload::file-selector-button {
     color: #2dd243;
     
 }
@@ -87,7 +87,7 @@ footer, #image-options, header, .title-header {
     color: #2dd243
 }
 /*6b6b6b TEXT*/
-#trash, #new, #tier-move button, .del-tier, .header-button {
+#trash, #plus-button, #tier-move button, .del-tier, .header-button {
     color: #6b6b6b;
 }
 /*BLACK TEXT*/
@@ -97,6 +97,6 @@ th:not(.header) {
 .settings-grid p {
     border-color: #2dd243;
 }
-#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+#urlselect:focus, .text-input:focus, .tierheader:focus, #list-header:focus {
     outline-color: #2dd243;
 }

@@ -14,7 +14,11 @@ header, .title-header {
     border: transparent;
     border-bottom: #e89f30 solid;
 }
-
+h1 {
+    content: url("/lib/arrow_ta.png");
+    width: 160px;
+    margin: 5px;
+}
 
 /*6b6b6b BORDER*/
 .button:hover, #export-buttons .button:hover, .input-upload:hover, .button-border:hover {
@@ -81,7 +85,7 @@ footer, #image-options, header, .title-header {
 .button, .main-text, .header-button:hover, .del-tier:hover, .input-upload::file-selector-button, #desc p, .header-button {
     color: black;
 }
-#new:hover, #trash, #tier-move button:hover, #list-header, h1, .title-header, footer .main-text, footer, p#upload-images-info {
+#plus-button:hover, #trash, #tier-move button:hover, #list-header, h1, .title-header, footer .main-text, footer, p#upload-images-info {
     color: white;
 }
 /*RED TEXT*/
@@ -89,7 +93,7 @@ footer, #image-options, header, .title-header {
     color: #e89f30
 }
 /*6b6b6b TEXT*/
- #new, #tier-move button, .del-tier {
+ #plus-button, #tier-move button, .del-tier {
     color: #6b6b6b;
 }
 .button {

@@ -4,13 +4,14 @@
 }
 /*style the uploaded image options*/
 #image-options {
-    min-height: 100px;
+    height: 100px;
     display: flex;
     position: fixed;
     bottom: 0;
     width: 100%;
     min-height: min-content;
-    overflow: hidden;
+    overflow-x: auto;
+    flex-wrap: wrap;
 }
 /*fancy footer*/
 footer {
@@ -18,10 +19,11 @@ footer {
     margin-right: auto;
     text-align: center;
     position: bottom;
-    bottom:0;
+    bottom: 0;
     width: 100%;
     display: flex;
     justify-content: space-between;
+    
 }
 td, th {
     width: 10vh;

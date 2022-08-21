@@ -40,13 +40,27 @@
         <table id="tierlist"><thead><tr id="tablehead">
             <th oninput="screenTitle()" id="list-header" class="header" contenteditable="true" colspan="2">
                 Tier List
-            </th><th data-html2canvas-ignore id="new" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>
+            </th><th data-html2canvas-ignore id="plus-button" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>
 
             </th>
         </tr></thead><tbody></tbody></table>
         <div style="transition: opacity .3s; opacity: 0;" id="plus" class="hidden">
         </div>
         <div style="transition: opacity .3s; opacity: 0;" id="export" class="hidden">
+        </div>
+        <div style="transition: opacity .3s; opacity: 0;" id="element" class="hidden">
+            <h2 class="title-header">
+                <i class="fa fa-cog" aria-hidden="true"></i>
+                 Element Settings
+            </h2>
+            <div style="display: flex">
+                <div id="preview">
+                </div>
+                <div style="display: flex; width: 100%;">
+                    <input value="" oninput="changeText()" type="text" id="add-text-to-image" class="main-text button-border text-input">
+                    <input oninput="changeTextColour()" type="color" class="button button-border" id="text-colour-picker">
+                </div>  
+            </div>
         </div>
         <div style="transition: opacity .3s; opacity: 0;" id="settings" class="hidden">
             <h2 class="title-header">
@@ -63,9 +77,9 @@
                     <i id="light-icon" class="fa fa-times" aria-hidden="true"></i>
                      Light
                 </button>
-                <button onclick="changeSetting('theme-green')" class="button menu-button theme-button">
-                    <i id="green-icon" class="fa fa-times" aria-hidden="true"></i>
-                     Green
+                <button onclick="changeSetting('theme-arrow')" class="button menu-button theme-button">
+                    <i id="arrow-icon" class="fa fa-times" aria-hidden="true"></i>
+                     Arrow
                 </button>
                 <button onclick="changeSetting('theme-luke')" class="button menu-button theme-button">
                     <i id="luke-icon" class="fa fa-times" aria-hidden="true"></i>

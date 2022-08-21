@@ -110,9 +110,8 @@ function addTier() {
 function imageRead(imageToRead) {
     if (document.getElementById("upload-images-info").style.display != "none") {
         document.getElementById("upload-images-info").style.display = "none"   
-    }
-    if (document.getElementById("trash") == null) {
         document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i></div>`
+
     }
     closeMenu("plus");
     //check if it was triggered by the file upload
@@ -125,7 +124,7 @@ function imageRead(imageToRead) {
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id="img-${uploadID}" onclick="openMenu('element', this)" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             uploadID += 1;
         }
     }
@@ -173,7 +172,7 @@ function addText() {
     }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
-            <div id="img-${uploadID}" draggable="true" class="potential-drag" >${text}</div>`;
+            <div onclick="openMenu('element', this)" id="img-${uploadID}" draggable="true" class="potential-drag"><p class="drag-text">${text}</p></div>`;
     
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
@@ -205,6 +204,7 @@ function endDrag(e) {
     posY = e.clientY;
     moveElement()
     
+    
 }
 //ends drag - touch api
 function endTouch(e) {
@@ -226,7 +226,7 @@ position.forEach(function(element) {
         //remove the old id
         content = content.slice(content.search("draggable"))
         //add the new id
-        content = `<div id=${tempID} ${content}`
+        content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
         //add it to the array
         element.innerHTML += content
         //update the tier list array
@@ -258,6 +258,8 @@ position.forEach(function(element) {
     }
     //moved elements lose their event listeners after being dragged
     addListeners()
+    closeMenu("element")
+    
 }
 
 function addSelection(select) {
@@ -275,7 +277,7 @@ function addSelection(select) {
         document.getElementById("plus").innerHTML =
         `<h2 class="title-header menu-header">Add Image from URL</h2>
         <div id="addurldiv">
-            <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border">
+            <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border text-input">
             <button onclick="imageRead('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         //Add Image from Clipboard
@@ -298,7 +300,7 @@ function addSelection(select) {
             <div id="addtextdiv">
             
             <div id="text-add">
-                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border" id="text-select">
+                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border text-input" id="text-select">
                 <button onclick="addText()" class="button" id="add-text-button">Add Text</button>
                 
                 
@@ -314,7 +316,7 @@ function addSelection(select) {
         </h2>
         <div id="addtierdiv">
             <div id="add-tier-content">
-                <input type="text" class="button-border main-text" placeholder="S Tier" id="add-tier">
+                <input type="text" class="button-border main-text text-input" placeholder="S Tier" id="add-tier">
                 <input type="color" value="#780063" class="button-border" id="add-tier-colour">
                 <button onclick="addTier()" class="button" id="add-tier-button">Add Tier</button>
             </div>
@@ -336,7 +338,7 @@ function addSelection(select) {
 }
 
 //opens the specified menu
-function openMenu(menu) {
+function openMenu(menu, element) {
     document.getElementById(menu).className = "visible-drop";
     if (enableAnimations == "true") {
         document.getElementById(menu).style.opacity = 0;
@@ -388,10 +390,6 @@ function openMenu(menu) {
                 <p>Add Image from URL (legacy)</p>
             </button>`
         }
-        document.querySelector("body").addEventListener('click', checkPlus);
-    }
-    else if (menu == "settings") {
-        document.querySelector("body").addEventListener('click', checkSettings);
     }
     else if (menu == "export") {
         let url;
@@ -418,19 +416,62 @@ function openMenu(menu) {
                 url = URL.createObjectURL(blob)
                 document.getElementById("export-image").innerHTML = `<img src=${url}></img>`
             })
-        document.querySelector("body").addEventListener('click', checkExport);
         
         });
-    }
-    else if (menu == "about") {
-        document.querySelector("body").addEventListener('click', checkAbout);
-    }
+   }
+   else if (menu == "element") {
+        //copy a representation of the element
+        let content = element.outerHTML;
+        elementConfigure = element;
+        //remove the old id
+        content = content.slice(content.search("style"));
+        //add the new id
+        content = `<div class="preview" ${content}`;
+        if (document.querySelector(`#${elementConfigure.id} p`) != null) {
+            document.getElementById("add-text-to-image").value = document.querySelector(`#${elementConfigure.id} p`).innerText
+        }
+        else {
+            document.getElementById("add-text-to-image").value = ""
+        }
+        document.getElementById("preview").innerHTML = `${content} <div style="display:flex;"><button class="button menu-button" id="replace-image">Add/Replace Image from Upload</button><button class="button menu-button" onclick="deleteFromSettings()">Delete Element</button></div>`
+
+        
+
+        
+   }
+   document.querySelector("body").setAttribute("onclick", `checkMenu('${menu}')`);
+    
     
 }
 
+let elementConfigure;
+
+function changeText() {
+    document.querySelector(".preview").innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
+    elementConfigure.innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
+}
+function changeTextColour() {
+    document.querySelector(`#${elementConfigure.id} p`).style.color = document.getElementById("text-colour-picker").value
+    document.querySelector(".preview p").style.color = document.getElementById("text-colour-picker").value
+}
+function deleteFromSettings() {
+    //find element id to be removed
+    let trashID = elementConfigure.id.split("-")[1];
+    let i = 0;
+    zipArray.forEach(function(element) {
+        //match up element id with array id
+        if (element.id == trashID) {
+            zipArray.splice(i, 1)
+        }
+        i++
+    })
+    elementConfigure.remove();
+    closeMenu("element")
+}
 
 //closes the specified menu
 function closeMenu(menu) {
+    document.querySelector("body").removeAttribute("onclick")
     if (enableAnimations == "true") {
         let opacity = parseFloat(document.getElementById(menu).style.opacity)
         setInterval(function(){
@@ -451,39 +492,21 @@ function closeMenu(menu) {
 }
 
 //checks if the menu should be closed
-function checkPlus() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#plus.visible-drop:hover") == null && document.querySelector("#new:hover") == null) {
-        closeMenu("plus")
+function checkMenu(menu) {
+    //check if user is hovering over the dropdown, or the specified button. closes if not.
+    if (menu == "element") {
+        if (document.querySelector(`#${menu}.visible-drop:hover`) == null && document.querySelector(`.potential-drag:hover`) == null) {
+            closeMenu(menu)
+            console.log("test")
+        }
+        
     }
-}
-
-
-//closes the plus menu
-function checkSettings() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#settings.visible-drop:hover") == null && document.querySelector("#settings-button:hover") == null) {
-        closeMenu("settings")
+    else if (document.querySelector(`#${menu}.visible-drop:hover`) == null && document.querySelector(`#${menu}-button:hover`) == null) {
+        closeMenu(menu)
+        
     }
+    
 }
-
-//checks if the export menu should be closed
-function checkExport() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#export.visible-drop:hover") == null && document.querySelector("#export-button:hover") == null) {
-        closeMenu("export") 
-    };
-}
-//checks if the about menu should be closed
-function checkAbout() {
-    //check if user is hovering over the dropdown, or the plus button. closes if not.
-    if (document.querySelector("#about.visible-drop:hover") == null && document.querySelector("#about-button:hover") == null) {
-        closeMenu("about") 
-    };
-}
-
-
-
 
 //moves a tier up
 function moveTierUp(tier) {
