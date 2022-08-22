@@ -84,10 +84,10 @@ class Tier{
         <td data-html2canvas-ignore class="tiersettings">
             <div>
             <div id="tier-move">
-                <button class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${this.id})"></button>
-                <button class="del-tier fa fa-times fa-2x" onclick="tierList.removeTierByID(${this.id})">
+                <button title="Click here to move this tier up." class="fa fa-chevron-up fa-2x" onclick="moveTierUp(${this.id})"></button>
+                <button title="Click here to delete this tier." class="del-tier fa fa-times fa-2x" onclick="tierList.removeTierByID(${this.id})">
             </button>
-                <button class="fa fa-chevron-down fa-2x" onclick="moveTierDown(${this.id})"></button>
+                <button title="Click here to move this tier down." class="fa fa-chevron-down fa-2x" onclick="moveTierDown(${this.id})"></button>
             </div>
             </div>
         </td></tr>`;
@@ -315,7 +315,7 @@ function addSelection(select) {
             <div id="addtextdiv">
             
             <div id="text-add">
-                <input type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border text-input" id="text-select">
+                <input onfocusin="setFocus(1)" onfocusout="setFocus(0)" type="text" placeholder="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua." class="main-text button-border text-input" id="text-select">
                 <button onclick="addText()" class="button" id="add-text-button">Add Text</button>
                 
                 
@@ -331,7 +331,7 @@ function addSelection(select) {
         </h2>
         <div id="addtierdiv">
             <div id="add-tier-content">
-                <input type="text" class="button-border main-text text-input" placeholder="S Tier" id="add-tier">
+                <input onfocusin="setFocus(1)" onfocusout="setFocus(0)" type="text" class="button-border main-text text-input" placeholder="S Tier" id="add-tier">
                 <input type="color" value="#780063" class="button-border" id="add-tier-colour">
                 <button onclick="addTier()" class="button" id="add-tier-button">Add Tier</button>
             </div>
@@ -377,23 +377,23 @@ function openMenu(menu, element) {
             Add to Tier List
         </h2>
         <div id="button-panel">
-            <button class="menu-button button" onclick="addSelection('upload')">
+            <button title="Click here to upload one or more images onto the Tier List." class="menu-button button" onclick="addSelection('upload')">
                 <i class="fa fa-file-image-o fa-2x" aria-hidden="true"></i>
                 <p>Add Image from Upload</p>
             </button>
-            <button class="menu-button button" onclick="addSelection('clip')">
+            <button title="Click here (or press paste) to paste an image from your clipboard into the Tier List." class="menu-button button" onclick="addSelection('clip')">
                 <i class="fa fa-clipboard fa-2x" aria-hidden="true"></i>
                 <p>Add Image from Clipboard</p>
             </button>
-            <button class="menu-button button" onclick="addSelection('text')">
+            <button title="Click here to add a draggable text element to the Tier List." class="menu-button button" onclick="addSelection('text')">
                 <i class="fa fa-file-text fa-2x" aria-hidden="true"></i>
                 <p>Add Text to Tier List</p>
             </button>
-            <button class="menu-button button" onclick="addSelection('newtier')">
+            <button title="Add another Tier to the Tier List" class="menu-button button" onclick="addSelection('newtier')">
                 <i class="fa fa-plus fa-2x" aria-hidden="true"></i>
                 <p>Add New Tier</p>
             </button>
-            <button class="menu-button button" onclick="addSelection('import')">
+            <button title="Import a previously exported template from Tier Away." class="menu-button button" onclick="addSelection('import')">
                 <i class="fa fa-upload fa-2x" aria-hidden="true"></i>
                 <p>Import Tier List Template</p>
             </button>
@@ -405,6 +405,8 @@ function openMenu(menu, element) {
                 <p>Add Image from URL (legacy)</p>
             </button>`
         }
+        closeMenu("export")
+        closeMenu("element")
     }
     else if (menu == "export") {
         let url;
@@ -415,11 +417,11 @@ function openMenu(menu, element) {
                 </h2>
                 <div id="export-image"></div>
                 <div id="export-buttons">
-                    <a class="button" href="${url}" download="tierlist.png">
+                    <a title="Click here to download your Tier List as an image to share." class="button" href="${url}" download="tierlist.png">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         Download/Share Image
                     </a>
-                    <button class="button" onclick="exportTiers()">
+                    <button title="Click here to download a ZIP template to let others try your list." class="button" onclick="exportTiers()">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         Export Template
                     </button>
@@ -429,10 +431,12 @@ function openMenu(menu, element) {
         }).then(canvas => {
             canvas.toBlob(function(blob) {
                 url = URL.createObjectURL(blob)
-                document.getElementById("export-image").innerHTML = `<img src=${url}></img>`
+                document.getElementById("export-image").innerHTML = `<img title="This is your Tier List, as an image!" src=${url}></img>`
             })
         
         });
+        closeMenu("plus")
+        closeMenu("element")
    }
    else if (menu == "element") {
         //copy a representation of the element
@@ -670,37 +674,40 @@ window.onkeydown= function(key){
         closeMenu("settings")
         closeMenu("element")
     }
-    //+ key - open plus mini-menu
-    else if (key.key == "="){
-        openMenu("plus")
+    if (screenFocus == 0) {
+        //+ key - open plus mini-menu
+        if (key.key == "="){
+            openMenu("plus")
+        }
+        //e key - open export menu
+        else if (key.key == "e"){
+            openMenu("export")
+        }
+        //u key - open upload menu
+        else if (key.key == "u"){
+            openMenu("plus")
+            addSelection("upload")
+        }
+        //t key - open text menu
+        else if (key.key == "t"){
+            openMenu("plus")
+            addSelection("text")
+        }
+        //i key - open import menu
+        else if (key.key == "i"){
+            openMenu("plus")
+            addSelection("import")
+        }
+        //h key - focus tier list title
+        else if (key.key == "h"){
+            document.getElementById("list-header").focus()
+        }
+        //h key - focus tier list title
+        else if (key.key == "g"){
+            openMenu("settings")
+        }
     }
-    //e key - open export menu
-    else if (key.key == "e"){
-        openMenu("export")
-    }
-    //u key - open upload menu
-    else if (key.key == "u"){
-        openMenu("plus")
-        addSelection("upload")
-    }
-    //t key - open text menu
-    else if (key.key == "t"){
-        openMenu("plus")
-        addSelection("text")
-    }
-    //i key - open import menu
-    else if (key.key == "i"){
-        openMenu("plus")
-        addSelection("import")
-    }
-    //h key - focus tier list title
-    else if (key.key == "h"){
-        document.getElementById("list-header").focus()
-    }
-    //h key - focus tier list title
-    else if (key.key == "g"){
-        openMenu("settings")
-    }
+    
     
 };
 var zip;
@@ -789,3 +796,8 @@ function screenTitle() {
     document.querySelector('title').innerHTML = `Tier Away - ${document.getElementById("list-header").innerText}`
 }
 screenTitle()
+let screenFocus = 0;
+function setFocus(num) {
+    screenFocus = num
+    console.log(screenFocus)
+}

@@ -18,15 +18,15 @@
         <header>
             <h1>Tier Away</h1>
             <div id="header-buttons">
-                <button class="header-button button" id="export-button" onclick="openMenu('export')">
+                <button title="Download, export, and share your tier list image and template." class="header-button button" id="export-button" onclick="openMenu('export')">
                     <i class="fa fa-download" aria-hidden="true"></i>
                      Download
                 </button>
-                <button draggable="false" onclick="openMenu(`settings`)" class="header-button button" id="settings-button">
+                <button title="View app settings and reference information." draggable="false" onclick="openMenu(`settings`)" class="header-button button" id="settings-button">
                     <i class="fa fa-cog" aria-hidden="true"></i>
                      Settings
                 </button>
-                <button draggable="false" onclick="openMenu(`about`)" class="header-button button" id="about-button">
+                <button title="See who made Tier Away!" draggable="false" onclick="openMenu(`about`)" class="header-button button" id="about-button">
                     <i class="fa fa-question" aria-hidden="true"></i>
                      About
                 </button>
@@ -38,7 +38,7 @@
             <p>Creating a tier list is simple! Just hit the Plus button, and upload away.</p>
         </div>
         <table id="tierlist"><thead><tr id="tablehead">
-            <th oninput="screenTitle()" id="list-header" class="header" contenteditable="true" colspan="2">
+            <th onfocusin="setFocus(1)" onfocusout="setFocus(0)" oninput="screenTitle()" id="list-header" class="header" title="This is the title of your Tier List." contenteditable="true" colspan="2">
                 Tier List
             </th><th data-html2canvas-ignore id="plus-button" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>
 
@@ -57,7 +57,7 @@
                 <div id="preview">
                 </div>
                 <div style="display: flex; width: 100%;">
-                    <input value="" oninput="changeText()" type="text" id="add-text-to-image" class="main-text button-border text-input">
+                    <input value="" oninput="changeText()" onfocusin="setFocus(1)" onfocusout="setFocus(0)" type="text" id="add-text-to-image" class="main-text button-border text-input">
                     <input oninput="changeTextColour()" type="color" class="button button-border" id="text-colour-picker">
                 </div>  
             </div>
@@ -69,11 +69,11 @@
             </h2>
             <h3 class="left-header">Theme Settings</h3>
             <div id="theme-buttons">
-                <button title="A classic Dark theme in keeping with CG products." onclick="changeSetting('theme-dark')" class="button menu-button theme-button">
+                <button title="A classic Dark theme in keeping with my other apps" onclick="changeSetting('theme-dark')" class="button menu-button theme-button">
                     <i id="dark-icon" class="fa fa-check" aria-hidden="true"></i>
                      Dark
                 </button>
-                <button title="In case you love burnt retinas." onclick="changeSetting('theme-light')" class="button menu-button theme-button">
+                <button title="Suprisingly, some people prefer it." onclick="changeSetting('theme-light')" class="button menu-button theme-button">
                     <i id="light-icon" class="fa fa-times" aria-hidden="true"></i>
                      Light
                 </button>
@@ -81,7 +81,7 @@
                     <i id="arrow-icon" class="fa fa-times" aria-hidden="true"></i>
                      Arrow
                 </button>
-                <button title="I'm not sure why I made this, honestly." onclick="changeSetting('theme-luke')" class="button menu-button theme-button">
+                <button title="luke trenaman, but tier away" onclick="changeSetting('theme-luke')" class="button menu-button theme-button">
                     <i id="luke-icon" class="fa fa-times" aria-hidden="true"></i>
                      LT
                 </button>
