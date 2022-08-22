@@ -663,17 +663,45 @@ window.onscroll = function() {
 }
 //keyboard accessible tier list creation
 window.onkeydown= function(key){
-    
-    //esc key - close plus or export menu
-    if (key.keyCode == 27){
+    //esc key - close any open menu
+    if (key.key == "Escape"){
         closeMenu("plus")
         closeMenu("export")
         closeMenu("settings")
+        closeMenu("element")
     }
     //+ key - open plus mini-menu
-    else if (key.keyCode == 61){
+    else if (key.key == "="){
         openMenu("plus")
-    };
+    }
+    //e key - open export menu
+    else if (key.key == "e"){
+        openMenu("export")
+    }
+    //u key - open upload menu
+    else if (key.key == "u"){
+        openMenu("plus")
+        addSelection("upload")
+    }
+    //t key - open text menu
+    else if (key.key == "t"){
+        openMenu("plus")
+        addSelection("text")
+    }
+    //i key - open import menu
+    else if (key.key == "i"){
+        openMenu("plus")
+        addSelection("import")
+    }
+    //h key - focus tier list title
+    else if (key.key == "h"){
+        document.getElementById("list-header").focus()
+    }
+    //h key - focus tier list title
+    else if (key.key == "g"){
+        openMenu("settings")
+    }
+    
 };
 var zip;
 //

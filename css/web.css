@@ -309,7 +309,7 @@ table {
 .settings-grid p {
     padding: 10px;
     width: 100%;
-    
+    margin: 0;
 }
 .left-header {
     text-align: left;
