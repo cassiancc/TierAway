@@ -84,7 +84,7 @@ footer, #image-options, header {
 }
 
 /*RED TEXT*/
-.github:hover, footer a:hover, #change-theme-button:hover {
+.github:hover, #trash:hover, footer a:hover, #change-theme-button:hover {
     color: #55091d
 }
 /*6b6b6b TEXT*/

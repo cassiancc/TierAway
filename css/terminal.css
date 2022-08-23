@@ -74,7 +74,7 @@ footer, #image-options, header, .title-header {
 }
 
 /*WHITE TEXT*/
-.button, .main-text, #plus-button:hover, #tier-move button:hover, .del-tier:hover, .input-upload::file-selector-button {
+.button, #trash:hover, .main-text, #plus-button:hover, #tier-move button:hover, .del-tier:hover, .input-upload::file-selector-button {
     color: #2dd243;
     
 }

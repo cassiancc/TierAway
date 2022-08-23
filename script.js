@@ -19,7 +19,6 @@ let tempID;
 let elementConfigure;
 
 
-
 //declare settings global variables
 let enableURL = localStorage.enableURL
 if (localStorage.enableURL != "true") {
@@ -29,6 +28,11 @@ if (localStorage.enableURL != "true") {
 let enableAnimations = localStorage.enableAnimations
 if (localStorage.enableAnimations != "false") {
     enableAnimations = "true";
+}
+//declare settings global variables
+let enableKeybinds = localStorage.enableKeybinds
+if (localStorage.enableKeybinds != "false") {
+    enableKeybinds = "true";
 }
 
 
@@ -79,7 +83,7 @@ class Tier{
     }
     render(){
         return `<tr id="${this.id}">
-        <th contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix.toUpperCase()}</td>
+        <th onfocusout="renameTier(${this.id})" contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix}</td>
         <td id="content-${this.id}" class="tiers">${this.content}</td>
         <td data-html2canvas-ignore class="tiersettings">
             <div>
@@ -97,12 +101,12 @@ class Tier{
 let tierList = new TierList();
 
 //the default tiers, s-f
-tierList.addTier(new Tier("#e53e3e","s"));
-tierList.addTier(new Tier("#e8532a","a"));
-tierList.addTier(new Tier("#cba000","b"));
-tierList.addTier(new Tier("#86d300","c"));
-tierList.addTier(new Tier("#32bc53","d"));
-tierList.addTier(new Tier("#009376","f"));
+tierList.addTier(new Tier("#e53e3e","S"));
+tierList.addTier(new Tier("#e8532a","A"));
+tierList.addTier(new Tier("#cba000","B"));
+tierList.addTier(new Tier("#86d300","C"));
+tierList.addTier(new Tier("#32bc53","D"));
+tierList.addTier(new Tier("#009376","F"));
 //add new tier
 function addTier() {
     tierName = document.getElementById("add-tier").value;
@@ -119,9 +123,9 @@ function addImage(imageToRead) {
     if (document.getElementById("upload-images-info").style.display != "none") {
         document.getElementById("upload-images-info").style.display = "none"   
         document.getElementById("image-options").innerHTML += `
-        <div id="trash">
+        <button onclick="deleteEverything()" id="trash">
             <i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i>
-        </div>`
+        </button>`
 
     }
     closeMenu("plus");
@@ -276,7 +280,14 @@ position.forEach(function(element) {
     addListeners();
     
 }
-
+function deleteEverything() {
+    zipArray = []
+    textArray = []
+    let items = document.querySelectorAll('.potential-drag');
+    items.forEach(function(item) {
+        item.remove()
+    });
+}
 function addSelection(select) {
     if (select == "upload") {
         //Add Image from Upload
@@ -417,7 +428,7 @@ function openMenu(menu, element) {
                 </h2>
                 <div id="export-image"></div>
                 <div id="export-buttons">
-                    <a title="Click here to download your Tier List as an image to share." class="button" href="${url}" download="tierlist.png">
+                    <a title="Click here to download your Tier List as an image to share." class="button" id="download-as-image">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         Download/Share Image
                     </a>
@@ -431,6 +442,8 @@ function openMenu(menu, element) {
         }).then(canvas => {
             canvas.toBlob(function(blob) {
                 url = URL.createObjectURL(blob)
+                document.getElementById("download-as-image").href = url;
+                document.getElementById("download-as-image").download = `${document.getElementById("list-header").innerText}.png`;
                 document.getElementById("export-image").innerHTML = `<img title="This is your Tier List, as an image!" src=${url}></img>`
             })
         
@@ -566,6 +579,16 @@ function moveTierDown(tier) {
         }
     }
 }
+//renames a tier
+function renameTier(tier) {
+    //backup the tier that's being replaced
+    tierList.tiers[tier].suffix = document.getElementById(`${tier}`).firstElementChild.innerText
+    tierList.render()
+    addListeners()
+    if (document.getElementById("dragged")) {
+        document.getElementById("dragged").remove();
+    }
+}
 
 async function exportTiers() {
     //tier list title
@@ -668,13 +691,13 @@ window.onscroll = function() {
 //keyboard accessible tier list creation
 window.onkeydown= function(key){
     //esc key - close any open menu
-    if (key.key == "Escape"){
+    if (key.key == "Escape" && enableKeybinds == "true"){
         closeMenu("plus")
         closeMenu("export")
         closeMenu("settings")
         closeMenu("element")
     }
-    if (screenFocus == 0) {
+    if (screenFocus == 0 && enableKeybinds == "true") {
         //+ key - open plus mini-menu
         if (key.key == "="){
             openMenu("plus")
@@ -746,6 +769,17 @@ function changeSetting(setting) {
             enableAnimations = "false"
             localStorage.enableAnimations = "false"
             document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
+        }}
+    else if (setting == "keybinds") {
+        if (enableKeybinds == "false") {
+            enableKeybinds = "true"
+            localStorage.enableKeybinds = "true"
+            document.getElementById("keybinds-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable Keybinds`
+        }
+        else {
+            enableKeybinds = "false"
+            localStorage.enableKeybinds = "false"
+            document.getElementById("keybinds-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Keybinds`
         }}
     //toggle dark/light theme
     else if (setting == "theme") {

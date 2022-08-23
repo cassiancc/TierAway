@@ -158,7 +158,7 @@ header {
 }
 /*divs to style*/
 .potential-drag {
-    cursor: pointer;
+    cursor: grab;
     text-align: center;
     width: 10vh;
     height: 10vh;
@@ -168,6 +168,9 @@ header {
     background-repeat: no-repeat; 
     background-position: center;
     display: inline-table;
+}
+td .potential-drag {
+    height: 100%;
 }
 td img {
     width: 100%;
@@ -205,6 +208,9 @@ table {
 #trash {
     padding: 5px;
     transition: color .1s;
+    background-color: transparent;
+    border: transparent;
+    cursor: pointer;
 }
 .hidden {
     display: none;
