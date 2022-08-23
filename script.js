@@ -48,8 +48,12 @@ class TierList{
         this.counter++;
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
-        addListeners()
-        closeMenu("plus")
+        addListeners();
+        closeMenu("plus");
+        //update sticky footer on taller viewport from additional tier
+        setHeight = document.body.offsetHeight;
+        setWidth = document.body.offsetWidth;
+        dist = 60;
     }
     //re-renders the tier list when tier order changes
     render() {
@@ -70,6 +74,10 @@ class TierList{
         }
         document.getElementById(tierID).remove();
         this.tiers.splice(q,1);
+        //update sticky footer on shorter viewport from removed tier
+        setHeight = document.body.offsetHeight;
+        setWidth = document.body.offsetWidth;
+        dist = 60;
     }
 }
 
@@ -238,8 +246,29 @@ function endTouch(e) {
 function moveElement() {
 //check what the mouse is hovering over
 let position = document.elementsFromPoint(posX, posY)
+let draggedSuccess = 0
 position.forEach(function(element) {
-    if (element.tagName == "TD" && element.className != "tiersettings") { //find a part of the table to insert
+    if (element.className == "potential-drag") {
+        //If its a TD, we know it has a TR above it
+        //copy a representation of the element
+        let content = document.getElementById("dragged").outerHTML
+        //remove the old id
+        content = content.slice(content.search("draggable"))
+        //add the new id
+        content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
+        //add it to the array
+        element.outerHTML += content
+        draggedSuccess = 1
+        //update the tier list array
+        let i = 0
+        tierList.tiers.forEach(function() {
+            tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
+            i++
+        })
+        //remove the successfully dragged element
+        document.getElementById("dragged").remove();
+    }
+    else if (element.tagName == "TD" && element.className != "tiersettings" && draggedSuccess == 0) { //find a part of the table to insert
         //If its a TD, we know it has a TR above it
         //copy a representation of the element
         let content = document.getElementById("dragged").outerHTML
