@@ -648,6 +648,7 @@ async function exportTiers() {
         zip.file(zipArray[f].file.name, zipArray[f].file)
         f++
     })
+    f = 0;
     //text elements
     textArray.forEach(function() {
         zip.file(`${textArray[f].id}.txt`, textArray[f].content)
@@ -684,13 +685,10 @@ async function importTiers() {
             let tierImportSuffix = input.slice(0, endSuffix)
             input = input.slice(endSuffix+1)
             //add the tier
-            tierList.addTier(new Tier(tierImportColour, tierImportSuffix));
-            console.log(tierImportColour, tierImportSuffix)
-        
+            tierList.addTier(new Tier(tierImportColour, tierImportSuffix));        
         }
         //re-render the tier list
         tierList.render()
-        console.log(zip.files)
         //import uploaded images
         zip.forEach(async function(file) {
             if (document.getElementById("upload-images-info").style.display != "none") {
@@ -700,14 +698,22 @@ async function importTiers() {
                 document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o fa-4x" aria-hidden="true"></i></div>`
             }
             if (file.search(".txt") == -1) {
-                
+                console.log(file)
                 let file2 = await zip.file(file).async("blob")
                 imageToRead = URL.createObjectURL(file2);
                 document.querySelector("#image-options").innerHTML += `
                 <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             }
+            else if (file.search("tiers") == -1) {
+                
+                let file2 = await zip.file(file).async("text");
+                file = file.slice(file.search(".txt"))
+                document.querySelector("#image-options").innerHTML += `
+                <div id="img-${file}" draggable="true" class="potential-drag">${file2}</div>`;
+            }
             
-        })
+    addListeners()
+    })
     });
     
 }
