@@ -24,15 +24,17 @@ let enableURL = localStorage.enableURL
 if (localStorage.enableURL != "true") {
     enableURL = "false";
 }
-//declare settings global variables
 let enableAnimations = localStorage.enableAnimations
 if (localStorage.enableAnimations != "false") {
     enableAnimations = "true";
 }
-//declare settings global variables
 let enableKeybinds = localStorage.enableKeybinds
 if (localStorage.enableKeybinds != "false") {
     enableKeybinds = "true";
+}
+let enableElementSettings = localStorage.enableElementSettings
+if (localStorage.enableElementSettings != "true") {
+    enableElementSettings = "false";
 }
 
 
@@ -394,7 +396,13 @@ function addSelection(select) {
 
 //opens the specified menu
 function openMenu(menu, element) {
-    document.getElementById(menu).className = "visible-drop";
+    //temporary disabling of the element settings - they're a wip
+    if ((menu == "element") && enableElementSettings == "false") {
+    }
+    else {
+        document.getElementById(menu).className = "visible-drop";
+    }
+    
     if (enableAnimations == "true") {
         document.getElementById(menu).style.opacity = 0;
         let opacity = parseFloat(document.getElementById(menu).style.opacity)
@@ -716,7 +724,7 @@ window.onscroll = function() {
     else {
         document.getElementById("image-options").style.position = "fixed"
     }
-}
+} 
 //keyboard accessible tier list creation
 window.onkeydown= function(key){
     //esc key - close any open menu
@@ -810,6 +818,17 @@ function changeSetting(setting) {
             localStorage.enableKeybinds = "false"
             document.getElementById("keybinds-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Keybinds`
         }}
+    else if (setting == "elementsettings") {
+        if (enableElementSettings == "false") {
+            enableElementSettings = "true"
+            localStorage.enableElementSettings = "true"
+            document.getElementById("elementsettings-toggle").innerHTML = `<i class="fa fa-times" aria-hidden="true"></i> Disable Element Settings`
+        }
+        else {
+            enableElementSettings = "false"
+            localStorage.enableElementSettings = "false"
+            document.getElementById("elementsettings-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Element Settings`
+        }}
     //toggle dark/light theme
     else if (setting == "theme") {
         //dark to light
@@ -862,5 +881,4 @@ screenTitle()
 let screenFocus = 0;
 function setFocus(num) {
     screenFocus = num
-    console.log(screenFocus)
 }
