@@ -672,11 +672,12 @@ async function importTiers() {
         //find the name
         document.getElementById("list-header").textContent = input.slice(0, input.search("§"))
         //find the number of tiers
-        let numberOfTiers = input.charAt(input.search("§")+1)
-        input = input.slice(input.search("§")+2)
+        let numberOfTiers = input.slice(input.search("§")+1, input.search("#"))
+        input = input.slice(input.search("#"))
         for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
             // Runs however many times is specified in input tiers
             //import tier colour
+            
             let endColour = input.search("§")
             let tierImportColour = input.slice(0, endColour)
             input = input.slice(endColour+1)
@@ -685,6 +686,7 @@ async function importTiers() {
             let tierImportSuffix = input.slice(0, endSuffix)
             input = input.slice(endSuffix+1)
             //add the tier
+            console.log(tierImportColour)
             tierList.addTier(new Tier(tierImportColour, tierImportSuffix));        
         }
         //re-render the tier list
@@ -903,4 +905,7 @@ function dropHandler(event) {
 }
 function dropOverHandler(event) {
     event.preventDefault()
+}
+function quickColour(val) {
+    document.getElementById("add-tier-colour").value = val
 }
