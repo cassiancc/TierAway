@@ -37,7 +37,7 @@
             <p>Have a tier list idea that's too niche, something you're creating just for yourself or a few friends? Tier Away is perfect.</p>
             <p>Creating a tier list is simple! Just hit the Plus button, and upload away.</p>
         </div>
-        <table id="tierlist"><thead><tr id="tablehead">
+        <table ondragover="dropOverHandler(event)" ondrop="dropHandler(event)" id="tierlist"><thead><tr id="tablehead">
             <th onfocusin="setFocus(1)" onfocusout="setFocus(0)" oninput="screenTitle()" id="list-header" class="header" title="This is the title of your Tier List." contenteditable="true" colspan="2">
                 Tier List
             </th><th data-html2canvas-ignore id="plus-button" title="Click here (or press +) to add to the tier list." class="header" onclick="openMenu(`plus`)"><i class="fa fa-plus fa-2x"></i>

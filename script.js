@@ -697,6 +697,7 @@ async function importTiers() {
             if (document.getElementById("trash") == null) {
                 document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o fa-4x" aria-hidden="true"></i></div>`
             }
+            //handle images
             if (file.search(".txt") == -1) {
                 console.log(file)
                 let file2 = await zip.file(file).async("blob")
@@ -704,6 +705,7 @@ async function importTiers() {
                 document.querySelector("#image-options").innerHTML += `
                 <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             }
+            //handle text
             else if (file.search("tiers") == -1) {
                 
                 let file2 = await zip.file(file).async("text");
@@ -887,4 +889,18 @@ screenTitle()
 let screenFocus = 0;
 function setFocus(num) {
     screenFocus = num
+}
+//drag and drop file upload
+function dropHandler(event) {
+    event.preventDefault()
+    let items = event.dataTransfer.items;
+    for (let i = 0; i < items.length; i++) {
+        if (items[i].type.indexOf("image") == 0) {
+            //upload the image into menu function
+            addImage(items[i].getAsFile())
+        }
+    }
+}
+function dropOverHandler(event) {
+    event.preventDefault()
 }
