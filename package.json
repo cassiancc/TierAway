@@ -1,0 +1,29 @@
+{
+  "name": "tieraway",
+  "version": "1.0.0",
+  "description": "Tier Away is a simple, open source tier list creation tool. No accounts, no public data, no prep work, no hassle.",
+  "main": "script.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "mocha testMain"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ConGodsted/TierAway.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ConGodsted/TierAway/issues"
+  },
+  "homepage": "https://github.com/ConGodsted/TierAway#readme",
+  "dependencies": {
+    "chai": "^4.3.6",
+    "express": "^4.18.1",
+    "mocha": "^10.0.0",
+    "puppeteer": "^16.1.0",
+    "puppeteer-core": "^16.1.0"
+  }
+}
