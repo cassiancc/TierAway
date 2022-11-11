@@ -17,7 +17,7 @@ Tier Away templates are exportable via the Download button. These templates cont
 Tier Away does not offer image or template hosting.
 
 # Themes
-Tier Away currently has 5 custom themes, including a Dark and Light mode. More themes are planned.
+Tier Away currently has 6 custom themes, including a Dark and Light mode. More themes are planned.
 
 # Libraries
 HTML2Canvas 1.4.1, used for image exports under the MIT License: https://html2canvas.hertzen.com/

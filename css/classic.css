@@ -1,0 +1,116 @@
+/*
+    Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
+    Copyright (C) 2022 Con Godsted
+*/
+
+/*fancy header*/
+header {
+    border: transparent;
+    border-bottom: black solid;
+}
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@500&display=swap');
+html {
+    scrollbar-color: #393939 #1f1f1f; 
+    font-family: 'IBM Plex Mono', monospace;
+    
+}
+
+
+
+/*6b6b6b BORDER*/
+.menu-button:hover, .visible-drop a:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover, #fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover {
+    border-color: #949494;
+}
+/*TRANSPARENT BORDER*/
+#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    border-color: transparent;
+}
+
+
+
+/*TRANSPARENT BACKGROUND*/
+#fileselect::file-selector-button, #tier-move button, .del-tier, #change-theme-button {
+    background-color: transparent;
+}
+/*WHITE BACKGROUND*/
+.visible-drop a {
+    background-color: black;
+}
+/*222222 BORDER*/
+.visible-drop {
+    border-color: #dddddd;
+    border-radius: 0;
+    border: outset #eeecdf;
+}
+
+/*BLACK BORDER*/
+table, tr, td, th {
+    border-color: black;
+}
+/*BLACK BORDER*/
+footer {
+    border-color: white;
+}
+
+/*2b2b2b BACKGROUND*/
+#fileselect:hover, #url-upload button:hover, #add-text-button:hover, #add-tier-button:hover, #add-tier-colour:hover, #urlselect:focus, #urlselect:hover, #text-select:focus, #text-select:hover {
+    background-color: #d4d4d4;
+}
+
+/*18181b BACKGROUND*/
+body {
+    background-color: white;
+}
+/*1f1f1f BACKGROUND*/
+.dropshown, .hidden, .visible-drop, .tiersettings, #tablehead, .visible-drop a {
+    background-color: #d5cfcf;
+}
+/*222222 BACKGROUND*/
+.header-button, #url-upload button, #text-add button, #add-tier-button, #add-tier-colour, #urlselect, #text-select, #add-tier, .menu-button, .hidden button, .menu-button, header button:hover {
+    background-color: #d5cfcf;
+    border: outset #eeecdf !important;
+    color: black !important;
+}
+/*393939 BACKGROUND*/
+table {
+    background-color: #393939;
+}
+/*BLACK BACKGROUND*/
+footer, #image-options, header {
+    background-color: #d5cfcf;
+}
+
+.title-header {
+    background-image: linear-gradient(to right, #052460, #a0c0e6); 
+    color: white;
+    text-align: left;
+    font-size: x-large;
+}
+
+/*WHITE TEXT*/
+.button, .github, #plus-button:hover, #tier-move button:hover, .del-tier:hover, footer a, body, header button:hover, .menu-button, #fileselect::file-selector-button {
+    color: black;
+}
+
+/*RED TEXT*/
+.github:hover, #trash:hover, footer a:hover, #change-theme-button:hover {
+    color: #55091d
+}
+/*6b6b6b TEXT*/
+#trash, #plus-button, #tier-move button, .del-tier {
+    color: #6b6b6b;
+}
+/*BLACK TEXT*/
+th:not(.header), .dropshown a {
+    color: black
+}
+.header-button {
+    color: #6b6b6b;
+    border-color: #393939;
+}
+.settings-grid p {
+    border-color: black;
+}
+#urlselect:focus, #text-select:focus, #add-tier:focus, .tierheader:focus, #list-header:focus {
+    outline-color: black;
+}
