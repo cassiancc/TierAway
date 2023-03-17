@@ -3,6 +3,8 @@ Tier Away is a simple, open source tier list creation tool. No accounts, no publ
 
 Have a tier list idea that's too niche, something you're creating just for yourself or a few friends? Tier Away is perfect.
 
+Tier Away is in open beta. Bugs may occur.
+
 # Getting Started
 Creating a tier list couldn't be easier. Just head to the site, click the Plus button, and upload your images. 
 
