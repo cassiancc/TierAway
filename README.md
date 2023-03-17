@@ -25,3 +25,5 @@ HTML2Canvas 1.4.1, used for image exports under the MIT License: https://html2ca
 Font Awesome 4, used under the SIL OFL 1.1 License https://fontawesome.com/v4/license/
 
 FileSaver 2.0.4, used for image exports under the MIT License: https://github.com/eligrey/FileSaver.js
+
+JSZip, used for image exports under the MIT License: https://stuk.github.io/jszip/
