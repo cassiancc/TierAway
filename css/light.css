@@ -57,7 +57,7 @@ footer {
 }
 
 /*18181b BACKGROUND*/
-body, .header-button {
+body, .header-button.button {
     background-color: #e7e7e4;
 }
 /*1f1f1f BACKGROUND*/

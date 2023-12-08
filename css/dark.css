@@ -53,7 +53,7 @@ footer, table, tr, td, th {
 }
 
 /*18181b BACKGROUND*/
-body, .header-button {
+body, .header-button.button {
     background-color: #18181b;
 }
 /*1f1f1f BACKGROUND*/
@@ -84,7 +84,7 @@ footer, #image-options, header, .title-header {
 }
 /*6b6b6b TEXT*/
 #trash, #plus-button, #tier-move button, .del-tier, .header-button {
-    color: #6b6b6b;
+    color: #828282;
 }
 /*BLACK TEXT*/
 th:not(.header) {

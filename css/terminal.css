@@ -53,7 +53,7 @@ footer, table, tr, td, th {
 }
 
 /*18181b BACKGROUND*/
-body, .header-button {
+body, .header-button.button {
     background-color: black;
 }
 /*1f1f1f BACKGROUND*/

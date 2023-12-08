@@ -56,7 +56,7 @@ footer, table, tr, td, th {
     text-transform: lowercase;
 }
 /*18181b BACKGROUND*/
-body, .header-button {
+body, .header-button.button {
     background-color: #0F1120;
 }
 /*1f1f1f BACKGROUND*/
