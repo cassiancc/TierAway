@@ -1,6 +1,6 @@
 /*
     Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
-    Copyright (C) 2022 Con Godsted
+    Copyright (C) 2024 Cassian Godsted
 */
 //declare global variables
 //export logic - arrays and upload counter
