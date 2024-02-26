@@ -83,11 +83,14 @@ class TierList{
 
 //begin luke's fancy tier class
 class Tier{
-    constructor(color,suffix){
+    constructor(color,suffix, content){
+        if (content == undefined) {
+            content = ""
+        }
         this.id = null;
         this.color = color;
         this.suffix = suffix;
-        this.content = "";
+        this.content = content;
     }
     render(){
         return `<tr id="${this.id}">
@@ -400,7 +403,7 @@ function addSelection(select) {
             Import Tier List Template
         </h2>
         <div id="addimagediv">
-            <input onchange="importTiers()" type="file" accept=".zip" id="import-fileselect" class="input-upload">
+            <input onchange="importTiers()" type="file" accept=".json" id="import-fileselect" class="input-upload">
         </div>`;
     } else {
         document.getElementById.innerHTML = select;
@@ -686,8 +689,37 @@ async function exportTiers() {
     saveAs(fileData, `${tierTitle}.json`);
 }
 
-
 async function importTiers() {
+
+    //IMPORT
+    let importedFile = document.getElementById("import-fileselect").files[0];
+    
+    const reader = new FileReader();
+    reader.addEventListener('load', (event) => {
+        //create object to store uploaded tier list
+        const newTierList = JSON.parse(event.target.result);
+        //reset tier list
+        clearTierList()
+        //add new tiers to existing tier list
+        newTierList.tiers.forEach(function(tier) {
+            tierList.addTier(new Tier(tier.color, tier.suffix, tier.content));
+        })
+    });
+    reader.readAsText(importedFile);
+    //RENDER
+    console.log(importedFile);
+    tierList.render();
+    addListeners();
+    
+}
+
+function clearTierList() {
+    tierList.tiers = [];
+    tierList.counter = 0;
+    tierList.render()
+}
+
+async function legacyImportTiers() {
     let importedfile = document.getElementById("import-fileselect").files[0];
     zip.loadAsync(importedfile).then(function (zip) {
         //read tiers.txt
