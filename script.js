@@ -707,7 +707,6 @@ async function importTiers() {
     });
     reader.readAsText(importedFile);
     //RENDER
-    console.log(importedFile);
     tierList.render();
     addListeners();
     
