@@ -78,8 +78,11 @@ class TierList{
         setHeight = document.body.offsetHeight;
         setWidth = document.body.offsetWidth;
         dist = 60;
+        this.counter = this.counter-1;
+        clearGhosts()
     }
 }
+
 
 //begin luke's fancy tier class
 class Tier{
@@ -279,10 +282,9 @@ position.forEach(function(element) {
         element.outerHTML += content
         draggedSuccess = 1
         //update the tier list array
-        let i = 0
-        tierList.tiers.forEach(function() {
-            tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
-            i++
+        tierList.tiers.forEach(function(tier) {
+            id = tier.id
+            tier.content = document.getElementById(`content-${id}`).innerHTML
         })
         //remove the successfully dragged element
         document.getElementById("dragged").remove();
@@ -297,11 +299,9 @@ position.forEach(function(element) {
         content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
         //add it to the array
         element.innerHTML += content
-        //update the tier list array
-        let i = 0
-        tierList.tiers.forEach(function() {
-            tierList.tiers[i].content = document.getElementById(`content-${i}`).innerHTML
-            i++
+        tierList.tiers.forEach(function(tier) {
+            id = tier.id
+            tier.content = document.getElementById(`content-${id}`).innerHTML
         })
         //remove the successfully dragged element
         document.getElementById("dragged").remove();
@@ -609,9 +609,7 @@ function moveTierUp(tier) {
         //renders the new list
         tierList.render()
         addListeners()
-        if (document.getElementById("dragged")) {
-            document.getElementById("dragged").remove();
-        }
+        clearGhosts()
         
     }
     
@@ -628,9 +626,7 @@ function moveTierDown(tier) {
         //renders the new list
         tierList.render()
         addListeners()
-        if (document.getElementById("dragged")) {
-            document.getElementById("dragged").remove();
-        }
+        clearGhosts()
     }
 }
 //renames a tier
@@ -639,9 +635,7 @@ function renameTier(tier) {
     tierList.tiers[tier].suffix = document.getElementById(`${tier}`).firstElementChild.innerText
     tierList.render()
     addListeners()
-    if (document.getElementById("dragged")) {
-        document.getElementById("dragged").remove();
-    }
+    clearGhosts()
 }
 
 async function legacyExportTiers() {
@@ -714,9 +708,7 @@ async function importTiers() {
     reader.readAsText(importedFile);
     //RENDER
     tierList.render();
-    if (document.getElementById("dragged")) {
-        document.getElementById("dragged").remove();
-    }
+    clearGhosts()
     addListeners();
     
 }
@@ -731,9 +723,7 @@ async function loadTiers() {
         })
         //RENDER
         tierList.render();
-        if (document.getElementById("dragged")) {
-            document.getElementById("dragged").remove();
-        }
+        clearGhosts()
         addListeners();
     }
     
@@ -744,6 +734,12 @@ function clearTierList() {
     tierList.tiers = [];
     tierList.counter = 0;
     tierList.render()
+}
+
+function clearGhosts() {
+    if (document.getElementById("dragged")) {
+        document.getElementById("dragged").remove();
+    }
 }
 
 function resetTierList() {
