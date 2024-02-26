@@ -486,7 +486,7 @@ function openMenu(menu, element) {
                         <i class="fa fa-download" aria-hidden="true"></i>
                         Download/Share Image
                     </a>
-                    <button title="Click here to download a ZIP template to let others try your list." class="button" onclick="exportTiers()">
+                    <button title="Click here to download a JSON template to let others try your list." class="button" onclick="exportTiers()">
                         <i class="fa fa-download" aria-hidden="true"></i>
                         Export Template
                     </button>
