@@ -689,6 +689,12 @@ async function exportTiers() {
     saveAs(fileData, `${tierTitle}.json`);
 }
 
+async function saveTiers() {    
+    //tier list title
+    let exportString = JSON.stringify(tierList)
+    localStorage.tierList = exportString
+}
+
 async function importTiers() {
 
     //IMPORT
@@ -708,7 +714,29 @@ async function importTiers() {
     reader.readAsText(importedFile);
     //RENDER
     tierList.render();
+    if (document.getElementById("dragged")) {
+        document.getElementById("dragged").remove();
+    }
     addListeners();
+    
+}
+
+async function loadTiers() {
+    const newTierList = JSON.parse(localStorage.tierList)
+    if ((newTierList != undefined) && (newTierList.counter != 0)) {
+        clearTierList()
+        //add new tiers to existing tier list
+        newTierList.tiers.forEach(function(tier) {
+            tierList.addTier(new Tier(tier.color, tier.suffix, tier.content));
+        })
+        //RENDER
+        tierList.render();
+        if (document.getElementById("dragged")) {
+            document.getElementById("dragged").remove();
+        }
+        addListeners();
+    }
+    
     
 }
 
@@ -967,6 +995,7 @@ function quickColour(val) {
     document.getElementById("add-tier-colour").value = val
 }
 window.addEventListener('beforeunload', function (event) {
-    event.returnValue = `Are you sure you want to leave?`;
+    saveTiers()
   });
-  
+
+window.onload = loadTiers
