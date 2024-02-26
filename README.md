@@ -14,12 +14,12 @@ After that, arrange them until you're satisfied, then download it by clicking Do
 Tier Away supports multiple types of content. Images can be uploaded or pasted from the clipboard, and text can be written directly onto the tier list.
 
 # Sharing Templates
-Tier Away templates are exportable via the Download button. These templates contain the structure of the list as well as all images, in a sharable ZIP file.
+Tier Away templates are exportable via the Download button. These templates contain the structure of the list as well as all images, in one JSON file.
 
 Tier Away does not offer image or template hosting.
 
 # Themes
-Tier Away currently has 6 custom themes, including a Dark and Light mode. More themes are planned.
+Tier Away currently has 6 custom themes, including a Dark and Light mode.
 
 # Libraries
 HTML2Canvas 1.4.1, used for image exports under the MIT License: https://html2canvas.hertzen.com/
