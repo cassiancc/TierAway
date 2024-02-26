@@ -21,9 +21,7 @@ let elementConfigure;
 
 //declare settings global variables
 let enableURL = localStorage.enableURL
-if (localStorage.enableURL != "true") {
-    enableURL = "false";
-}
+enableURL = "true"
 let enableAnimations = localStorage.enableAnimations
 if (localStorage.enableAnimations != "false") {
     enableAnimations = "true";
@@ -129,7 +127,7 @@ function addTier() {
 //The images created exist initially as elements local to the DOM
 //They could be re-represented once dragged into a tier
 //UNTIL THEN update the DOM API for tiers with a string "children"
-function addImage(imageToRead) {
+async function addImage(imageToRead) {
     if (document.getElementById("upload-images-info").style.display != "none") {
         document.getElementById("upload-images-info").style.display = "none"   
         document.getElementById("image-options").innerHTML += `
@@ -148,6 +146,7 @@ function addImage(imageToRead) {
             textArray.push({"id":uploadID, "content":""})
             //create a blob link for the image
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
+            imageToRead = await convertImage(imageToRead)
             //turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
             <div id="img-${uploadID}" onclick="openMenu('element', this)" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
@@ -157,18 +156,21 @@ function addImage(imageToRead) {
     //check if its a url that needs to be parsed
     else if (imageToRead == "url") {
         imageToRead = document.getElementById('urlselect').value
+        imageToRead = await convertImage(imageToRead)
         //turn the image into a draggable div
         document.querySelector("#image-options").innerHTML += `
         <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
         uploadID += 1;
     }
-    ///triggered by copy paste
+    ///triggered by copy paste 
     else {
         //add the image to the exportable zip
         zipArray.push({"id":uploadID, "file":imageToRead})
         textArray.push({"id":uploadID, "content":""})
         //create a blob link for the image
         imageToRead = URL.createObjectURL(imageToRead);
+        //convert to data URI
+        imageToRead = await convertImage(imageToRead)
         //turn the image into a draggable div
         document.querySelector("#image-options").innerHTML += `
         <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
@@ -177,6 +179,18 @@ function addImage(imageToRead) {
     }
     addListeners()
 }
+
+async function convertImage(imageToRead) {
+    let blob = await fetch(imageToRead).then(r => r.blob());
+    let dataUrl = await new Promise(resolve => {
+      let reader = new FileReader();
+      reader.onload = () => resolve(reader.result);
+    reader.readAsDataURL(blob);
+    }
+    );
+   return dataUrl
+
+};
 
 //clipboard image upload
 document.onpaste = function(event) {
@@ -627,7 +641,7 @@ function renameTier(tier) {
     }
 }
 
-async function exportTiers() {
+async function legacyExportTiers() {
     //tier list title
     let tierTitle = document.getElementById("list-header").outerText
     let exportString = `${tierTitle}§`
@@ -661,6 +675,18 @@ async function exportTiers() {
         saveAs(content, `${tierTitle}.zip`);
     });
 }
+
+async function exportTiers() {
+    //tier list title
+    let tierTitle = document.getElementById("list-header").outerText
+    let exportString = JSON.stringify(tierList)
+    //generate table file
+    let fileData = new Blob([exportString], {type: 'text/plain'});
+    //download file
+    saveAs(fileData, `${tierTitle}.json`);
+}
+
+
 async function importTiers() {
     let importedfile = document.getElementById("import-fileselect").files[0];
     zip.loadAsync(importedfile).then(function (zip) {
