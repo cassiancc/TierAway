@@ -746,6 +746,18 @@ function clearTierList() {
     tierList.render()
 }
 
+function resetTierList() {
+    clearTierList()
+    //the default tiers, s-f
+    tierList.addTier(new Tier("#e53e3e","S"));
+    tierList.addTier(new Tier("#e8532a","A"));
+    tierList.addTier(new Tier("#cba000","B"));
+    tierList.addTier(new Tier("#86d300","C"));
+    tierList.addTier(new Tier("#32bc53","D"));
+    tierList.addTier(new Tier("#009376","F"));
+
+}
+
 async function legacyImportTiers() {
     let importedfile = document.getElementById("import-fileselect").files[0];
     zip.loadAsync(importedfile).then(function (zip) {
