@@ -689,11 +689,15 @@ async function saveTiers() {
     localStorage.tierList = exportString
 }
 
-async function importTiers() {
+async function importTiers(content) {
+    let importedFile;
+    if (content == undefined) {
+        importedFile = document.getElementById("import-fileselect").files[0];
 
-    //IMPORT
-    let importedFile = document.getElementById("import-fileselect").files[0];
-    
+    }
+    else {
+        importedFile = content
+    }    
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
         //create object to store uploaded tier list
@@ -990,9 +994,14 @@ function dropHandler(event) {
     event.preventDefault()
     let items = event.dataTransfer.items;
     for (let i = 0; i < items.length; i++) {
+        //Drag and Drop Image Upload.
         if (items[i].type.indexOf("image") == 0) {
             //upload the image into menu function
             addImage(items[i].getAsFile())
+        }
+        //Drag and Drop Tier List Importing
+        else if (items[i].type.indexOf("application/json") == 0) {
+            importTiers(items[i].getAsFile())
         }
     }
 }
