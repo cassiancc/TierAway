@@ -2,24 +2,24 @@
     Tier Away is a website that helps users create unique tier lists. No accounts, no hassle.
     Copyright (C) 2024 Cassian Godsted
 */
-//declare global variables
-//export logic - arrays and upload counter
+// declare global variables
+// export logic - arrays and upload counter
 let zipArray = [];
 let textArray = [];
 let uploadID = 0;
-//image option position logic
+// image option position logic
 let dist = -60;
 let setHeight = document.body.offsetHeight
 let setWidth = document.body.offsetWidth
-//drag logic
+// drag logic
 let posX;
 let posY;
 let tempID;
-//element that opened menu identifier
+// element that opened menu identifier
 let elementConfigure;
 
 
-//declare settings global variables
+// declare settings global variables
 let enableURL = localStorage.enableURL
 enableURL = "true"
 let enableAnimations = localStorage.enableAnimations
@@ -36,57 +36,77 @@ if (localStorage.enableElementSettings != "true") {
 }
 
 
-//begin luke's fancy tier list class
-class TierList{
-    constructor(){
+// begin luke's fancy tier list class
+class TierList {
+    constructor() {
         this.tiers = [];
         this.counter = 0;
+        this.images = []
+        this.imageOptions = ""
     }
-    //creates a new tier
-    addTier(tier){
+    // creates a new tier
+    addTier(tier) {
         tier.id = this.counter;
         this.counter++;
         this.tiers.push(tier);
         document.querySelector("tbody").innerHTML += tier.render();
         addListeners();
         closeMenu("plus");
-        //update sticky footer on taller viewport from additional tier
+        // update sticky footer on taller viewport from additional tier
         setHeight = document.body.offsetHeight;
         setWidth = document.body.offsetWidth;
         dist = 60;
     }
-    //re-renders the tier list when tier order changes
+    // re-renders the tier list when tier order changes
     render() {
         document.querySelector("tbody").innerHTML = ""
         let i = 0
-        tierList.tiers.forEach(function(tier) {
+        tierList.tiers.forEach(function (tier) {
             tier.id = i
             document.querySelector("tbody").innerHTML += tierList.tiers[i].render()
             i++;
         })
     }
-    removeTierByID(tierID){
+    removeTierByID(tierID) {
         let q;
-        for(q = 0;q<this.tiers.length;q++){
-            if(this.tiers[q].id == tierID){
+        for (q = 0; q < this.tiers.length; q++) {
+            if (this.tiers[q].id == tierID) {
                 break;
             }
         }
         document.getElementById(tierID).remove();
-        this.tiers.splice(q,1);
-        //update sticky footer on shorter viewport from removed tier
+        this.tiers.splice(q, 1);
+        // update sticky footer on shorter viewport from removed tier
         setHeight = document.body.offsetHeight;
         setWidth = document.body.offsetWidth;
         dist = 60;
-        this.counter = this.counter-1;
+        this.counter = this.counter - 1;
         clearGhosts()
+    }
+    addImage(imageID) {
+        // this.images.push(document.getElementById(imageID).outerHTML)
+    }
+    addImageFromData(image) {
+        // this.images.push(image)
+    }
+    removeImage(imageID) {
+        // let i = 0;
+        // this.images.forEach(element => {
+        //     if (element.includes(imageID)) {
+        //         console.log(i)
+        //     }
+        //     i++
+        // });
+    }
+    setImageOptions(imageOptions) {
+        this.imageOptions = imageOptions
     }
 }
 
 
-//begin luke's fancy tier class
-class Tier{
-    constructor(color,suffix, content){
+// begin luke's fancy tier class
+class Tier {
+    constructor(color, suffix, content) {
         if (content == undefined) {
             content = ""
         }
@@ -95,7 +115,7 @@ class Tier{
         this.suffix = suffix;
         this.content = content;
     }
-    render(){
+    render() {
         return `<tr id="${this.id}">
         <th onfocusout="renameTier(${this.id})" contenteditable style="background-color: ${this.color};" class="tier${this.suffix} tierheader">${this.suffix}</td>
         <td id="content-${this.id}" class="tiers">${this.content}</td>
@@ -114,74 +134,70 @@ class Tier{
 
 let tierList = new TierList();
 
-//the default tiers, s-f
-tierList.addTier(new Tier("#e53e3e","S"));
-tierList.addTier(new Tier("#e8532a","A"));
-tierList.addTier(new Tier("#cba000","B"));
-tierList.addTier(new Tier("#86d300","C"));
-tierList.addTier(new Tier("#32bc53","D"));
-tierList.addTier(new Tier("#009376","F"));
-//add new tier
+// the default tiers, s-f
+tierList.addTier(new Tier("#e53e3e", "S"));
+tierList.addTier(new Tier("#e8532a", "A"));
+tierList.addTier(new Tier("#cba000", "B"));
+tierList.addTier(new Tier("#86d300", "C"));
+tierList.addTier(new Tier("#32bc53", "D"));
+tierList.addTier(new Tier("#009376", "F"));
+// add new tier
 function addTier() {
     tierName = document.getElementById("add-tier").value;
     tierColour = document.getElementById("add-tier-colour").value;
-    //Modify rendered HTML
-    tierList.addTier(new Tier(tierColour,tierName));
+    // Modify rendered HTML
+    tierList.addTier(new Tier(tierColour, tierName));
 }
-//read image from file upload
+// read image from file upload
 
-//The images created exist initially as elements local to the DOM
-//They could be re-represented once dragged into a tier
-//UNTIL THEN update the DOM API for tiers with a string "children"
-async function addImage(imageToRead) {
-    if (document.getElementById("upload-images-info").style.display != "none") {
-        document.getElementById("upload-images-info").style.display = "none"   
-        document.getElementById("image-options").innerHTML += `
-        <button onclick="deleteEverything()" id="trash">
-            <i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i>
-        </button>`
-
-    }
+// The images created exist initially as elements local to the DOM
+// They could be re-represented once dragged into a tier
+// UNTIL THEN update the DOM API for tiers with a string "children"
+async function uploadImage(imageToRead) {
+    resetUploadImagesInfo()
     closeMenu("plus");
-    //check if it was triggered by the file upload
+    // check if it was triggered by the file upload
     if (imageToRead == "file") {
         let fileLength = document.getElementById(`fileselect`).files.length;
-        for (let f = 0;f < fileLength;f++) {
-            //add the image to the exportable zip
-            zipArray.push({"id":uploadID, "file":document.getElementById(`fileselect`).files[f]})
-            textArray.push({"id":uploadID, "content":""})
-            //create a blob link for the image
+        for (let f = 0; f < fileLength; f++) {
+            // add the image to the exportable zip
+            zipArray.push({ "id": uploadID, "file": document.getElementById(`fileselect`).files[f] })
+            textArray.push({ "id": uploadID, "content": "" })
+            // create a blob link for the image
             imageToRead = URL.createObjectURL(document.getElementById(`fileselect`).files[f]);
             imageToRead = await convertImage(imageToRead)
-            //turn the image into a draggable div
+            // turn the image into a draggable div
             document.querySelector("#image-options").innerHTML += `
-            <div id="img-${uploadID}" onclick="openMenu('element', this)" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+            <div id='img-${uploadID}' draggable='true' class='potential-drag' style='background-image: url(${imageToRead});' ></div>`;
+            tierList.addImage("img-" + uploadID)
             uploadID += 1;
         }
     }
-    //check if its a url that needs to be parsed
+    // check if its a url that needs to be parsed
     else if (imageToRead == "url") {
         imageToRead = document.getElementById('urlselect').value
         imageToRead = await convertImage(imageToRead)
-        //turn the image into a draggable div
+        // turn the image into a draggable div
         document.querySelector("#image-options").innerHTML += `
-        <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+        <div id='img-${uploadID}' draggable='true' class='potential-drag' style='background-image: url(${imageToRead});' ></div>`;
+        tierList.addImage("img-" + uploadID)
         uploadID += 1;
     }
-    ///triggered by copy paste 
+    // /triggered by copy paste 
     else {
-        //add the image to the exportable zip
-        zipArray.push({"id":uploadID, "file":imageToRead})
-        textArray.push({"id":uploadID, "content":""})
-        //create a blob link for the image
+        // add the image to the exportable zip
+        zipArray.push({ "id": uploadID, "file": imageToRead })
+        textArray.push({ "id": uploadID, "content": "" })
+        // create a blob link for the image
         imageToRead = URL.createObjectURL(imageToRead);
-        //convert to data URI
+        // convert to data URI
         imageToRead = await convertImage(imageToRead)
-        //turn the image into a draggable div
+        // turn the image into a draggable div
         document.querySelector("#image-options").innerHTML += `
-        <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
+        <div id='img-${uploadID}' draggable='true' class='potential-drag' style='background-image: url(${imageToRead});' ></div>`;
+        tierList.addImage("img-" + uploadID)
         uploadID += 1;
-    
+
     }
     addListeners()
 }
@@ -189,182 +205,186 @@ async function addImage(imageToRead) {
 async function convertImage(imageToRead) {
     let blob = await fetch(imageToRead).then(r => r.blob());
     let dataUrl = await new Promise(resolve => {
-      let reader = new FileReader();
-      reader.onload = () => resolve(reader.result);
-    reader.readAsDataURL(blob);
+        let reader = new FileReader();
+        reader.onload = () => resolve(reader.result);
+        reader.readAsDataURL(blob);
     }
     );
-   return dataUrl
+    return dataUrl
 
 };
 
-//clipboard image upload
-document.onpaste = function(event) {
-    //read all items from clipboard
+// clipboard image upload
+document.onpaste = function (event) {
+    // read all items from clipboard
     let items = event.clipboardData.items;
-    //check items for image data
+    // check items for image data
     for (let i = 0; i < items.length; i++) {
-      if (items[i].type.indexOf("image") == 0) {
-        //upload the image into menu function
-        addImage(items[i].getAsFile())
-      }
+        if (items[i].type.indexOf("image") == 0) {
+            // upload the image into menu function
+            uploadImage(items[i].getAsFile())
+        }
     }
 }
 
-//creates a draggable text element
+// creates a draggable text element
 function addText() {
     if (document.getElementById("upload-images-info").style.display != "none") {
-        document.getElementById("upload-images-info").style.display = "none"   
+        document.getElementById("upload-images-info").style.display = "none"
     }
     let text = document.getElementById("text-select").value
     document.querySelector("#image-options").innerHTML += `
         <div onclick="openMenu('element', this)" id="img-${uploadID}" draggable="true" class="potential-drag">
             <p class="drag-text">${text}</p>
         </div>`;
-    textArray.push({"id":uploadID, "content":text})
+    textArray.push({ "id": uploadID, "content": text })
     uploadID += 1;
     addListeners()
     if (document.getElementById("keep-alive-text").checked == false) {
         closeMenu("plus")
     }
-    
-    
 }
-//adds the necessary event listeners for the Drag
+
+// adds the necessary event listeners for the Drag
 function addListeners() {
-    //find all draggable elements
+    // find all draggable elements
     let items = document.querySelectorAll('.potential-drag');
-    items.forEach(function(item) {
+    items.forEach(function (item) {
         item.addEventListener('dragstart', startDrag);
         item.addEventListener('dragend', endDrag);
         item.addEventListener('touchstart', startDrag);
         item.addEventListener('touchend', endTouch);
     });
 }
-//starts the drag process by setting an id on the element being dragged
+
+// starts the drag process by setting an id on the element being dragged
 function startDrag() {
     tempID = this.id;
     this.id = 'dragged';
     closeMenu("element")
 }
-//ends drag - drag and drop api
+
+// ends drag - drag and drop api
 function endDrag(e) {
-    //find the mouse
+    // find the mouse
     posX = e.clientX;
     posY = e.clientY;
     moveElement()
-    
-    
 }
-//ends drag - touch api
+
+// ends drag - touch api
 function endTouch(e) {
-    //find the touch
+    // find the touch
     posX = e.changedTouches[0].clientX
     posY = e.changedTouches[0].clientY
     moveElement()
 }
 
-//ends the drag process, deletes the old element, and creates a new one
+// ends the drag process, deletes the old element, and creates a new one
 function moveElement() {
-//check what the mouse is hovering over
-let position = document.elementsFromPoint(posX, posY)
-let draggedSuccess = 0
-position.forEach(function(element) {
-    if (element.className == "potential-drag") {
-        //If its a TD, we know it has a TR above it
-        //copy a representation of the element
-        let content = document.getElementById("dragged").outerHTML
-        //remove the old id
-        content = content.slice(content.search("draggable"))
-        //add the new id
-        content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
-        //add it to the array
-        element.outerHTML += content
-        draggedSuccess = 1
-        //update the tier list array
-        tierList.tiers.forEach(function(tier) {
-            id = tier.id
-            tier.content = document.getElementById(`content-${id}`).innerHTML
-        })
-        //remove the successfully dragged element
-        document.getElementById("dragged").remove();
-    }
-    else if (element.tagName == "TD" && element.className != "tiersettings" && draggedSuccess == 0) { //find a part of the table to insert
-        //If its a TD, we know it has a TR above it
-        //copy a representation of the element
-        let content = document.getElementById("dragged").outerHTML
-        //remove the old id
-        content = content.slice(content.search("draggable"))
-        //add the new id
-        content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
-        //add it to the array
-        element.innerHTML += content
-        tierList.tiers.forEach(function(tier) {
-            id = tier.id
-            tier.content = document.getElementById(`content-${id}`).innerHTML
-        })
-        //remove the successfully dragged element
-        document.getElementById("dragged").remove();
+    // check what the mouse is hovering over
+    let position = document.elementsFromPoint(posX, posY)
+    let draggedSuccess = 0
+    position.forEach(function (element) {
+        if (element.className == "potential-drag") {
+            // If its a TD, we know it has a TR above it
+            // copy a representation of the element
+            let content = document.getElementById("dragged").outerHTML
+            // remove the old id
+            content = content.slice(content.search("draggable"))
+            // add the new id
+            content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
+            // add it to the array
+            element.outerHTML += content
+            draggedSuccess = 1
+            // update the tier list array
+            tierList.tiers.forEach(function (tier) {
+                id = tier.id
+                tier.content = document.getElementById(`content-${id}`).innerHTML
+            })
+            // remove the successfully dragged element
+            document.getElementById("dragged").remove();
+        }
+        else if (element.tagName == "TD" && element.className != "tiersettings" && draggedSuccess == 0) { // find a part of the table to insert
+            // If its a TD, we know it has a TR above it
+            // copy a representation of the element
+            let content = document.getElementById("dragged").outerHTML
+            // remove the old id
+            content = content.slice(content.search("draggable"))
+            // add the new id
+            content = `<div onclick="openMenu('element', this)" id=${tempID} ${content}`
+            // add it to the array
+            element.innerHTML += content
+            tierList.tiers.forEach(function (tier) {
+                id = tier.id
+                tier.content = document.getElementById(`content-${id}`).innerHTML
+            })
+            // remove the successfully dragged element
+            document.getElementById("dragged").remove();
 
-    } else if (element.id == "trash") {
-        //find element id to be removed
-        let trashID = tempID.split("-")[1];
-        let i = 0;
-        zipArray.forEach(function(element) {
-            //match up element id with array id
-            if (element.id == trashID) {
-                zipArray.splice(i, 1)
-            }
-            i++
-        })
-        document.getElementById("dragged").remove();
-    }
-});
-    //if an element is dragged to the wrong place it may stay dragged/transculent
+        } else if (element.id == "trash") {
+            // find element id to be removed
+            let trashID = tempID.split("-")[1];
+            let i = 0;
+            zipArray.forEach(function (element) {
+                // match up element id with array id
+                if (element.id == trashID) {
+                    zipArray.splice(i, 1)
+                }
+                i++
+            })
+            document.getElementById("dragged").remove();
+        }
+    });
+    // if an element is dragged to the wrong place it may stay dragged/transculent
     if (document.getElementById('dragged')) {
         document.getElementById("dragged").id = tempID;
     }
-    //moved elements lose their event listeners after being dragged
+    // moved elements lose their event listeners after being dragged
     addListeners();
-    
+    // remove image from bottom menu
+    tierList.removeImage(tempID)
 }
+
 function deleteEverything() {
     zipArray = []
     textArray = []
     let items = document.querySelectorAll('.potential-drag');
-    items.forEach(function(item) {
+    items.forEach(function (item) {
         item.remove()
     });
+    resetTierList()
 }
+
 function addSelection(select) {
     if (select == "upload") {
-        //Add Image from Upload
+        // Add Image from Upload
         document.getElementById("plus").innerHTML =
-        `<h2 class="title-header menu-header">
+            `<h2 class="title-header menu-header">
             <i class="fa fa-file-image-o" aria-hidden="true"></i> Add Image from File Upload
         </h2>
         <div id="addimagediv">
             <input multiple onchange="addImage('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
         </div>`;
-        //Add Image from URL
+        // Add Image from URL
     } else if (select == "url") {
         document.getElementById("plus").innerHTML =
-        `<h2 class="title-header menu-header">Add Image from URL</h2>
+            `<h2 class="title-header menu-header">Add Image from URL</h2>
         <div id="addurldiv">
-            <div id="url-upload"><input type="url" placeholder="http://example.com/" id="urlselect" class="main-text button-border text-input">
+            <div id="url-upload"><input type="url" placeholder="http:// example.com/" id="urlselect" class="main-text button-border text-input">
             <button onclick="addImage('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
-        //Add Image from Clipboard
+        // Add Image from Clipboard
     } else if (select == "clip") {
         document.getElementById("plus").innerHTML =
-        `<h2 class="title-header menu-header">
+            `<h2 class="title-header menu-header">
             <i class="fa fa-clipboard" aria-hidden="true"></i>
              Add Image from Clipboard
         </h2>
         <div id="addurldiv">
             <p>Paste (ctrl-v/cmd-v) to upload image.</p>
             </div>`;
-        //Add Text to Tier List
+        // Add Text to Tier List
     } else if (select == "text") {
         document.getElementById("plus").innerHTML =
             `<h2 class="title-header menu-header">
@@ -381,10 +401,10 @@ function addSelection(select) {
             </div>
             <label><input type="checkbox" id="keep-alive-text">Keep Alive (use for multiple text elements)</label>
         </div>`;
-        //Add New Tier
+        // Add New Tier
     } else if (select == "newtier") {
         document.getElementById("plus").innerHTML =
-        `<h2 class="title-header menu-header">
+            `<h2 class="title-header menu-header">
             <i class="fa fa-plus" aria-hidden="true"></i>
             Add New Tier
         </h2>
@@ -398,7 +418,7 @@ function addSelection(select) {
     }
     else if (select = "import") {
         document.getElementById("plus").innerHTML =
-        `<h2 class="title-header menu-header">
+            `<h2 class="title-header menu-header">
             <i class="fa fa-upload" aria-hidden="true"></i>
             Import Tier List Template
         </h2>
@@ -411,19 +431,19 @@ function addSelection(select) {
 
 }
 
-//opens the specified menu
+// opens the specified menu
 function openMenu(menu, element) {
-    //temporary disabling of the element settings - they're a wip
+    // temporary disabling of the element settings - they're a wip
     if ((menu == "element") && enableElementSettings == "false") {
     }
     else {
         document.getElementById(menu).className = "visible-drop";
     }
-    
+
     if (enableAnimations == "true") {
         document.getElementById(menu).style.opacity = 0;
         let opacity = parseFloat(document.getElementById(menu).style.opacity)
-        setInterval(function(){
+        setInterval(function () {
             if (opacity <= 1) {
                 opacity += 1
                 document.getElementById(menu).style.opacity = opacity
@@ -433,8 +453,7 @@ function openMenu(menu, element) {
     else {
         document.getElementById(menu).style.opacity = 1;
     }
-    
-    
+
     if (menu == "plus") {
         document.getElementById("plus").innerHTML = `
         <h2 class="title-header">
@@ -464,8 +483,8 @@ function openMenu(menu, element) {
             </button>
         </div`;
         if (enableURL == "true") {
-            document.getElementById("button-panel").innerHTML += 
-            `<button class="menu-button button" onclick="addSelection('url')">
+            document.getElementById("button-panel").innerHTML +=
+                `<button class="menu-button button" onclick="addSelection('url')">
                 <i class="fa fa-external-link fa-2x" aria-hidden="true"></i>
                 <p>Add Image from URL (legacy)</p>
             </button>`
@@ -494,24 +513,24 @@ function openMenu(menu, element) {
         html2canvas(document.querySelector("#tierlist"), {
             scale: 2
         }).then(canvas => {
-            canvas.toBlob(function(blob) {
+            canvas.toBlob(function (blob) {
                 url = URL.createObjectURL(blob)
                 document.getElementById("download-as-image").href = url;
                 document.getElementById("download-as-image").download = `${document.getElementById("list-header").innerText}.png`;
                 document.getElementById("export-image").innerHTML = `<img title="This is your Tier List, as an image!" src=${url}></img>`
             })
-        
+
         });
         closeMenu("plus")
         closeMenu("element")
-   }
-   else if (menu == "element") {
-        //copy a representation of the element
+    }
+    else if (menu == "element") {
+        // copy a representation of the element
         let content = element.outerHTML;
         elementConfigure = element;
-        //remove the old id
+        // remove the old id
         content = content.slice(content.search("style"));
-        //add the new id
+        // add the new id
         content = `<div class="preview" ${content}`;
         if (document.querySelector(`#${elementConfigure.id} p`) != null) {
             document.getElementById("add-text-to-image").value = document.querySelector(`#${elementConfigure.id} p`).innerText
@@ -521,35 +540,35 @@ function openMenu(menu, element) {
         }
         document.getElementById("preview").innerHTML = `${content} <div style="display:flex;"><button class="button menu-button" onclick="deleteFromSettings()">Delete Element</button></div>`
 
-        
 
-        
-   }
-   document.querySelector("body").setAttribute("onclick", `checkMenu('${menu}')`);
-    
-    
+
+
+    }
+    document.querySelector("body").setAttribute("onclick", `checkMenu('${menu}')`);
 }
 
 function changeText() {
     document.querySelector(".preview").innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
     elementConfigure.innerHTML = `<p class="drag-text">${document.getElementById("add-text-to-image").value}</p>`
-    textArray.forEach(function(element) {
+    textArray.forEach(function (element) {
         if (elementConfigure.id.split("-")[1] == element.id) {
             element.content = document.getElementById("add-text-to-image").value
         }
     })
-    
+
 }
+
 function changeTextColour() {
     document.querySelector(`#${elementConfigure.id} p`).style.color = document.getElementById("text-colour-picker").value
     document.querySelector(".preview p").style.color = document.getElementById("text-colour-picker").value
 }
+
 function deleteFromSettings() {
-    //find element id to be removed
+    // find element id to be removed
     let trashID = elementConfigure.id.split("-")[1];
     let i = 0;
-    zipArray.forEach(function(element) {
-        //match up element id with array id
+    zipArray.forEach(function (element) {
+        // match up element id with array id
         if (element.id == trashID) {
             zipArray.splice(i, 1)
         }
@@ -559,12 +578,12 @@ function deleteFromSettings() {
     closeMenu("element")
 }
 
-//closes the specified menu
+// closes the specified menu
 function closeMenu(menu) {
     document.querySelector("body").removeAttribute("onclick")
     if (enableAnimations == "true") {
         let opacity = parseFloat(document.getElementById(menu).style.opacity)
-        setInterval(function(){
+        setInterval(function () {
             if (opacity >= -5) {
                 opacity -= 1
                 document.getElementById(menu).style.opacity = opacity;
@@ -572,66 +591,63 @@ function closeMenu(menu) {
                     document.getElementById(menu).className = "hidden";
                 }
             }
-          }, 15)
+        }, 15)
     }
     else {
         document.getElementById(menu).style.opacity = 0;
         document.getElementById(menu).className = "hidden";
     }
-    
 }
 
-//checks if the menu should be closed
+// checks if the menu should be closed
 function checkMenu(menu) {
-    //check if user is hovering over the dropdown, or the specified button. closes if not.
+    // check if user is hovering over the dropdown, or the specified button. closes if not.
     if (menu == "element") {
         if (document.querySelector(`#${menu}.visible-drop:hover`) == null && document.querySelector(`.potential-drag:hover`) == null) {
             closeMenu(menu)
         }
-        
+
     }
     else if (document.querySelector(`#${menu}.visible-drop:hover`) == null && document.querySelector(`#${menu}-button:hover`) == null) {
         closeMenu(menu)
-        
+
     }
-    
 }
 
-//moves a tier up
+// moves a tier up
 function moveTierUp(tier) {
     if (tier != 0) {
-        //backup the tier that's being replaced
-        let backup = tierList.tiers[tier-1]
-        //move the tier
-        tierList.tiers.copyWithin(tier-1, tier, tier+1);
-        //replace the tier that's been copied by the backup tier
+        // backup the tier that's being replaced
+        let backup = tierList.tiers[tier - 1]
+        // move the tier
+        tierList.tiers.copyWithin(tier - 1, tier, tier + 1);
+        // replace the tier that's been copied by the backup tier
         tierList.tiers[tier] = backup;
-        //renders the new list
+        // renders the new list
         tierList.render()
         addListeners()
         clearGhosts()
-        
     }
-    
 }
-//moves a tier down
+// moves a tier down
 function moveTierDown(tier) {
-    if (tier != tierList.tiers.length-1) {
-        //backup the tier that's being replaced
-        let backup = tierList.tiers[tier+1]
-        //move the tier
-        tierList.tiers.copyWithin(tier+1, tier, tier+1);
-        //replace the tier that's been copied by the backup tier
+    if (tier != tierList.tiers.length - 1) {
+        // backup the tier that's being replaced
+        let backup = tierList.tiers[tier + 1]
+        // move the tier
+        tierList.tiers.copyWithin(tier + 1, tier, tier + 1);
+        // replace the tier that's been copied by the backup tier
         tierList.tiers[tier] = backup;
-        //renders the new list
+        // renders the new list
         tierList.render()
         addListeners()
         clearGhosts()
     }
 }
-//renames a tier
+
+// renames a tier
 function renameTier(tier) {
-    //backup the tier that's being replaced
+    // backup the tier that's being replaced
     tierList.tiers[tier].suffix = document.getElementById(`${tier}`).firstElementChild.innerText
     tierList.render()
     addListeners()
@@ -639,52 +655,53 @@ function renameTier(tier) {
 }
 
 async function legacyExportTiers() {
-    //tier list title
+    // tier list title
     let tierTitle = document.getElementById("list-header").outerText
     let exportString = `${tierTitle}§`
-    //tier list length
+    // tier list length
     exportString += tierList.tiers.length
-    //tier list color code and suffix
-    tierList.tiers.forEach(function(tier) {
+    // tier list color code and suffix
+    tierList.tiers.forEach(function (tier) {
         exportString += `${tier.color}§${tier.suffix}§`
     })
-    //generate table file
-    let fileData = new Blob([exportString], {type: 'text/plain'});
-    
-    //generate zip with jszip
+    // generate table file
+    let fileData = new Blob([exportString], { type: 'text/plain' });
+
+    // generate zip with jszip
     zip.file("tiers.txt", fileData)
-    //images
+    // images
     let f = 0;
-    zipArray.forEach(function() {
+    zipArray.forEach(function () {
         zip.file(zipArray[f].file.name, zipArray[f].file)
         f++
     })
     f = 0;
-    //text elements
-    textArray.forEach(function() {
+    // text elements
+    textArray.forEach(function () {
         zip.file(`${textArray[f].id}.txt`, textArray[f].content)
         f++
     })
-    //create file
-    zip.generateAsync({type:"blob"})
-    .then(function(content) {
-        // see FileSaver.js
-        saveAs(content, `${tierTitle}.zip`);
-    });
+    // create file
+    zip.generateAsync({ type: "blob" })
+        .then(function (content) {
+            // see FileSaver.js
+            saveAs(content, `${tierTitle}.zip`);
+        });
 }
 
 async function exportTiers() {
-    //tier list title
+    // tier list title
     let tierTitle = document.getElementById("list-header").outerText
     let exportString = JSON.stringify(tierList)
-    //generate table file
-    let fileData = new Blob([exportString], {type: 'text/plain'});
-    //download file
+    // generate table file
+    let fileData = new Blob([exportString], { type: 'text/plain' });
+    // download file
     saveAs(fileData, `${tierTitle}.json`);
 }
 
-async function saveTiers() {    
-    //tier list title
+async function saveTiers() {
+    // tier list title
+    tierList.setImageOptions(document.getElementById("image-options").innerHTML)
     let exportString = JSON.stringify(tierList)
     localStorage.tierList = exportString
 }
@@ -697,45 +714,70 @@ async function importTiers(content) {
     }
     else {
         importedFile = content
-    }    
+    }
     const reader = new FileReader();
     reader.addEventListener('load', (event) => {
-        //create object to store uploaded tier list
+        // create object to store uploaded tier list
         const newTierList = JSON.parse(event.target.result);
-        //reset tier list
+        // reset tier list
         clearTierList()
-        //add new tiers to existing tier list
-        newTierList.tiers.forEach(function(tier) {
+        // add new tiers to existing tier list
+        newTierList.tiers.forEach(function (tier) {
             tierList.addTier(new Tier(tier.color, tier.suffix, tier.content));
         })
+        if (newTierList.imageOptions !== "") {
+            document.getElementById("image-options").innerHTML = newTierList.imageOptions
+        }
     });
     reader.readAsText(importedFile);
-    //RENDER
+    // RENDER
     tierList.render();
     clearGhosts()
     addListeners();
-    
 }
 
 async function loadTiers() {
     const newTierList = JSON.parse(localStorage.tierList)
     if ((newTierList != undefined) && (newTierList.counter != 0)) {
         clearTierList()
-        //add new tiers to existing tier list
-        newTierList.tiers.forEach(function(tier) {
+        // add new tiers to existing tier list
+        newTierList.tiers.forEach(function (tier) {
             tierList.addTier(new Tier(tier.color, tier.suffix, tier.content));
         })
-        //RENDER
+        // RENDER
         tierList.render();
+        // if (newTierList.images instanceof Array) {
+        //     if (newTierList.images.length !== 0) {
+        //         resetUploadImagesInfo()
+        //         newTierList.images.forEach(element => {
+        //             document.getElementById("image-options").innerHTML += element
+        //             tierList.addImageFromData(element)
+        //         });
+        //         uploadID += newTierList.images.length
+        //     }
+        // }
+        if (newTierList.imageOptions.includes("div")) {
+            document.getElementById("image-options").innerHTML = newTierList.imageOptions
+        }
         clearGhosts()
         addListeners();
     }
-    
-    
+}
+
+function resetUploadImagesInfo() {
+    if (document.getElementById("upload-images-info").style.display != "none") {
+        document.getElementById("upload-images-info").style.display = "none"
+        document.getElementById("image-options").innerHTML += `
+        <button onclick="deleteEverything()" id="trash">
+            <i class="fa fa-trash-o   fa-4x" aria-hidden="true"></i>
+        </button>`
+
+    }
 }
 
 function clearTierList() {
     tierList.tiers = [];
+    tierList.images = [];
     tierList.counter = 0;
     tierList.render()
 }
@@ -748,55 +790,54 @@ function clearGhosts() {
 
 function resetTierList() {
     clearTierList()
-    //the default tiers, s-f
-    tierList.addTier(new Tier("#e53e3e","S"));
-    tierList.addTier(new Tier("#e8532a","A"));
-    tierList.addTier(new Tier("#cba000","B"));
-    tierList.addTier(new Tier("#86d300","C"));
-    tierList.addTier(new Tier("#32bc53","D"));
-    tierList.addTier(new Tier("#009376","F"));
-
+    // the default tiers, s-f
+    tierList.addTier(new Tier("#e53e3e", "S"));
+    tierList.addTier(new Tier("#e8532a", "A"));
+    tierList.addTier(new Tier("#cba000", "B"));
+    tierList.addTier(new Tier("#86d300", "C"));
+    tierList.addTier(new Tier("#32bc53", "D"));
+    tierList.addTier(new Tier("#009376", "F"));
 }
 
 async function legacyImportTiers() {
     let importedfile = document.getElementById("import-fileselect").files[0];
     zip.loadAsync(importedfile).then(function (zip) {
-        //read tiers.txt
+        // read tiers.txt
         return zip.file("tiers.txt").async("text");
-      }).then(function (input) {
-        //clear the default tiers
+    }).then(function (input) {
+        // clear the default tiers
         tierList.tiers = [];
-        //find the name
+        // find the name
         document.getElementById("list-header").textContent = input.slice(0, input.search("§"))
-        //find the number of tiers
-        let numberOfTiers = input.slice(input.search("§")+1, input.search("#"))
+        // find the number of tiers
+        let numberOfTiers = input.slice(input.search("§") + 1, input.search("#"))
         input = input.slice(input.search("#"))
         for (let runningTiers = 0; runningTiers < numberOfTiers; runningTiers++) {
             // Runs however many times is specified in input tiers
-            //import tier colour
-            
+            // import tier colour
+
             let endColour = input.search("§")
             let tierImportColour = input.slice(0, endColour)
-            input = input.slice(endColour+1)
-            //import tier suffix
+            input = input.slice(endColour + 1)
+            // import tier suffix
             let endSuffix = input.search("§")
             let tierImportSuffix = input.slice(0, endSuffix)
-            input = input.slice(endSuffix+1)
-            //add the tier
+            input = input.slice(endSuffix + 1)
+            // add the tier
             console.log(tierImportColour)
-            tierList.addTier(new Tier(tierImportColour, tierImportSuffix));        
+            tierList.addTier(new Tier(tierImportColour, tierImportSuffix));
         }
-        //re-render the tier list
+        // re-render the tier list
         tierList.render()
-        //import uploaded images
-        zip.forEach(async function(file) {
+        // import uploaded images
+        zip.forEach(async function (file) {
             if (document.getElementById("upload-images-info").style.display != "none") {
-                document.getElementById("upload-images-info").style.display = "none"   
+                document.getElementById("upload-images-info").style.display = "none"
             }
             if (document.getElementById("trash") == null) {
                 document.getElementById("image-options").innerHTML += `<div id="trash"><i class="fa fa-trash-o fa-4x" aria-hidden="true"></i></div>`
             }
-            //handle images
+            // handle images
             if (file.search(".txt") == -1) {
                 console.log(file)
                 let file2 = await zip.file(file).async("blob")
@@ -804,22 +845,21 @@ async function legacyImportTiers() {
                 document.querySelector("#image-options").innerHTML += `
                 <div id="img-${uploadID}" draggable="true" class="potential-drag" style="background-image: url(${imageToRead});" ></div>`;
             }
-            //handle text
+            // handle text
             else if (file.search("tiers") == -1) {
-                
+
                 let file2 = await zip.file(file).async("text");
                 file = file.slice(file.search(".txt"))
                 document.querySelector("#image-options").innerHTML += `
                 <div id="img-${file}" draggable="true" class="potential-drag">${file2}</div>`;
             }
-            
-    addListeners()
-    })
+
+            addListeners()
+        })
     });
-    
 }
 
-window.onscroll = function() {
+window.onscroll = function () {
     if (setWidth != document.body.offsetWidth) {
         setHeight = document.body.offsetHeight
         setWidth = document.body.offsetWidth
@@ -831,66 +871,63 @@ window.onscroll = function() {
     else {
         document.getElementById("image-options").style.position = "fixed"
     }
-} 
-//keyboard accessible tier list creation
-window.onkeydown= function(key){
-    //esc key - close any open menu
-    if (key.key == "Escape" && enableKeybinds == "true"){
+}
+
+// keyboard accessible tier list creation
+window.onkeydown = function (key) {
+    // esc key - close any open menu
+    if (key.key == "Escape" && enableKeybinds == "true") {
         closeMenu("plus")
         closeMenu("export")
         closeMenu("settings")
         closeMenu("element")
     }
     if (screenFocus == 0 && enableKeybinds == "true") {
-        //+ key - open plus mini-menu
-        if (key.key == "="){
+        // + key - open plus mini-menu
+        if (key.key == "=") {
             openMenu("plus")
         }
-        //e key - open export menu
-        else if (key.key == "e"){
+        // e key - open export menu
+        else if (key.key == "e") {
             openMenu("export")
         }
-        //u key - open upload menu
-        else if (key.key == "u"){
+        // u key - open upload menu
+        else if (key.key == "u") {
             openMenu("plus")
             addSelection("upload")
         }
-        //t key - open text menu
-        else if (key.key == "t"){
+        // t key - open text menu
+        else if (key.key == "t") {
             openMenu("plus")
             addSelection("text")
         }
-        //i key - open import menu
-        else if (key.key == "i"){
+        // i key - open import menu
+        else if (key.key == "i") {
             openMenu("plus")
             addSelection("import")
         }
-        //h key - focus tier list title
-        else if (key.key == "h"){
+        // h key - focus tier list title
+        else if (key.key == "h") {
             document.getElementById("list-header").focus()
         }
-        //h key - focus tier list title
-        else if (key.key == "g"){
+        // h key - focus tier list title
+        else if (key.key == "g") {
             openMenu("settings")
         }
     }
-    
-    
 };
 var zip;
-//
-window.addEventListener("load", function(){
+// 
+window.addEventListener("load", function () {
     zip = new JSZip();
     if (localStorage.theme != undefined) {
         changeSetting(`theme-${localStorage.theme}`)
     }
-    
-});
-  
 
+});
 
 function changeSetting(setting) {
-    //deprecated url upload
+    // deprecated url upload
     if (setting == "url") {
         if (enableURL == "false") {
             enableURL = "true"
@@ -901,8 +938,9 @@ function changeSetting(setting) {
             enableURL = "false"
             localStorage.enableURL = "false"
             document.getElementById("url-images-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable URL Images`
-        }}
-    //animation settings
+        }
+    }
+    // animation settings
     else if (setting == "animations") {
         if (enableAnimations == "false") {
             enableAnimations = "true"
@@ -913,7 +951,8 @@ function changeSetting(setting) {
             enableAnimations = "false"
             localStorage.enableAnimations = "false"
             document.getElementById("animations-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Animations`
-        }}
+        }
+    }
     else if (setting == "keybinds") {
         if (enableKeybinds == "false") {
             enableKeybinds = "true"
@@ -924,7 +963,8 @@ function changeSetting(setting) {
             enableKeybinds = "false"
             localStorage.enableKeybinds = "false"
             document.getElementById("keybinds-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Keybinds`
-        }}
+        }
+    }
     else if (setting == "elementsettings") {
         if (enableElementSettings == "false") {
             enableElementSettings = "true"
@@ -935,17 +975,18 @@ function changeSetting(setting) {
             enableElementSettings = "false"
             localStorage.enableElementSettings = "false"
             document.getElementById("elementsettings-toggle").innerHTML = `<i class="fa fa-check" aria-hidden="true"></i> Enable Element Settings`
-        }}
-    //toggle dark/light theme
+        }
+    }
+    // toggle dark/light theme
     else if (setting == "theme") {
-        //dark to light
+        // dark to light
         if (document.getElementById("theme-style").className == "dark-mode") {
             document.getElementById("theme-style").remove()
             document.querySelector("head").innerHTML += `<link class="light-mode" id="theme-style" rel="stylesheet" href="css/light.css">`
             document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
             localStorage.theme = "light"
         }
-        //light to dark
+        // light to dark
         else {
             document.getElementById("theme-style").remove()
             document.querySelector("head").innerHTML += `<link class="dark-mode" id="theme-style" rel="stylesheet" href="css/dark.css">`
@@ -953,34 +994,34 @@ function changeSetting(setting) {
             localStorage.theme = "dark"
         }
     }
-    //change theme directly
+    // change theme directly
     else if (setting.search("theme-") != -1) {
-        //find theme
+        // find theme
         theme = setting.slice(setting.search("-") + 1)
-        //remove old theme
+        // remove old theme
         document.getElementById("theme-style").remove()
-        //add new theme
+        // add new theme
         document.querySelector("head").innerHTML += `<link id="theme-style" rel="stylesheet" href="css/${theme}.css">`
-        //untoggle theme button
-        document.querySelectorAll(".theme-button i").forEach(function(element) {
+        // untoggle theme button
+        document.querySelectorAll(".theme-button i").forEach(function (element) {
             element.className = "fa fa-times"
         })
-        //toggle new theme button
+        // toggle new theme button
         document.getElementById(`${theme}-icon`).className = 'fa fa-check'
-        //update dark/light toggle
+        // update dark/light toggle
         if (setting == "theme-dark") {
             document.getElementById("change-theme-button").className = "fa fa-sun-o main-text"
         }
         else if (setting == "theme-light") {
             document.getElementById("change-theme-button").className = "fa fa-moon-o main-text"
-            
+
         }
-        //save theme
+        // save theme
         localStorage.theme = theme
     }
 }
 
-//match up tier list title with tab title
+// match up tier list title with tab title
 function screenTitle() {
     document.querySelector('title').innerHTML = `Tier Away - ${document.getElementById("list-header").innerText}`
 }
@@ -989,17 +1030,17 @@ let screenFocus = 0;
 function setFocus(num) {
     screenFocus = num
 }
-//drag and drop file upload
+// drag and drop file upload
 function dropHandler(event) {
     event.preventDefault()
     let items = event.dataTransfer.items;
     for (let i = 0; i < items.length; i++) {
-        //Drag and Drop Image Upload.
+        // Drag and Drop Image Upload.
         if (items[i].type.indexOf("image") == 0) {
-            //upload the image into menu function
-            addImage(items[i].getAsFile())
+            // upload the image into menu function
+            uploadImage(items[i].getAsFile())
         }
-        //Drag and Drop Tier List Importing
+        // Drag and Drop Tier List Importing
         else if (items[i].type.indexOf("application/json") == 0) {
             importTiers(items[i].getAsFile())
         }
@@ -1013,6 +1054,6 @@ function quickColour(val) {
 }
 window.addEventListener('beforeunload', function (event) {
     saveTiers()
-  });
+});
 
 window.onload = loadTiers
