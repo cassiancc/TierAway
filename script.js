@@ -364,7 +364,7 @@ function addSelection(select) {
             <i class="fa fa-file-image-o" aria-hidden="true"></i> Add Image from File Upload
         </h2>
         <div id="addimagediv">
-            <input multiple onchange="addImage('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
+            <input multiple onchange="uploadImage('file')" type="file" accept="image/*" id="fileselect" class="input-upload">
         </div>`;
         // Add Image from URL
     } else if (select == "url") {
@@ -372,7 +372,7 @@ function addSelection(select) {
             `<h2 class="title-header menu-header">Add Image from URL</h2>
         <div id="addurldiv">
             <div id="url-upload"><input type="url" placeholder="http:// example.com/" id="urlselect" class="main-text button-border text-input">
-            <button onclick="addImage('url')" class="button" id="addtierbutton">Add Image</button></div>
+            <button onclick="uploadImage('url')" class="button" id="addtierbutton">Add Image</button></div>
         </div>`;
         // Add Image from Clipboard
     } else if (select == "clip") {
