@@ -882,7 +882,8 @@ window.onkeydown = function (key) {
         closeMenu("settings")
         closeMenu("element")
     }
-    if (screenFocus == 0 && enableKeybinds == "true") {
+    if (screenFocus == 0 && enableKeybinds == "true" && !key.ctrlKey & !key.altKey) {
+        console.log(key)
         // + key - open plus mini-menu
         if (key.key == "=") {
             openMenu("plus")
